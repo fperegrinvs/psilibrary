@@ -199,14 +199,31 @@ gulp.task('image:min', function () {
 
 gulp.task('copy', ['copy:html', 'copy:images', 'copy:fonts', 'copy:html:root']);
 
+gulp.task('copy:html', ['minifyHtl', 'convert2Js']);
 
-gulp.task('copy:html', function () {
-	
+
+var concat = require('gulp-concat')
+
+var ngHtml2Js = require("gulp-ng-html2js");
+
+gulp.task('convert2Js', function() {
+	gulp.src([SETTINGS.src.templates + '*.html', SETTINGS.src.templates + '**/*.html'])
+    .pipe(ngHtml2Js({
+        moduleName: "psilibrary.templates",
+        prefix: "templates/"
+	}))
+    .pipe(concat('template.js'))
+	.pipe(gulp.dest(SETTINGS.build.js))
+	.pipe(gulpPlugins.connect.reload());
+})
+
+
+gulp.task('minifyHtl', function () {
 	console.log('-------------------------------------------------- COPY :html');
 	gulp.src([SETTINGS.src.templates + '*.html', SETTINGS.src.templates + '**/*.html'])
 		.pipe(gulpPlugins.if(isProduction, gulpPlugins.minifyHtml({comments: false, quotes: true, spare: true, empty: true, cdata: true})))
-		.pipe(gulp.dest(SETTINGS.build.templates))
-		.pipe(gulpPlugins.connect.reload());
+		//.pipe(gulp.dest(SETTINGS.build.templates))
+		//.pipe(gulpPlugins.connect.reload());
 });
 
 gulp.task('copy:html:root', function () {
@@ -281,6 +298,7 @@ gulp.task('watch', function () {
 	});
 	
 });
+
 
 
 /*============================================================

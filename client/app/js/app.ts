@@ -4,9 +4,10 @@
 ==================================================================*/
 /*global angular*/
 
-var app = angular.module('client', ["ngCookies", "ngResource", "ngSanitize", "ngRoute", "ngAnimate", "ui.utils", "ui.bootstrap", "ui.router", "psilibrary.controllers"]);
+var app = angular.module('client', ["ngCookies", "ngResource", "ngSanitize", "ngRoute", "ngAnimate", "ui.utils", "ui.bootstrap", "ui.router", "psilibrary.controllers", 'psilibrary.templates']);
 
 angular.module("psilibrary.controllers", []);
+angular.module("psilibrary.templates", []);
 
 app.config(['$routeProvider', '$locationProvider', '$httpProvider', '$stateProvider','$urlRouterProvider', function($routeProvider, $locationProvider, $httpProvider, $stateProvider, $urlRouterProvider) {
 	'use strict';
