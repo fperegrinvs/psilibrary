@@ -12,81 +12,86 @@
 	"buffers":
 	[
 		{
-			"file": "app/js/app.ts",
+			"file": "main.go",
 			"settings":
 			{
-				"buffer_size": 6281,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "app/index.html",
-			"settings":
-			{
-				"buffer_size": 672,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "app/templates/home.html",
-			"settings":
-			{
-				"buffer_size": 29,
+				"buffer_size": 135,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "app/templates/404.html",
+			"file": "error.go",
 			"settings":
 			{
-				"buffer_size": 12,
+				"buffer_size": 91,
 				"line_ending": "Windows",
-				"name": "<h1>404</h1>"
+				"name": "package main"
 			}
 		},
 		{
-			"file": "app/js/controllers/homeCtl.ts",
+			"file": "handlers.go",
 			"settings":
 			{
-				"buffer_size": 234,
+				"buffer_size": 1913,
 				"line_ending": "Windows",
-				"name": "'use strict'; // http://stackoverflow.com/question"
+				"name": "package main"
 			}
 		},
 		{
-			"file": "app/js/controllers/homeCtl.js",
+			"file": "logger.go",
 			"settings":
 			{
-				"buffer_size": 242,
+				"buffer_size": 338,
+				"line_ending": "Windows",
+				"name": "package main"
+			}
+		},
+		{
+			"file": "repo.go",
+			"settings":
+			{
+				"buffer_size": 731,
+				"line_ending": "Windows",
+				"name": "package main"
+			}
+		},
+		{
+			"file": "router.go",
+			"settings":
+			{
+				"buffer_size": 395,
+				"line_ending": "Windows",
+				"name": "package main"
+			}
+		},
+		{
+			"file": "routes.go",
+			"settings":
+			{
+				"buffer_size": 430,
+				"line_ending": "Windows",
+				"name": "package main"
+			}
+		},
+		{
+			"file": "todo.go",
+			"settings":
+			{
+				"buffer_size": 210,
+				"line_ending": "Windows",
+				"name": "package main"
+			}
+		},
+		{
+			"file": "/C/Users/Leonardo/AppData/Roaming/Sublime Text 3/Packages/User/GoSublime.sublime-settings",
+			"settings":
+			{
+				"buffer_size": 1143,
 				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "app/js/app.js",
-			"settings":
-			{
-				"buffer_size": 6553,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "gulpfile.js",
-			"settings":
-			{
-				"buffer_size": 13218,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "app/css/fonts.less",
-			"settings":
-			{
-				"buffer_size": 51,
-				"line_ending": "Unix"
 			}
 		}
 	],
-	"build_system": "Packages/TypeScript/TypeScript.sublime-build",
+	"build_system": "",
 	"build_system_choices":
 	[
 		[
@@ -101,7 +106,7 @@
 				]
 			],
 			[
-				"Packages/TypeScript/TypeScript.sublime-build",
+				"Packages/User/TypeScript.sublime-build",
 				""
 			]
 		]
@@ -147,20 +152,9 @@
 	},
 	"expanded_folders":
 	[
-		"/C/Projetos/Go/src/psilibrary/client",
-		"/C/Projetos/Go/src/psilibrary/client/app",
-		"/C/Projetos/Go/src/psilibrary/client/app/css",
-		"/C/Projetos/Go/src/psilibrary/client/app/fonts",
-		"/C/Projetos/Go/src/psilibrary/client/app/img",
-		"/C/Projetos/Go/src/psilibrary/client/app/js",
-		"/C/Projetos/Go/src/psilibrary/client/app/js/controllers",
-		"/C/Projetos/Go/src/psilibrary/client/app/js/directives",
-		"/C/Projetos/Go/src/psilibrary/client/app/js/factories",
-		"/C/Projetos/Go/src/psilibrary/client/app/templates"
 	],
 	"file_history":
 	[
-		"/C/Users/Leonardo/AppData/Roaming/Sublime Text 3/Packages/User/Preferences.sublime-settings",
 		"/C/Projetos/psi-library/src/server/root.ts",
 		"/C/Users/Leonardo/AppData/Roaming/Sublime Text 3/Packages/GoSublime/CHANGELOG.md",
 		"/C/Users/Leonardo/AppData/Roaming/Sublime Text 3/Packages/GoSublime/USAGE.md",
@@ -171,7 +165,7 @@
 	],
 	"find":
 	{
-		"height": 34.0
+		"height": 23.0
 	},
 	"find_in_files":
 	{
@@ -185,8 +179,6 @@
 		"case_sensitive": false,
 		"find_history":
 		[
-			"templ",
-			"routePRo",
 			" "
 		],
 		"highlight": true,
@@ -205,61 +197,58 @@
 	"groups":
 	[
 		{
-			"selected": 0,
+			"selected": 2,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "app/js/app.ts",
+					"file": "main.go",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 6281,
+						"buffer_size": 135,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1030,
-								1030
+								135,
+								135
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/TypeScript/TypeScript.tmLanguage",
-							"translate_tabs_to_spaces": false,
-							"use_tab_stops": false
+							"syntax": "Packages/GoSublime/syntax/GoSublime-Go.tmLanguage"
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 0,
+					"stack_index": 2,
 					"type": "text"
 				},
 				{
 					"buffer": 1,
-					"file": "app/index.html",
+					"file": "error.go",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 672,
+						"buffer_size": 91,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								617,
-								617
+								91,
+								91
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/HTML/HTML.tmLanguage",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
+							"auto_name": "package main",
+							"syntax": "Packages/GoSublime/syntax/GoSublime-Go.tmLanguage"
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -270,112 +259,56 @@
 				},
 				{
 					"buffer": 2,
-					"file": "app/templates/home.html",
-					"semi_transient": true,
+					"file": "handlers.go",
+					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 29,
+						"buffer_size": 1913,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								0,
-								0
+								89,
+								89
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/HTML/HTML.tmLanguage"
+							"auto_name": "package main",
+							"syntax": "Packages/GoSublime/syntax/GoSublime-Go.tmLanguage",
+							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 2,
+					"stack_index": 0,
 					"type": "text"
 				},
 				{
 					"buffer": 3,
-					"file": "app/templates/404.html",
+					"file": "logger.go",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 12,
+						"buffer_size": 338,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								12,
-								12
+								338,
+								338
 							]
 						],
 						"settings":
 						{
-							"auto_name": "<h1>404</h1>",
-							"syntax": "Packages/HTML/HTML.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 3,
-					"type": "text"
-				},
-				{
-					"buffer": 4,
-					"file": "app/js/controllers/homeCtl.ts",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 234,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								190,
-								190
-							]
-						],
-						"settings":
-						{
-							"auto_name": "'use strict'; // http://stackoverflow.com/question",
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 4,
-					"type": "text"
-				},
-				{
-					"buffer": 5,
-					"file": "app/js/controllers/homeCtl.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 242,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage"
+							"auto_name": "package main",
+							"syntax": "Packages/GoSublime/syntax/GoSublime-Go.tmLanguage",
+							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -385,84 +318,144 @@
 					"type": "text"
 				},
 				{
-					"buffer": 6,
-					"file": "app/js/app.js",
+					"buffer": 4,
+					"file": "repo.go",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 6553,
+						"buffer_size": 731,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								368,
-								368
+								731,
+								731
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 5,
-					"type": "text"
-				},
-				{
-					"buffer": 7,
-					"file": "gulpfile.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 13218,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								4985,
-								4989
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"auto_name": "package main",
+							"syntax": "Packages/GoSublime/syntax/GoSublime-Go.tmLanguage",
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 4860.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 7,
 					"type": "text"
 				},
 				{
-					"buffer": 8,
-					"file": "app/css/fonts.less",
+					"buffer": 5,
+					"file": "router.go",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 51,
+						"buffer_size": 395,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								51,
-								51
+								395,
+								395
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/CSS/CSS.tmLanguage"
+							"auto_name": "package main",
+							"syntax": "Packages/GoSublime/syntax/GoSublime-Go.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "routes.go",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 430,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								235,
+								235
+							]
+						],
+						"settings":
+						{
+							"auto_name": "package main",
+							"syntax": "Packages/GoSublime/syntax/GoSublime-Go.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": -0.0,
+						"translation.y": 135.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "todo.go",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 210,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								210,
+								210
+							]
+						],
+						"settings":
+						{
+							"auto_name": "package main",
+							"syntax": "Packages/GoSublime/syntax/GoSublime-Go.tmLanguage"
+						},
+						"translation.x": -0.0,
+						"translation.y": 135.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "/C/Users/Leonardo/AppData/Roaming/Sublime Text 3/Packages/User/GoSublime.sublime-settings",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1143,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								966,
+								966
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JSON.tmLanguage"
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -541,8 +534,8 @@
 	{
 		"height": 0.0
 	},
-	"pinned_build_system": "Packages/User/TypeScript.sublime-build",
-	"project": "client.sublime-project",
+	"pinned_build_system": "Packages/GoSublime/GoSublime.sublime-build",
+	"project": "server.sublime-project",
 	"replace":
 	{
 		"height": 42.0
@@ -583,7 +576,7 @@
 	"show_open_files": false,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 298.0,
+	"side_bar_width": 150.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{
