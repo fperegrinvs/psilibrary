@@ -11,10 +11,12 @@ import (
 	"github.com/gorilla/mux"
 )
 
+// Index Página principal
 func Index(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprint(w, "Welcome!\n")
 }
 
+// TodoIndex rota teste
 func TodoIndex(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	w.WriteHeader(http.StatusOK)
@@ -23,15 +25,16 @@ func TodoIndex(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// TodoShow rota teste
 func TodoShow(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
-	var todoId int
+	var todoID int
 	var err error
-	if todoId, err = strconv.Atoi(vars["todoId"]); err != nil {
+	if todoID, err = strconv.Atoi(vars["todoId"]); err != nil {
 		panic(err)
 	}
-	todo := RepoFindTodo(todoId)
-	if todo.Id > 0 {
+	todo := RepoFindTodo(todoID)
+	if todo.ID > 0 {
 		w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 		w.WriteHeader(http.StatusOK)
 		if err := json.NewEncoder(w).Encode(todo); err != nil {
@@ -49,10 +52,7 @@ func TodoShow(w http.ResponseWriter, r *http.Request) {
 
 }
 
-/*
-Test with this curl command:
-curl -H "Content-Type: application/json" -d '{"name":"New Todo"}' http://localhost:8080/todos
-*/
+// TodoCreate rota teste
 func TodoCreate(w http.ResponseWriter, r *http.Request) {
 	var todo Todo
 	body, err := ioutil.ReadAll(io.LimitReader(r.Body, 1048576))

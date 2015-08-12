@@ -2,6 +2,7 @@ package main
 
 import "net/http"
 
+// Route rota de acesso ao serviço REST
 type Route struct {
 	Name        string
 	Method      string
@@ -9,6 +10,7 @@ type Route struct {
 	HandlerFunc http.HandlerFunc
 }
 
+// Routes lista de rotas do REST
 type Routes []Route
 
 var routes = Routes{

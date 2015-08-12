@@ -2,7 +2,7 @@ package main
 
 import "fmt"
 
-var currentId int
+var currentID int
 
 var todos Todos
 
@@ -12,9 +12,10 @@ func init() {
 	RepoCreateTodo(Todo{Name: "Host meetup"})
 }
 
+// RepoFindTodo exemplo de repositorio find
 func RepoFindTodo(id int) Todo {
 	for _, t := range todos {
-		if t.Id == id {
+		if t.ID == id {
 			return t
 		}
 	}
@@ -22,17 +23,18 @@ func RepoFindTodo(id int) Todo {
 	return Todo{}
 }
 
-//this is bad, I don't think it passes race condtions
+// RepoCreateTodo exemplo de repositorio create
 func RepoCreateTodo(t Todo) Todo {
-	currentId += 1
-	t.Id = currentId
+	currentID ++
+	t.ID = currentID
 	todos = append(todos, t)
 	return t
 }
 
+// RepoDestroyTodo exemplo, remover item
 func RepoDestroyTodo(id int) error {
 	for i, t := range todos {
-		if t.Id == id {
+		if t.ID == id {
 			todos = append(todos[:i], todos[i+1:]...)
 			return nil
 		}

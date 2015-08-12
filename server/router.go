@@ -6,6 +6,7 @@ import (
 	"github.com/gorilla/mux"
 )
 
+// NewRouter cria instância do roteador
 func NewRouter() *mux.Router {
 
 	router := mux.NewRouter().StrictSlash(true)
