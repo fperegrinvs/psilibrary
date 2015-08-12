@@ -7,26 +7,35 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
-func AddEntryType(e *models.EntryType) {
+func AddEntryType(e *models.EntryType) (int, error) {
 	db, err := sql.Open(conf.Db, conf.Conn)	
 	defer db.Close()
 
-	_, err = db.Exec("insert into EntryType (Name) values (?)", e.Name)
+	res, err := db.Exec("insert into EntryType (Name) values (?)", e.Name)
 
-	if err != nil {}
+	if err == nil {
+        id, err := res.LastInsertId()
+        if err == nil {
+            return int(id), nil
+        }
+    }
+	
+	return  -1, err
 }
 
-func DeleteEntryType(id int) {
+func DeleteEntryType(id int) error{
 	db, err := sql.Open(conf.Db, conf.Conn)	
 	defer db.Close()
 
 	_, err = db.Exec("delete from EntryType where IdEntryType = ?", id)
 
-	if err != nil {}
+	if err == nil {}
+
+	return err
 }
 
 
-func GetEntryTypeById(id int) *models.EntryType {
+func GetEntryTypeById(id int) (*models.EntryType, error) {
 	db, err := sql.Open(conf.Db, conf.Conn)	
 	defer db.Close()
 
@@ -35,16 +44,16 @@ func GetEntryTypeById(id int) *models.EntryType {
 	for rows.Next() {
 	    e := new(models.EntryType)
 	    if err := rows.Scan(&e.ID, &e.Name); err != nil { }
-	    return e
+	    return e, err
 	}
 
 	if err != nil {
 	}
 
-	return nil
+	return nil, err
 }
 
-func ListEntryTypes() []*models.EntryType {
+func ListEntryTypes() ([]*models.EntryType, error) {
 	var entries []*models.EntryType
 
 	db, err := sql.Open(conf.Db, conf.Conn)	
@@ -61,5 +70,5 @@ func ListEntryTypes() []*models.EntryType {
 	if err != nil {
 	}
 
-	return entries
+	return entries, err
 }
