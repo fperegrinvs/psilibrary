@@ -31,6 +31,7 @@ app.config(['$routeProvider', '$locationProvider', '$httpProvider', '$stateProvi
         'home',
         'home2',
         'entryType',
+        'entryTypeEdit',
         '404',
     ];
 
@@ -38,6 +39,7 @@ app.config(['$routeProvider', '$locationProvider', '$httpProvider', '$stateProvi
         'home': { url: '', partial: 'home', controller: 'home', target: 'miolo' },
         'home2': { url: '/', partial: 'home', controller: 'home', target: 'miolo' },
         'entryType': { url: '/entryType', controller: 'entryTypeList', partial: 'entryTypeList', target: 'miolo'},
+        'entryTypeEdit': { url: '/entryType/{id}', controller: 'entryTypeEdit', partial: 'entryTypeEdit', target: 'miolo'},
         '404': { url: '/404', partial: '404', controller: 'home', target: 'miolo' },
     };
 
@@ -149,6 +151,15 @@ function createStateOptions(stateTree, stateConfigs) {
         return clone;
     })
     .filter(function (obj) { return !!obj; });
+}
+
+// helper functions
+function getScope(e) {
+    return angular.element(e).scope();
+}
+
+function getParentScope(e) {
+    return angular.element(e).scope().$parent;
 }
 
 /*

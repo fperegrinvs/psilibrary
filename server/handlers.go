@@ -41,18 +41,19 @@ func EntryTypeIndex(w http.ResponseWriter, r *http.Request) {
 }
 
 // TodoShow rota teste
-func TodoShow(w http.ResponseWriter, r *http.Request) {
+func EntryTypeShow(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
-	var todoID int
+	var entryTypeID int
 	var err error
-	if todoID, err = strconv.Atoi(vars["todoId"]); err != nil {
+	if entryTypeID, err = strconv.Atoi(vars["entrytypeId"]); err != nil {
 		panic(err)
 	}
-	todo := RepoFindTodo(todoID)
-	if todo.ID > 0 {
+	entryType, err := repositories.GetEntryTypeById(entryTypeID)
+	if entryType.ID > 0 {
 		w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+		addCors(w, r)
 		w.WriteHeader(http.StatusOK)
-		if err := json.NewEncoder(w).Encode(todo); err != nil {
+		if err := json.NewEncoder(w).Encode(entryType); err != nil {
 			panic(err)
 		}
 		return

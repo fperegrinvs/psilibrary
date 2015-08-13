@@ -13,6 +13,7 @@
     "angular-ui-router": "*",
     "ng-grid": "*",
     "jquery": "*",
+    "bootstrap": "*",
     "bootstrap-table": "*"
   },
   "devDependencies": {

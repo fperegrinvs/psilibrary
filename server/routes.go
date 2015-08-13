@@ -33,9 +33,9 @@ var routes = Routes{
 		TodoCreate,
 	},
 	Route{
-		"TodoShow",
-		[]string{"GET"},
-		"/todos/{todoId}",
-		TodoShow,
+		"EntryTypeShow",
+		[]string{"GET", "OPTIONS"},
+		"/entrytype/{entrytypeId}",
+		EntryTypeShow,
 	},
 }

@@ -103,16 +103,18 @@ gulp.task('concat:bower', function () {
 	console.log('-------------------------------------------------- CONCAT :bower');
 
 	var jsFilter = gulpPlugins.filter('**/*.js', {restore: true}),
+		lessFilter = gulpPlugins.filter('**/*.less', {restore: true}),
 		cssFilter = gulpPlugins.filter('**/*.css', {restore: true}),
 		assetsFilter = gulpPlugins.filter(['!**/*.js', '!**/*.css', '!**/*.scss'], {restore: true});
 
-	var stream = gulp.src(bowerFiles(bowerConfig), {base: SETTINGS.src.bower})
-		.pipe(jsFilter)
-		.pipe(gulpPlugins.concat('_bower.js'))
-		.pipe(gulpPlugins.if(isProduction, gulpPlugins.uglify()))
-		.pipe(gulp.dest(SETTINGS.build.bower))
-		.pipe(jsFilter.restore)
-		.pipe(cssFilter)
+	var less = require('gulp-less');
+
+    var lessStream = gulp.src(bowerFiles(bowerConfig), {base: SETTINGS.src.bower})
+    	.pipe(lessFilter)
+    	.pipe(less());
+
+    var cssStream = gulp.src(bowerFiles(bowerConfig), {base: SETTINGS.src.bower})
+	    .pipe(cssFilter)
 		.pipe(gulpPlugins.sass())
 		.pipe(map(function (file, callback) {
 			var relativePath = path.dirname(path.relative(path.resolve(SETTINGS.src.bower), file.path));
@@ -133,15 +135,27 @@ gulp.task('concat:bower', function () {
 			file.contents = new Buffer(contents);
 
 			callback(null, file);
-		}))
+		}));
+
+	var merge = require('merge-stream');
+	
+	var unified = merge(cssStream, lessStream)
 		.pipe(gulpPlugins.concat('_bower.css'))
 		.pipe(gulp.dest(SETTINGS.build.bower))
-		.pipe(cssFilter.restore)
+
+
+	var stream = gulp.src(bowerFiles(bowerConfig), {base: SETTINGS.src.bower})
+		.pipe(jsFilter)
+		.pipe(gulpPlugins.concat('_bower.js'))
+		.pipe(gulpPlugins.if(isProduction, gulpPlugins.uglify()))
+		.pipe(gulp.dest(SETTINGS.build.bower))
+		.pipe(jsFilter.restore)
 		.pipe(assetsFilter)
 		.pipe(gulp.dest(SETTINGS.build.bower))
 		.pipe(assetsFilter.restore)
 		.pipe(gulpPlugins.connect.reload());
-	return stream;
+
+	return merge(stream, unified);
 });
 
 gulp.task('concat:js', ['js:hint'], function () {
