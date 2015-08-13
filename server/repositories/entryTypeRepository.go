@@ -1,6 +1,7 @@
 package repositories
 
 import (
+	"log"
 	"psilibrary/server/models"
 	"psilibrary/server/conf"
 	"database/sql"
@@ -21,6 +22,17 @@ func AddEntryType(e *models.EntryType) (int, error) {
     }
 	
 	return  -1, err
+}
+
+func UpdateEntryType(e *models.EntryType) (error) {
+	db, err := sql.Open(conf.Db, conf.Conn)	
+	defer db.Close()
+
+	_, err = db.Exec("update EntryType set Name = ? where entryTypeId = ?", e.Name, e.ID)
+
+	log.Printf("update " +  e.Name)
+	
+	return  err
 }
 
 func DeleteEntryType(id int) error{

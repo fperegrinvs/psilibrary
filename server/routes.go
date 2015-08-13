@@ -27,6 +27,18 @@ var routes = Routes{
 		EntryTypeIndex,
 	},
 	Route{
+		"EntryTypeUpdate",
+		[]string{"POST"},
+		"/entrytype/update",
+		EntryTypeUpdate,
+	},
+	Route{
+		"EntryTypeUpdateOptions",
+		[]string{"OPTIONS"},
+		"/entrytype/update",
+		OptionsHandler,
+	},
+	Route{
 		"TodoCreate",
 		[]string{"POST"},
 		"/todos",

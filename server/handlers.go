@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"strconv"
+	"psilibrary/server/models"
 	"psilibrary/server/repositories"
 	"github.com/gorilla/mux"
 )
@@ -40,6 +41,15 @@ func EntryTypeIndex(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func OptionsHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+
+	addCors(w, r)
+
+	w.WriteHeader(http.StatusOK)
+}
+
+
 // TodoShow rota teste
 func EntryTypeShow(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
@@ -66,6 +76,35 @@ func EntryTypeShow(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
+}
+
+// TodoCreate rota teste
+func EntryTypeUpdate(w http.ResponseWriter, r *http.Request) {
+	entryType := new(models.EntryType)
+	body, err := ioutil.ReadAll(io.LimitReader(r.Body, 1048576))
+	if err != nil {
+		panic(err)
+	}
+	if err := r.Body.Close(); err != nil {
+		panic(err)
+	}
+	if err := json.Unmarshal(body, &entryType); err != nil {
+		w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+		w.WriteHeader(422) // unprocessable entity
+		if err := json.NewEncoder(w).Encode(err); err != nil {
+			panic(err)
+		}
+	}
+
+	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+	addCors(w, r)
+	err = repositories.UpdateEntryType(entryType)
+
+	if err != nil {
+		panic(err)
+	}
+
+	w.WriteHeader(http.StatusOK)
 }
 
 // TodoCreate rota teste

@@ -31,6 +31,21 @@ angular.module('psilibrary.services')
             });
 
             return deferred.promise;
+		},
+		Update: function(entryType) {
+            var p = $http.post(config.serverUrl + '/entrytype/update',entryType);
+
+            var deferred = $q.defer();
+
+            p.success(function (data, status) {
+                deferred.resolve(data, status);
+            });
+            p.error(function (data, status) {
+                deferred.reject(data, status);
+            });
+
+            return deferred.promise;
 		}
+
 	};
  }]);

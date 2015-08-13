@@ -9,7 +9,7 @@ angular.module('psilibrary.controllers')
 		$scope.data = data;
     });
 
-    $scope.edit = function(v){
-		alert(v);
+    $scope.update = function(){
+		entryTypeService.Update($scope.data);
     }
 }]);
