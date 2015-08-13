@@ -7,7 +7,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"strconv"
-
+	"psilibrary/server/repositories"
 	"github.com/gorilla/mux"
 )
 
@@ -17,10 +17,11 @@ func Index(w http.ResponseWriter, r *http.Request) {
 }
 
 // TodoIndex rota teste
-func TodoIndex(w http.ResponseWriter, r *http.Request) {
+func EntryTypeIndex(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	w.WriteHeader(http.StatusOK)
-	if err := json.NewEncoder(w).Encode(todos); err != nil {
+	list, _ := repositories.ListEntryTypes()
+	if err := json.NewEncoder(w).Encode(list); err != nil {
 		panic(err)
 	}
 }

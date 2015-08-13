@@ -25,12 +25,14 @@ app.config(['$routeProvider', '$locationProvider', '$httpProvider', '$stateProvi
     var stateTree = [
         'home',
         'home2',
+        'entryType',
         '404',
     ];
 
     var stateConfigs = {
         'home': { url: '', partial: 'home', controller: 'home', target: 'miolo' },
         'home2': { url: '/', partial: 'home', controller: 'home', target: 'miolo' },
+        'entryType': { url: '/entryType', controller: 'entryTypeList', partial: 'entryTypeList', target: 'miolo'},
         '404': { url: '/404', partial: '404', controller: 'home', target: 'miolo' },
     };
 

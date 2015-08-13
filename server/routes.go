@@ -21,10 +21,10 @@ var routes = Routes{
 		Index,
 	},
 	Route{
-		"TodoIndex",
+		"EntryTypeIndex",
 		"GET",
-		"/todos",
-		TodoIndex,
+		"/entrytype",
+		EntryTypeIndex,
 	},
 	Route{
 		"TodoCreate",

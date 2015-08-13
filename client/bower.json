@@ -12,7 +12,8 @@
     "angular-bootstrap": "*",
     "angular-ui-router": "*",
     "ng-grid": "*",
-    "jquery": "*"
+    "jquery": "*",
+    "bootstrap-table": "*"
   },
   "devDependencies": {
     "angular-mocks": "*",
