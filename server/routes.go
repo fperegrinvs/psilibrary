@@ -5,7 +5,7 @@ import "net/http"
 // Route rota de acesso ao serviço REST
 type Route struct {
 	Name        string
-	Method      string
+	Methods     []string
 	Pattern     string
 	HandlerFunc http.HandlerFunc
 }
@@ -16,25 +16,25 @@ type Routes []Route
 var routes = Routes{
 	Route{
 		"Index",
-		"GET",
+		[]string{"GET"},
 		"/",
 		Index,
 	},
 	Route{
 		"EntryTypeIndex",
-		"GET",
+		[]string{"GET","OPTIONS"},
 		"/entrytype",
 		EntryTypeIndex,
 	},
 	Route{
 		"TodoCreate",
-		"POST",
+		[]string{"POST"},
 		"/todos",
 		TodoCreate,
 	},
 	Route{
 		"TodoShow",
-		"GET",
+		[]string{"GET"},
 		"/todos/{todoId}",
 		TodoShow,
 	},

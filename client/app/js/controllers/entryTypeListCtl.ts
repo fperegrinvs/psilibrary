@@ -1,5 +1,9 @@
 'use strict'; // http://stackoverflow.com/questions/1335851/what-does-use-strict-do-in-javascript-and-what-is-the-reasoning-behind-it
 
 angular.module('psilibrary.controllers')
-.controller('entryTypeListCtl', ['$scope', function ($scope) {
+.controller('entryTypeListCtl', ['$scope', 'entryTypeService', function ($scope, entryTypeService) {
+	    var call = entryTypeService.List();
+	    call.then(function (data) {
+			$scope.data = data;
+	    });
 }]);

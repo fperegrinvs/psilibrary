@@ -3,3 +3,7 @@
 /server/*.exe
 /doc/*.bak
 /client/app/js/app.js
+/client/app/js/*.js
+/client/app/js/controllers/*.js
+/client/app/js/directives/*.js
+/client/app/js/services/*.js

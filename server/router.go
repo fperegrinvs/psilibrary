@@ -17,7 +17,7 @@ func NewRouter() *mux.Router {
 		handler = Logger(handler, route.Name)
 
 		router.
-			Methods(route.Method).
+			Methods(route.Methods...).
 			Path(route.Pattern).
 			Name(route.Name).
 			Handler(handler)

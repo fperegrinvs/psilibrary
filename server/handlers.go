@@ -16,9 +16,23 @@ func Index(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprint(w, "Welcome!\n")
 }
 
+func addCors(w http.ResponseWriter, r *http.Request){
+    if origin := r.Header.Get("Origin"); origin != "" {
+        w.Header().Set("Access-Control-Allow-Origin", origin)
+    } else {
+    	w.Header().Set("Access-Control-Allow-Origin", "*")
+    }
+    w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+    w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, X-Requested-With")
+    w.Header().Set("Access-Control-Allow-Credentials", "true")	
+}
+
 // TodoIndex rota teste
 func EntryTypeIndex(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+
+	addCors(w, r)
+
 	w.WriteHeader(http.StatusOK)
 	list, _ := repositories.ListEntryTypes()
 	if err := json.NewEncoder(w).Encode(list); err != nil {
