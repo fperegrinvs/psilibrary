@@ -96,7 +96,7 @@ gulp.task('js:hint', function () {
 =                          Concat                           =
 ============================================================*/
 
-gulp.task('concat', ['concat:bower', 'concat:js', 'concat:css']);
+gulp.task('concat', ['concat:bower', 'convert:ts', 'concat:js', 'concat:css']);
 
 
 gulp.task('concat:bower', function () {
@@ -138,7 +138,7 @@ gulp.task('concat:bower', function () {
 		}));
 
 	var merge = require('merge-stream');
-	
+
 	var unified = merge(cssStream, lessStream)
 		.pipe(gulpPlugins.concat('_bower.css'))
 		.pipe(gulp.dest(SETTINGS.build.bower))
@@ -156,6 +156,14 @@ gulp.task('concat:bower', function () {
 		.pipe(gulpPlugins.connect.reload());
 
 	return merge(stream, unified);
+});
+
+gulp.task('convert:ts', function () {
+	var ts = require('gulp-typescript');
+	console.log('-------------------------------------------------- CONVERT :ts');
+	gulp.src([SETTINGS.src.js + 'plugins/*.ts', SETTINGS.src.js + 'app.ts', SETTINGS.src.js + '*.ts', SETTINGS.src.js + '**/*.ts'], { base: "." })
+	.pipe(ts()).js
+	.pipe(gulp.dest('.'))
 });
 
 gulp.task('concat:js', ['js:hint'], function () {

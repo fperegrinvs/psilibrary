@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "dependencies": {
     "gulp-less": "^3.0.3",
+    "gulp-typescript": "^2.8.0",
     "merge-stream": "^1.0.0"
   },
   "devDependencies": {
