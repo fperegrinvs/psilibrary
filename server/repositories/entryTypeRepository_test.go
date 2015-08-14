@@ -13,7 +13,7 @@ func TestEntryTypeCrud(t *testing.T) {
 
     e := new(models.EntryType)
     e.Name = "Testing Add"
-    i, err := AddEntryType(e)
+    i, err := CreateEntryType(e)
 
     if (err != nil){
       t.Error("Erro ao inserir tipo de registro: %s", err.Error())

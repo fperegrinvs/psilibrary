@@ -1,7 +1,8 @@
-<h3>Editando tipo de registro</h3>
+<h3 ng-if="!data.id">Novo tipo de registro</h3>
+<h3 ng-if="data.id">Editando tipo de registro</h3>
 <div class="simple-form">
     <form>
-        <div class="form-group">
+        <div class="form-group" ng-if="data.id">
             <label for="id">Id</label>
             <input type="text" readonly="true" class="form-control" ng-model="data.id" id="id">
         </div>

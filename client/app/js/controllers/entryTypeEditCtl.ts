@@ -10,6 +10,8 @@ angular.module('psilibrary.controllers')
     });
 
     $scope.update = function(){
-		entryTypeService.Update($scope.data);
+		entryTypeService.Update($scope.data).then(function (){
+			$state.go('entryType')
+		});
     }
 }]);

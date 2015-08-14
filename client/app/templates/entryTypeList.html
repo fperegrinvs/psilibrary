@@ -1,5 +1,10 @@
 Tipos de Registro
-<table id="table-pagination" data-height="400" data-tabledata="data" data-search="true"  bs-table-control>
+<div id="toolbar">
+    <div class="form-inline" role="form">
+        <button type="submit" class="btn btn-primary" ng-click="create()">Novo</button>
+    </div>
+</div>
+<table id="table-pagination" data-toolbar="#toolbar" data-height="400" data-tabledata="data" data-search="true"  bs-table-control>
     <thead>
         <tr>
             <th data-field="id" data-align="right" data-sortable="true">ID</th>

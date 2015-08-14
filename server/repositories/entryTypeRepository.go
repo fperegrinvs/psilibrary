@@ -8,7 +8,7 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
-func AddEntryType(e *models.EntryType) (int, error) {
+func CreateEntryType(e *models.EntryType) (int, error) {
 	db, err := sql.Open(conf.Db, conf.Conn)	
 	defer db.Close()
 

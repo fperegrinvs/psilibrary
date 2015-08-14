@@ -108,8 +108,8 @@ func EntryTypeUpdate(w http.ResponseWriter, r *http.Request) {
 }
 
 // TodoCreate rota teste
-func TodoCreate(w http.ResponseWriter, r *http.Request) {
-	var todo Todo
+func EntryTypeCreate(w http.ResponseWriter, r *http.Request) {
+	entryType := new(models.EntryType)
 	body, err := ioutil.ReadAll(io.LimitReader(r.Body, 1048576))
 	if err != nil {
 		panic(err)
@@ -117,7 +117,7 @@ func TodoCreate(w http.ResponseWriter, r *http.Request) {
 	if err := r.Body.Close(); err != nil {
 		panic(err)
 	}
-	if err := json.Unmarshal(body, &todo); err != nil {
+	if err := json.Unmarshal(body, &entryType); err != nil {
 		w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 		w.WriteHeader(422) // unprocessable entity
 		if err := json.NewEncoder(w).Encode(err); err != nil {
@@ -125,10 +125,13 @@ func TodoCreate(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	t := RepoCreateTodo(todo)
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-	w.WriteHeader(http.StatusCreated)
-	if err := json.NewEncoder(w).Encode(t); err != nil {
+	addCors(w, r)
+	_, err = repositories.CreateEntryType(entryType)
+
+	if err != nil {
 		panic(err)
 	}
+
+	w.WriteHeader(http.StatusOK)
 }

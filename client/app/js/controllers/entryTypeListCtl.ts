@@ -13,6 +13,10 @@ angular.module('psilibrary.controllers')
 		$state.go('entryTypeEdit', { id: v });
     }
 
+    $scope.create = function() {
+		$state.go('entryTypeCreate');
+    }
+
 	$scope.formatter = function (value, row, index) {
 	return [
 		'<button type="submit" class="btn btn-primary" onclick="currentScope.edit(' + value + ')">Editar</button>',

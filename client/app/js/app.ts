@@ -31,6 +31,7 @@ app.config(['$routeProvider', '$locationProvider', '$httpProvider', '$stateProvi
         'home',
         'home2',
         'entryType',
+        'entryTypeCreate',
         'entryTypeEdit',
         '404',
     ];
@@ -40,6 +41,7 @@ app.config(['$routeProvider', '$locationProvider', '$httpProvider', '$stateProvi
         'home2': { url: '/', partial: 'home', controller: 'home', target: 'miolo' },
         'entryType': { url: '/entryType', controller: 'entryTypeList', partial: 'entryTypeList', target: 'miolo'},
         'entryTypeEdit': { url: '/entryType/{id}', controller: 'entryTypeEdit', partial: 'entryTypeEdit', target: 'miolo'},
+        'entryTypeCreate': { url: '/entryType/new', controller: 'entryTypeCreate', partial: 'entryTypeEdit', target: 'miolo'},
         '404': { url: '/404', partial: '404', controller: 'home', target: 'miolo' },
     };
 

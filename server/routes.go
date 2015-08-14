@@ -35,18 +35,18 @@ var routes = Routes{
 	Route{
 		"EntryTypeUpdateOptions",
 		[]string{"OPTIONS"},
-		"/entrytype/update",
+		"/entrytype/{value}",
 		OptionsHandler,
 	},
 	Route{
-		"TodoCreate",
+		"EntryTypeCreate",
 		[]string{"POST"},
-		"/todos",
-		TodoCreate,
+		"/entrytype/create",
+		EntryTypeCreate,
 	},
 	Route{
 		"EntryTypeShow",
-		[]string{"GET", "OPTIONS"},
+		[]string{"GET"},
 		"/entrytype/{entrytypeId}",
 		EntryTypeShow,
 	},
