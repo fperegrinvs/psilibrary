@@ -39,7 +39,7 @@ func DeleteEntryType(id int) error{
 	db, err := sql.Open(conf.Db, conf.Conn)	
 	defer db.Close()
 
-	_, err = db.Exec("delete from EntryType where IdEntryType = ?", id)
+	_, err = db.Exec("delete from EntryType where EntryTypeId = ?", id)
 
 	if err == nil {}
 
