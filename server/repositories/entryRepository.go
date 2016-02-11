@@ -7,7 +7,7 @@ import (
 	"database/sql"
 	_ "github.com/go-sql-driver/mysql"
 )
-
+/*
 func CreateCategory(e *models.Category) (int, error) {
 	db, err := sql.Open(conf.Db, conf.Conn)	
 	defer db.Close()
@@ -84,3 +84,4 @@ func ListCategorys() ([]*models.Category, error) {
 
 	return entries, err
 }
+*/

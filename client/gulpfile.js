@@ -37,7 +37,6 @@ var	SETTINGS = {
 		fonts: 'build/fonts/',
 		bower: 'build/bower/' // If you change this, you will have to change in index.html as well.
 	},
-	scss: 'scss/'
 };
 
 var bowerConfig = {
@@ -105,7 +104,7 @@ gulp.task('concat:bower', function () {
 	var jsFilter = gulpPlugins.filter('**/*.js', {restore: true}),
 		lessFilter = gulpPlugins.filter('**/*.less', {restore: true}),
 		cssFilter = gulpPlugins.filter('**/*.css', {restore: true}),
-		assetsFilter = gulpPlugins.filter(['!**/*.js', '!**/*.css', '!**/*.scss'], {restore: true});
+		assetsFilter = gulpPlugins.filter(['!**/*.js', '!**/*.css'], {restore: true});
 
 	var less = require('gulp-less');
 
@@ -115,7 +114,6 @@ gulp.task('concat:bower', function () {
 
     var cssStream = gulp.src(bowerFiles(bowerConfig), {base: SETTINGS.src.bower})
 	    .pipe(cssFilter)
-		.pipe(gulpPlugins.sass())
 		.pipe(map(function (file, callback) {
 			var relativePath = path.dirname(path.relative(path.resolve(SETTINGS.src.bower), file.path));
 
@@ -176,23 +174,8 @@ gulp.task('concat:js', ['js:hint'], function () {
 	    .pipe(gulpPlugins.connect.reload());
 });
 
-gulp.task('convert:scss', function () {
-	console.log('-------------------------------------------------- COVERT - scss');
 
-	// Callback to show sass error
-	var showError = function (err) {
-		console.log(errorLog('\n SASS file has error clear it to see changes, see below log ------------->>> \n'));
-		console.log(errorLog(err));
-	};
-
-    var stream = gulp.src(SETTINGS.src.css + 'application.scss')
-       .pipe(gulpPlugins.sass({includePaths: [SETTINGS.src.css], onError: showError}))
-       .pipe(gulp.dest(SETTINGS.scss))
-       .pipe(gulpPlugins.connect.reload());
-    return stream;
-});
-
-gulp.task('concat:css', ['convert:scss'], function () {
+gulp.task('concat:css', function () {
 
 	console.log('-------------------------------------------------- CONCAT :css ');
 	gulp.src([SETTINGS.src.css + 'fonts.css', SETTINGS.scss + 'application.css', SETTINGS.src.css + '*.css'])
@@ -289,8 +272,6 @@ gulp.task('watch', function () {
 
 	watchedFiles.push(gulp.watch([SETTINGS.src.css + '*.css',  SETTINGS.src.css + '**/*.css'],  ['concat:css']));
 	
-	watchedFiles.push(gulp.watch([SETTINGS.src.css + '*.scss', SETTINGS.src.css + '**/*.scss'], ['concat:css']));
-
     watchedFiles.push(gulp.watch([SETTINGS.src.js + '*.js',    SETTINGS.src.js + '**/*.js'],    ['concat:js']));
 
     watchedFiles.push(gulp.watch([SETTINGS.src.app + '*.html'], ['copy:html:root']));
