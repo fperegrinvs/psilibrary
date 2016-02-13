@@ -21,7 +21,7 @@ func TestCategoryCrud(t *testing.T) {
       t.Error("Erro ao inserir categoria: %s", err.Error())
     }
 
-    addedType, err := repository.GetCategoryById(i)
+    addedType, err := repository.GetCategoryById(i, nil)
 
     if (err != nil){
       t.Error("Erro ao recuperar categoria inserida: %s", err.Error())
@@ -31,7 +31,7 @@ func TestCategoryCrud(t *testing.T) {
       t.Error("Dados da categoria não correspondem à categoria inserida")
     } 
 
-    types, err := repository.ListCategories()
+    types, err := repository.ListCategories(nil)
     if err != nil {
       t.Error("Erro ao listar categorias: %s", err.Error())
     }

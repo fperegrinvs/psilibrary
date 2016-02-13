@@ -1,6 +1,7 @@
 package repositories
 
 import (
+	"errors"
 	"log"
 	"psilibrary/server/models"
 	"psilibrary/server/conf"
@@ -9,7 +10,7 @@ import (
 )
 
 type CategoryGetter interface{
-	GetCategoryById(int)(*models.Category, error)
+	GetCategoryById(int, *sql.DB)(*models.Category, error)
 }
 
 type CategoryValidator interface{
@@ -18,7 +19,16 @@ type CategoryValidator interface{
 
 type CategoryRepository struct{}
 
+var repository CategoryRepository
+
+
 func (CategoryRepository) CreateCategory(e *models.Category, mydb *sql.DB, validator CategoryValidator) (int, error) {
+	valid, err := validator.ValidateCategory(e, repository)
+
+	if !valid {
+		return -1, err 
+	}
+
 	db, err := OpenSql(conf.Db, conf.Conn, mydb)	
 	defer db.Close()
 
@@ -57,11 +67,15 @@ func (CategoryRepository) DeleteCategory(id int) error{
 }
 
 
-func (CategoryRepository) GetCategoryById(id int) (*models.Category, error) {
-	db, err := sql.Open(conf.Db, conf.Conn)	
+func (CategoryRepository) GetCategoryById(id int, mydb *sql.DB) (*models.Category, error) {
+	db, err := OpenSql(conf.Db, conf.Conn, mydb)	
 	defer db.Close()
 
-	rows, err := db.Query("SELECT CategoryId, Name, ParentId FROM Category where CategoryId = ?", id)
+	rows, err := db.Query("select CategoryId, Name, ParentId FROM Category where CategoryId = ?", id)
+
+	if rows == nil{
+		return nil, err
+	}
 
 	for rows.Next() {
 	    e := new(models.Category)
@@ -78,9 +92,13 @@ func (CategoryRepository) GetCategoryById(id int) (*models.Category, error) {
 // Verifica se a categoria é valida ou não.
 func (CategoryRepository) ValidateCategory(category *models.Category, getter CategoryGetter) (bool, error){
 	if category.ParentId != 0{
-		cat, err := getter.GetCategoryById(category.ParentId)
+		cat, err := getter.GetCategoryById(category.ParentId, nil)
 
 		if err != nil || cat == nil {
+			if cat == nil{
+				err = errors.New("Categoria pai não existente")
+			}
+
 			return false, err
 		}
 	}
@@ -88,13 +106,18 @@ func (CategoryRepository) ValidateCategory(category *models.Category, getter Cat
 	return true, nil
 }
 
-func (CategoryRepository) ListCategories() ([]*models.Category, error) {
-	var entries []*models.Category
+func (CategoryRepository) ListCategories(db *sql.DB) ([]*models.Category, error) {
 
-	db, err := sql.Open(conf.Db, conf.Conn)	
+	db, err := OpenSql(conf.Db, conf.Conn, db)	
+	
 	defer db.Close()
 
-	rows, err := db.Query("SELECT CategoryId, Name, ParentId FROM Category")
+	var entries []*models.Category
+	rows, err := db.Query("select CategoryId, Name, ParentId FROM Category")
+
+	if rows == nil{
+		return nil, err
+	}
 
 	for rows.Next() {
 	    e := new(models.Category)

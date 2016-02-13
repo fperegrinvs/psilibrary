@@ -2,6 +2,7 @@ package main
 import  (
 	"errors"
 	"testing"
+	"database/sql"
 	. "psilibrary/server/models"
 	"psilibrary/server/repositories"
     
@@ -11,7 +12,9 @@ import  (
 
 type fakeCategoryRepository struct{}
 
-type fakeCategoryValidator struct{}
+type fakeCategoryValidator struct{
+	validatorCalled bool
+}
 
 var (
 	cat1 Category
@@ -38,10 +41,12 @@ func init(){
 		ID: 3,
 		Name: "Cat3",
 		ParentId: 900,
-	}	
+	}
+
+	fakeValidator.validatorCalled = false	
 }
 
-func (fakeCategoryRepository) GetCategoryById(id int) (*Category, error) {
+func (fakeCategoryRepository) GetCategoryById(id int, mydb *sql.DB) (*Category, error) {
 	switch id{
 		case 1: return &cat1,nil
 		case 2: return &cat2,nil
@@ -52,7 +57,8 @@ func (fakeCategoryRepository) GetCategoryById(id int) (*Category, error) {
 }
 
 func (fakeCategoryValidator) ValidateCategory(category *Category, getter repositories.CategoryGetter) (bool, error){
-	panic("Not implemented")
+	fakeValidator.validatorCalled = true
+	return true, nil
 }
 
 
@@ -73,7 +79,27 @@ func TestCreatingNewCategory(t *testing.T) {
 	}
 }
 
-func TestCheckCategory(t *testing.T){
+func TestCreateValidatorCalled(t *testing.T){
+	db, mock, _ := sqlmock.New()
+
+	mock.ExpectExec("^.+$").WithArgs(cat2.Name, cat2.ParentId).WillReturnResult(sqlmock.NewResult(0, 1))
+
+	repo.CreateCategory(&cat2, db, fakeValidator)
+
+	if fakeValidator.validatorCalled == false{
+      t.Error("Validação não foi ativada")
+	}
+}
+
+func TestCheckCategoryNoParent(t *testing.T){
+	b,_ := repo.ValidateCategory(&cat1, fakeRepo)
+
+	if b != true{
+		t.Error("Erro ao validar categoria")
+	}
+}
+
+func TestCheckCategoryExistingParent(t *testing.T){
 	b,_ := repo.ValidateCategory(&cat2, fakeRepo)
 
 	if b != true{
@@ -90,15 +116,80 @@ func TestCheckCategoryInvalidParent(t *testing.T){
 }
 
 func TestListingAllCategories(t *testing.T) {
-	t.Error("Need to implement Test")
+	db, mock, err := sqlmock.New()
+
+	rows := sqlmock.NewRows([]string{"ID", "Name", "ParentId"}).AddRow(cat1.ID, cat2.Name, cat3.ParentId)
+
+	mock.ExpectQuery("^select .+$").WillReturnRows(rows)
+
+	cats, err := repo.ListCategories(db)
+
+	if err == nil{
+		err =  mock.ExpectationsWereMet()
+  	}
+
+  	if cats == nil{
+  		err = errors.New("Nenhuma categoria retornada")
+  	}
+
+  	if err == nil && cats[0].ID != 1{
+  		err = errors.New("Erro ao retornar categoria")
+  	}
+
+	if err != nil{
+      t.Error("Erro ao listar categorias: %s", err.Error())
+      return
+	}
 }
 
 func TestGettingACategory(t *testing.T) {
-	t.Error("Need to implement Test")
+	db, mock, err := sqlmock.New()
+
+	rows := sqlmock.NewRows([]string{"ID", "Name", "ParentId"}).AddRow(cat1.ID, cat1.Name, cat1.ParentId)
+
+	mock.ExpectQuery("^select .+$").WithArgs(1).WillReturnRows(rows)
+
+	cats, err := repo.GetCategoryById(1, db)
+
+	if err == nil{
+		err =  mock.ExpectationsWereMet()
+  	}
+
+  	if err == nil && cats == nil{
+  		err = errors.New("Nenhuma categoria retornada")
+  	}
+
+  	if err == nil && cats.ID != 1{
+  		err = errors.New("Dados da categoria diferente do esperado")
+  	}
+
+  	if err != nil{
+      t.Error("Erro ao recuperar categoria: %s", err.Error())
+      return
+	}
 }
 
 func TestGetInvalidCategory(t *testing.T){
-	t.Error("Need to implement Test")
+	db, mock, err := sqlmock.New()
+
+	rows := sqlmock.NewRows([]string{"ID", "Name", "ParentId"})
+
+	mock.ExpectQuery("^select .+$").WithArgs(900).WillReturnRows(rows)
+
+	cats, err := repo.GetCategoryById(900, db)
+
+	if err == nil{
+		err =  mock.ExpectationsWereMet()
+  	}
+
+  	if err == nil && cats != nil{
+  		err = errors.New("Categoria retornada, mas deveria retornar vazio")
+  	}
+
+  	if err != nil{
+      t.Error("Erro ao recuperar categoria: %s", err.Error())
+      return
+	}
 }
 
 
