@@ -1,5 +1,5 @@
 package repositories
-
+/*
 import (
 	"log"
 	"psilibrary/server/models"
@@ -7,6 +7,7 @@ import (
 	"database/sql"
 	_ "github.com/go-sql-driver/mysql"
 )
+*/
 /*
 func CreateCategory(e *models.Category) (int, error) {
 	db, err := sql.Open(conf.Db, conf.Conn)	

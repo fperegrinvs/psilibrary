@@ -12,7 +12,7 @@ func CreateCategory(e *models.Category) (int, error) {
 	db, err := sql.Open(conf.Db, conf.Conn)	
 	defer db.Close()
 
-	res, err := db.Exec("insert into Category (Name, ParentId) values (?, ?)", e.Name, e.ParentIdD)
+	res, err := db.Exec("insert into Category (Name, ParentId) values (?, ?)", e.Name, e.ParentId)
 
 	if err == nil {
         id, err := res.LastInsertId()

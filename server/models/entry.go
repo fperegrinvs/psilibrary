@@ -8,7 +8,7 @@ type (
 		Title   string        `json:"title"`
 		Abstract   string        `json:"abstract"`
 		Content   string        `json:"content"`
-		PublishDate   time        `json:"publishDate"`
+		PublishDate   time.Time        `json:"publishDate"`
 		Author   string        `json:"author"`
 		Journal   string        `json:"journal"`
 		EntryTypeId   int        `json:"entryTypeId"`
