@@ -15,13 +15,13 @@ func TestCategoryCrud(t *testing.T) {
     e.Name = "Testing Add"
 
     var repository CategoryRepository
-    i, err := CreateCategory(e, nil, repository)
+    i, err := repository.CreateCategory(e, nil, repository)
 
     if (err != nil){
       t.Error("Erro ao inserir categoria: %s", err.Error())
     }
 
-    addedType, err := GetCategoryById(i)
+    addedType, err := repository.GetCategoryById(i)
 
     if (err != nil){
       t.Error("Erro ao recuperar categoria inserida: %s", err.Error())
@@ -31,7 +31,7 @@ func TestCategoryCrud(t *testing.T) {
       t.Error("Dados da categoria não correspondem à categoria inserida")
     } 
 
-    types, err := ListCategories()
+    types, err := repository.ListCategories()
     if err != nil {
       t.Error("Erro ao listar categorias: %s", err.Error())
     }
@@ -42,7 +42,7 @@ func TestCategoryCrud(t *testing.T) {
       t.Error("Último categoria inserida não encontrada")
     }
 
-    err = DeleteCategory(i)
+    err = repository.DeleteCategory(i)
 
     if (err != nil) {
       t.Error("Erro ao deletar categoria")

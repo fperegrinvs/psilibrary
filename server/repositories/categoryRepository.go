@@ -9,16 +9,16 @@ import (
 )
 
 type CategoryGetter interface{
-	ListCategories() ([]*models.Category, error)
+	GetCategoryById(int)(*models.Category, error)
 }
 
 type CategoryValidator interface{
-	ValidateCategory(*models.Category, CategoryGetter) (bool)	
+	ValidateCategory(*models.Category, CategoryGetter) (bool, error)	
 }
 
 type CategoryRepository struct{}
 
-func CreateCategory(e *models.Category, mydb *sql.DB, validator CategoryValidator) (int, error) {
+func (CategoryRepository) CreateCategory(e *models.Category, mydb *sql.DB, validator CategoryValidator) (int, error) {
 	db, err := OpenSql(conf.Db, conf.Conn, mydb)	
 	defer db.Close()
 
@@ -34,7 +34,7 @@ func CreateCategory(e *models.Category, mydb *sql.DB, validator CategoryValidato
 	return  -1, err
 }
 
-func UpdateCategory(e *models.Category) (error) {
+func (CategoryRepository) UpdateCategory(e *models.Category) (error) {
 	db, err := sql.Open(conf.Db, conf.Conn)	
 	defer db.Close()
 
@@ -45,7 +45,7 @@ func UpdateCategory(e *models.Category) (error) {
 	return  err
 }
 
-func DeleteCategory(id int) error{
+func (CategoryRepository) DeleteCategory(id int) error{
 	db, err := sql.Open(conf.Db, conf.Conn)	
 	defer db.Close()
 
@@ -57,7 +57,7 @@ func DeleteCategory(id int) error{
 }
 
 
-func GetCategoryById(id int) (*models.Category, error) {
+func (CategoryRepository) GetCategoryById(id int) (*models.Category, error) {
 	db, err := sql.Open(conf.Db, conf.Conn)	
 	defer db.Close()
 
@@ -76,11 +76,19 @@ func GetCategoryById(id int) (*models.Category, error) {
 }
 
 // Verifica se a categoria é valida ou não.
-func (repository CategoryRepository) ValidateCategory(category *models.Category, getter CategoryGetter) (bool){
-	panic("Not implemented")
+func (CategoryRepository) ValidateCategory(category *models.Category, getter CategoryGetter) (bool, error){
+	if category.ParentId != 0{
+		cat, err := getter.GetCategoryById(category.ParentId)
+
+		if err != nil || cat == nil {
+			return false, err
+		}
+	}
+
+	return true, nil
 }
 
-func ListCategories() ([]*models.Category, error) {
+func (CategoryRepository) ListCategories() ([]*models.Category, error) {
 	var entries []*models.Category
 
 	db, err := sql.Open(conf.Db, conf.Conn)	
