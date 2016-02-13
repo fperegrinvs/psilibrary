@@ -8,8 +8,8 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
-func CreateCategory(e *models.Category) (int, error) {
-	db, err := sql.Open(conf.Db, conf.Conn)	
+func CreateCategory(e *models.Category, mydb *sql.DB) (int, error) {
+	db, err := OpenSql(conf.Db, conf.Conn, mydb)	
 	defer db.Close()
 
 	res, err := db.Exec("insert into Category (Name, ParentId) values (?, ?)", e.Name, e.ParentId)

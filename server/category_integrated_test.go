@@ -1,5 +1,5 @@
 package main_test
-
+/*
 import (
 	//. "psilibrary/server"
 	. "psilibrary/server/models"
@@ -91,3 +91,4 @@ var _ = Describe("Category", func() {
 		})
 	})
 })
+*/

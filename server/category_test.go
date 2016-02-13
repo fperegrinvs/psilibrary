@@ -1,49 +1,89 @@
 package main
-import  "testing"
+import  (
+	"testing"
+	. "psilibrary/server/models"
+	"psilibrary/server/repositories"
+    
+    "github.com/DATA-DOG/go-sqlmock"
+)
 
+var (
+	cat1 Category
+	cat2 Category
+	cat3 Category
+)
 
-func CreatingNewCategory(t *testing.T) {
+func init(){
+	cat1 = Category {
+		ID: 1,
+		Name: "Parent",
+		ParentId: 0,
+	}	
+	cat2 = Category {
+		Name: "Cat2",
+		ParentId: 1,
+	}	
+	cat3 = Category {
+		Name: "Cat3",
+		ParentId: 900,
+	}	
+}
+
+func TestCreatingNewCategory(t *testing.T) {
+	db, mock, err := sqlmock.New()
+
+	mock.ExpectExec("^insert into Category .+$").WithArgs(cat2.Name, cat2.ParentId).WillReturnResult(sqlmock.NewResult(0, 1))
+
+	_, err = repositories.CreateCategory(&cat2, db)
+
+	if err == nil{
+		err =  mock.ExpectationsWereMet()
+  	}
+
+	if err != nil{
+      t.Error("Erro ao inserir categoria: %s", err.Error())
+      return
+	}
+}
+
+func TestCheckCategory(t *testing.T){
 	t.Error("Need to implement Test")
 }
 
-func CheckCategory(t *testing.T){
+func TestCheckCategoryInvalidParent(t *testing.T){
 	t.Error("Need to implement Test")
 }
 
-func CheckCategoryInvalidParent(t *testing.T){
+func TestListingAllCategories(t *testing.T) {
 	t.Error("Need to implement Test")
 }
 
-func ListingAllCategories(t *testing.T) {
+func TestGettingACategory(t *testing.T) {
 	t.Error("Need to implement Test")
 }
 
-func GettingACategory(t *testing.T) {
-	t.Error("Need to implement Test")
-}
-
-func GetInvalidCategory(t *testing.T){
+func TestGetInvalidCategory(t *testing.T){
 	t.Error("Need to implement Test")
 }
 
 
-func UpdatingACategory(t *testing.T) {
+func TestUpdatingACategory(t *testing.T) {
 	t.Error("Need to implement Test")
 }
 
-func DeletingACategory(t *testing.T) {
+func TestDeletingACategory(t *testing.T) {
 	t.Error("Need to implement Test")
 }
 
-func CheckIfCategoryIsUsed(t *testing.T) {
+func TestCheckIfCategoryIsUsed(t *testing.T) {
 	t.Error("Need to implement Test")
 }
 
-func CheckIfCategoryIsUsedInvalid(t *testing.T) {
+func TestCheckIfCategoryIsUsedInvalid(t *testing.T) {
 	t.Error("Need to implement Test")
 }
 
 
-func CheckCategoryMethodsRoutes(t *testing.T){
+func TestCheckCategoryMethodsRoutes(t *testing.T){
 	t.Error("Need to implement Test")
 }
