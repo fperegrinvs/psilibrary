@@ -8,7 +8,17 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
-func CreateCategory(e *models.Category, mydb *sql.DB) (int, error) {
+type CategoryGetter interface{
+	ListCategories() ([]*models.Category, error)
+}
+
+type CategoryValidator interface{
+	ValidateCategory(*models.Category, CategoryGetter) (bool)	
+}
+
+type CategoryRepository struct{}
+
+func CreateCategory(e *models.Category, mydb *sql.DB, validator CategoryValidator) (int, error) {
 	db, err := OpenSql(conf.Db, conf.Conn, mydb)	
 	defer db.Close()
 
@@ -65,7 +75,12 @@ func GetCategoryById(id int) (*models.Category, error) {
 	return nil, err
 }
 
-func ListCategorys() ([]*models.Category, error) {
+// Verifica se a categoria é valida ou não.
+func (repository CategoryRepository) ValidateCategory(category *models.Category, getter CategoryGetter) (bool){
+	panic("Not implemented")
+}
+
+func ListCategories() ([]*models.Category, error) {
 	var entries []*models.Category
 
 	db, err := sql.Open(conf.Db, conf.Conn)	

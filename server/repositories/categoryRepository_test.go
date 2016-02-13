@@ -13,7 +13,9 @@ func TestCategoryCrud(t *testing.T) {
 
     e := new(models.Category)
     e.Name = "Testing Add"
-    i, err := CreateCategory(e, nil)
+
+    var repository CategoryRepository
+    i, err := CreateCategory(e, nil, repository)
 
     if (err != nil){
       t.Error("Erro ao inserir categoria: %s", err.Error())
@@ -29,7 +31,7 @@ func TestCategoryCrud(t *testing.T) {
       t.Error("Dados da categoria não correspondem à categoria inserida")
     } 
 
-    types, err := ListCategorys()
+    types, err := ListCategories()
     if err != nil {
       t.Error("Erro ao listar categorias: %s", err.Error())
     }

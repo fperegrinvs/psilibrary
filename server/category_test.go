@@ -7,11 +7,19 @@ import  (
     "github.com/DATA-DOG/go-sqlmock"
 )
 
+
+type fakeCategoryRepository struct{}
+
+type fakeCategoryValidator struct{}
+
 var (
 	cat1 Category
 	cat2 Category
 	cat3 Category
+	fakeRepo fakeCategoryRepository
+	fakeValidator fakeCategoryValidator
 )
+
 
 func init(){
 	cat1 = Category {
@@ -29,12 +37,21 @@ func init(){
 	}	
 }
 
+func (fakeCategoryRepository) ListCategorys() ([]*Category, error) {
+	return nil, nil
+}
+
+func (fakeCategoryValidator) ValidateCategory(category *Category, getter repositories.CategoryGetter) (bool){
+	panic("Not implemented")
+}
+
+
 func TestCreatingNewCategory(t *testing.T) {
 	db, mock, err := sqlmock.New()
 
 	mock.ExpectExec("^insert into Category .+$").WithArgs(cat2.Name, cat2.ParentId).WillReturnResult(sqlmock.NewResult(0, 1))
 
-	_, err = repositories.CreateCategory(&cat2, db)
+	_, err = repositories.CreateCategory(&cat2, db, fakeValidator)
 
 	if err == nil{
 		err =  mock.ExpectationsWereMet()
