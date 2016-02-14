@@ -2,19 +2,18 @@ package repositories
 
 import (
 	"errors"
-	"log"
+	//"fmt"
+	//"log"
 	"psilibrary/server/models"
 	"psilibrary/server/conf"
 	"database/sql"
 	_ "github.com/go-sql-driver/mysql"
 )
 
-type CategoryGetter interface{
-	GetCategoryById(int, *sql.DB)(*models.Category, error)
-}
-
 type CategoryValidator interface{
-	ValidateCategory(*models.Category, CategoryGetter) (bool, error)	
+	GetCategoryById(int, *sql.DB)(*models.Category, error)
+	ValidateCategory(*models.Category, CategoryValidator) (bool, error)
+	CheckForUsedCategory(int, CategoryValidator) ([]string, error)	
 }
 
 type CategoryRepository struct{}
@@ -36,32 +35,61 @@ func (CategoryRepository) CreateCategory(e *models.Category, mydb *sql.DB, valid
 
 	if err == nil {
         id, err := res.LastInsertId()
-        if err == nil {
-            return int(id), nil
+
+        if err != nil {
+        	return -1, err
         }
+
+        return int(id), nil
     }
 	
 	return  -1, err
 }
 
-func (CategoryRepository) UpdateCategory(e *models.Category) (error) {
-	db, err := sql.Open(conf.Db, conf.Conn)	
+func (CategoryRepository) UpdateCategory(e *models.Category, mydb *sql.DB, validator CategoryValidator) (error) {
+	valid, err := validator.ValidateCategory(e, repository)
+
+	if !valid {
+		return err 
+	}
+
+	db, err := OpenSql(conf.Db, conf.Conn, mydb)	
 	defer db.Close()
 
-	_, err = db.Exec("update Category set Name = ?, ParentId = ? where CategoryId = ?", e.Name, e.ParentId, e.ID)
+	rows, err := db.Exec("update Category set Name = ?, ParentId = ? where CategoryId = ?", e.Name, e.ParentId, e.ID)
 
-	log.Printf("update " +  e.Name)
-	
+	if err != nil {
+		return err
+	}
+
+	count, err := rows.RowsAffected()
+
+	if err == nil && count == 0{
+		err = errors.New("Nenhum registro afetado")
+	}
+
 	return  err
 }
 
-func (CategoryRepository) DeleteCategory(id int) error{
-	db, err := sql.Open(conf.Db, conf.Conn)	
+func (CategoryRepository) DeleteCategory(id int, mydb *sql.DB, validator CategoryValidator) error{
+	db, err := OpenSql(conf.Db, conf.Conn, mydb)	
 	defer db.Close()
 
-	_, err = db.Exec("delete from Category where CategoryId = ?", id)
+	if err != nil {
+		return err
+	}
 
-	if err == nil {}
+	result, err := db.Exec("delete from Category where CategoryId = ?", id)
+
+	if err != nil {
+		return err
+	}
+
+	count, err := result.RowsAffected()
+
+	if err == nil && count == 0{
+		err = errors.New("Nenhum registro afetado")
+	}
 
 	return err
 }
@@ -90,7 +118,7 @@ func (CategoryRepository) GetCategoryById(id int, mydb *sql.DB) (*models.Categor
 }
 
 // Verifica se a categoria é valida ou não.
-func (CategoryRepository) ValidateCategory(category *models.Category, getter CategoryGetter) (bool, error){
+func (CategoryRepository) ValidateCategory(category *models.Category, getter CategoryValidator) (bool, error){
 	if category.ParentId != 0{
 		cat, err := getter.GetCategoryById(category.ParentId, nil)
 
@@ -104,6 +132,10 @@ func (CategoryRepository) ValidateCategory(category *models.Category, getter Cat
 	}
 
 	return true, nil
+}
+
+func (CategoryRepository) CheckForUsedCategory(id int, validator CategoryValidator) ([]string, error){
+	panic("Não implementado")
 }
 
 func (CategoryRepository) ListCategories(db *sql.DB) ([]*models.Category, error) {
