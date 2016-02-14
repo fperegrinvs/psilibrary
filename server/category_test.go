@@ -64,9 +64,25 @@ func (fakeCategoryValidator) ValidateCategory(category *Category, getter reposit
 }
 
 // fake para validar se uma categoria foi usada
-func (fakeCategoryValidator) CheckForUsedCategory(id int, validator repositories.CategoryValidator) ([]string, error){
+func (fakeCategoryValidator) CheckForUsedCategory(id int, validator repositories.CategoryValidator) (repositories.CategoryCheckResult, error){
+	return repo.CheckForUsedCategory(id, validator)
+}
+
+// get categories by parentID
+func (fakeCategoryValidator) GetCategoriesByParentId(catid int, db *sql.DB)([]*Category, error){
+	if catid == 1 {
+		cats := []*Category{&cat2}
+		return cats, nil
+	}
+
+	return nil, nil
+}	
+
+// get entries from some category
+func (fakeCategoryValidator) GetEntriesByCategoryId(catid int, db *sql.DB)([]*Entry, error)	{
 	return nil, nil
 }
+
 
 /////////
 // TESTS
@@ -247,7 +263,7 @@ func TestDeletingACategory(t *testing.T) {
 
 	mock.ExpectExec("^delete .+$").WithArgs(cat2.ID).WillReturnResult(sqlmock.NewResult(0, 1))
 
-	err = repo.DeleteCategory(cat2.ID, db, fakeValidator)
+	_,err = repo.DeleteCategory(cat2.ID, db, fakeValidator)
 
 	if err == nil{
 		err =  mock.ExpectationsWereMet()
@@ -264,7 +280,7 @@ func TestDeletingUnkownCategory(t *testing.T) {
 
 	mock.ExpectExec("^delete .+$").WithArgs(invalidCat.ID).WillReturnResult(sqlmock.NewResult(0, 0))
 
-	err = repo.DeleteCategory(invalidCat.ID, db, fakeValidator)
+	_,err = repo.DeleteCategory(invalidCat.ID, db, fakeValidator)
 
 	if err == nil{
 		err =  mock.ExpectationsWereMet()
@@ -277,22 +293,40 @@ func TestDeletingUnkownCategory(t *testing.T) {
 
 // check unused category is used
 func TestCheckIfUnusedCategoryIsUsed(t *testing.T) {
-	t.Error("Need to implement Test")
+	b,_ := repo.CheckForUsedCategory(invalidCat.ID, fakeValidator)
+
+	if b.Existing == true{
+		t.Error("Categoria não é utilizada em lugar nenhum")
+	}
 }
 
 // check if used category (by another category) is used
 func TestCheckIfUsedCategoryIsUsedCategory(t *testing.T) {
-	t.Error("Need to implement Test")
+	b,_ := repo.CheckForUsedCategory(cat1.ID, fakeValidator)
+
+	if b.Existing == false || b.Categories == nil {
+		t.Error("Categoria é utilizada por outras categorias")
+	}
 }
 
 // check if used (by entry) category is used
 func TestCheckIfUsedCategoryIsUsedEntry(t *testing.T) {
-	t.Error("Need to implement Test")
+	b,_ := repo.CheckForUsedCategory(cat1.ID, fakeValidator)
+
+	if b.Existing == false || b.Entries == nil {
+		t.Error("Categoria é utilizada por registros")
+	}
 }
 
 // delete used category
 func TestDeletingUsedCategory(t *testing.T) {
-	t.Error("Need to implement Test")
+	db, _, _ := sqlmock.New()
+
+	used,_ := repo.DeleteCategory(cat1.ID, db, fakeValidator)
+
+  	if used.Existing == false{
+      t.Error("Erro era esperado ao tentar apagar categoria usada em outros lugares")
+	}
 }
 
 // check is routes are ok

@@ -42,7 +42,7 @@ func TestCategoryCrud(t *testing.T) {
       t.Error("Último categoria inserida não encontrada")
     }
 
-    err = repository.DeleteCategory(i, nil, repository)
+    _,err = repository.DeleteCategory(i, nil, repository)
 
     if (err != nil) {
       t.Error("Erro ao deletar categoria")
