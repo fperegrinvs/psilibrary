@@ -28,6 +28,14 @@ func addCors(w http.ResponseWriter, r *http.Request){
     w.Header().Set("Access-Control-Allow-Credentials", "true")	
 }
 
+func Noop(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+
+	addCors(w, r)
+
+	w.WriteHeader(http.StatusOK)
+}
+
 // TodoIndex rota teste
 func EntryTypeIndex(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")

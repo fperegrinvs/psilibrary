@@ -80,6 +80,12 @@ func (fakeCategoryValidator) GetCategoriesByParentId(catid int, db *sql.DB)([]*C
 
 // get entries from some category
 func (fakeCategoryValidator) GetEntriesByCategoryId(catid int, db *sql.DB)([]*Entry, error)	{
+	if catid == 1 {
+		entry := new(Entry)
+		entries := []*Entry{entry}
+		return entries, nil
+	}
+
 	return nil, nil
 }
 
@@ -331,5 +337,26 @@ func TestDeletingUsedCategory(t *testing.T) {
 
 // check is routes are ok
 func TestCheckCategoryMethodsRoutes(t *testing.T){
-	t.Error("Need to implement Test")
+	router := NewRouter()
+
+	if router.Get("CategoryIndex") == nil {
+		t.Error("rota de lista de categorias não está registrada")
+	}
+
+	if router.Get("CategoryCreate") == nil {
+		t.Error("rota de criação de categoria não está registrada")
+	}
+
+	if router.Get("CategoryUpdate") == nil {
+		t.Error("rota de atualização de categoria não está registrada")
+	}
+
+	if router.Get("CategoryDelete") == nil {
+		t.Error("rota de remoção de categoria não está registrada")
+	}
+
+	if router.Get("CategoryGet") == nil {
+		t.Error("rota para recuperar dados de categoria não está registrada")
+	}	
+
 }
