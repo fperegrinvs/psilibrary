@@ -1,0 +1,15 @@
+<h3 ng-if="!data.id">Novo tipo de registro</h3>
+<h3 ng-if="data.id">Editando tipo de registro</h3>
+<div class="simple-form">
+    <form>
+        <div class="form-group" ng-if="data.id">
+            <label for="id">Id</label>
+            <input type="text" readonly="true" class="form-control" ng-model="data.id" id="id">
+        </div>
+        <div class="form-group">
+            <label for="name">Nome</label>
+            <input type="text" class="form-control" ng-model="data.name" id="name" placeholder="Tipo de Registro">
+        </div>
+        <button type="submit" class="btn btn-primary" ng-click="update()">Salvar</button>
+    </form>
+</div>

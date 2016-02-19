@@ -1,0 +1,26 @@
+{
+  "name": "client",
+  "version": "0.0.0",
+  "dependencies": {
+    "angular": "*",
+    "angular-resource": "*",
+    "angular-cookies": "*",
+    "angular-sanitize": "*",
+    "angular-route": "*",
+    "angular-animate": "*",
+    "angular-ui-utils": "*",
+    "angular-bootstrap": "*",
+    "angular-ui-router": "*",
+    "ng-grid": "*",
+    "jquery": "*",
+    "bootstrap": "*",
+    "bootstrap-table": "*"
+  },
+  "devDependencies": {
+    "angular-mocks": "*",
+    "angular-scenario": "*"
+  },
+  "overrides": {
+
+  }
+}
