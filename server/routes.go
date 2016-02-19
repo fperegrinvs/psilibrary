@@ -1,6 +1,9 @@
 package main
 
-import "net/http"
+import ("net/http" 
+	"psilibrary/server/controllers"
+)
+
 
 // Route rota de acesso ao serviço REST
 type Route struct {
@@ -18,36 +21,36 @@ var routes = Routes{
 		"Index",
 		[]string{"GET"},
 		"/",
-		Index,
+		controllers.Index,
 	},
 	Route{
 		"EntryTypeIndex",
 		[]string{"GET","OPTIONS"},
 		"/entrytype",
-		EntryTypeIndex,
+		controllers.EntryTypeIndex,
 	},
 	Route{
 		"EntryTypeUpdate",
 		[]string{"POST"},
 		"/entrytype/update",
-		EntryTypeUpdate,
+		controllers.EntryTypeUpdate,
 	},
 	Route{
 		"EntryTypeUpdateOptions",
 		[]string{"OPTIONS"},
 		"/entrytype/{value}",
-		OptionsHandler,
+		controllers.OptionsHandler,
 	},
 	Route{
 		"EntryTypeCreate",
 		[]string{"POST"},
 		"/entrytype/create",
-		EntryTypeCreate,
+		controllers.EntryTypeCreate,
 	},
 	Route{
 		"EntryTypeShow",
 		[]string{"GET"},
 		"/entrytype/{entrytypeId}",
-		EntryTypeShow,
+		controllers.EntryTypeShow,
 	},
 }

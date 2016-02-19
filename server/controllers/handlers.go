@@ -1,4 +1,4 @@
-package main
+package controllers
 
 import (
 	"encoding/json"
@@ -14,7 +14,6 @@ type jsonErr struct {
 	Code int    `json:"code"`
 	Text string `json:"text"`
 }
-
 
 // Index Página principal
 func Index(w http.ResponseWriter, r *http.Request) {
@@ -33,6 +32,7 @@ func addCors(w http.ResponseWriter, r *http.Request){
 }
 
 
+// OptionsHandler handle options
 func OptionsHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 
@@ -41,6 +41,7 @@ func OptionsHandler(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 }
 
+// GenericList is a function to handle listings
 func GenericList(w http.ResponseWriter, r *http.Request, call func()(interface{}, error)) {
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 
@@ -58,7 +59,8 @@ func GenericList(w http.ResponseWriter, r *http.Request, call func()(interface{}
 	}
 }
 
-func GenericGetById(w http.ResponseWriter, r *http.Request, idVar string, call func(v int)(interface{}, error)) {
+// GenericGetByID is a functiont to handle get by Id
+func GenericGetByID(w http.ResponseWriter, r *http.Request, idVar string, call func(v int)(interface{}, error)) {
 	vars := mux.Vars(r)
 	var id int
 	var err error
@@ -87,6 +89,7 @@ func GenericGetById(w http.ResponseWriter, r *http.Request, idVar string, call f
 }
 
 
+// GenericUpdate is a function to handle updates
 func GenericUpdate(obj interface{}, r* http.Request, w http.ResponseWriter, call func(v interface{})(error)){
 	body, err := ioutil.ReadAll(io.LimitReader(r.Body, 1048576))
 	if err != nil {
@@ -105,8 +108,9 @@ func GenericUpdate(obj interface{}, r* http.Request, w http.ResponseWriter, call
 	}
 
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-	w.Header().Set("Teste", "application/json; charset=UTF-8")
 	addCors(w, r)
+
+
 	err = call(obj)
 
 	if err != nil {
@@ -115,4 +119,3 @@ func GenericUpdate(obj interface{}, r* http.Request, w http.ResponseWriter, call
 
 	w.WriteHeader(http.StatusOK)
 }
-
