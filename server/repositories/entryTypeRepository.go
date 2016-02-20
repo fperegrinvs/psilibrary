@@ -2,8 +2,8 @@ package repositories
 
 import (
 	"log"
-	"psilibrary/server/models"
-	"psilibrary/server/conf"
+	"github.com/lstern/psilibrary/server/models"
+	"github.com/lstern/psilibrary/server/conf"
 	"database/sql"
 	_ "github.com/go-sql-driver/mysql"
 )

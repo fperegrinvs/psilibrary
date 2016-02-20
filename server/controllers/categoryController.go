@@ -2,8 +2,8 @@ package controllers
 
 import (
 	"net/http"
-	"psilibrary/server/models"
-	"psilibrary/server/repositories"
+	"github.com/lstern/psilibrary/server/models"
+	"github.com/lstern/psilibrary/server/repositories"
 )
 
 var repository repositories.CategoryRepository

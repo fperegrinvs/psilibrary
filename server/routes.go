@@ -1,7 +1,7 @@
 package main
 
 import ("net/http" 
-	"psilibrary/server/controllers"
+	"github.com/lstern/psilibrary/server/controllers"
 )
 
 

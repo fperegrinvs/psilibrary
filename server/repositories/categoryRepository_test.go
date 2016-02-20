@@ -1,7 +1,7 @@
 package repositories
 
 import (
-  "psilibrary/server/models"
+  "github.com/lstern/psilibrary/server/models"
   "testing"
 )
 

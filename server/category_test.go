@@ -3,8 +3,8 @@ import  (
 	"errors"
 	"testing"
 	"database/sql"
-	. "psilibrary/server/models"
-	"psilibrary/server/repositories"
+	. "github.com/lstern/psilibrary/server/models"
+	"github.com/lstern/psilibrary/server/repositories"
     
     "github.com/DATA-DOG/go-sqlmock"
 )
