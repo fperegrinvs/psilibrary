@@ -10,8 +10,14 @@ install:
   - go get golang.org/x/tools/cmd/vet
   - go get github.com/golang/lint/golint
   
+before_script:
+    - sudo apt-get install phantomjs
+    - npm install karma karma-jasmine@2_0 jasmine-fixture jasmine-core phantomjs karma-phantomjs-launcher gulp
 
 script:
   - go test -v -short ./...
   - go vet ./...
   - GOFMT=$(gofmt -d -s .) && echo $GOFMT && test -z "$GOFMT"
+  - cd client
+  - gulp build-test
+  - ./node_modules/karma/bin/karma start --browsers PhantomJS --single-run

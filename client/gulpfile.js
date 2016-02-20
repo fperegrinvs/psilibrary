@@ -380,6 +380,10 @@ gulp.task('default', ['build', 'server']);
 // Just in case you are too lazy to type: $ gulp --type production
 gulp.task('prod', ['build:prod', 'server']);
 
+gulp.task('build-test', function(){
+	runSequence('copy', 'concat');
+});
+
 
 
 /*============================================================
