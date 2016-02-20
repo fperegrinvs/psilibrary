@@ -18,7 +18,7 @@ module.exports = function(config) {
         'build/bower/_bower.js',
         'build/js/all.js',
         'build/js/template.js',
-        'tests/**/*.js'
+        'test/**/*.js'
     ],
 
 
