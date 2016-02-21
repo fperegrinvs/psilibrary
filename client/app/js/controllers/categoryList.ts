@@ -16,9 +16,9 @@ angular.module('psilibrary.controllers')
         };
         $scope.formatter = function(value, row, index) {
             return [
-                '<button type="submit" class="btn btn-primary" onclick="currentScope.edit(' + value + ')">Editar</button>',
+                '<button type="submit" class="btn btn-primary edit" onclick="currentScope.edit(' + value + ')">Editar</button>',
             ].join('');
         };
-
+ 
         $scope.init();
     }]);
