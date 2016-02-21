@@ -2,8 +2,6 @@ package repositories
 
 import (
 	"errors"
-	//"fmt"
-	//"log"
 	"github.com/lstern/psilibrary/server/models"
 	"github.com/lstern/psilibrary/server/conf"
 	"database/sql"
