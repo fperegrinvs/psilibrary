@@ -219,5 +219,5 @@ func (CategoryRepository) GetCategoriesByParentId(catid int, mydb *sql.DB)([]*mo
 
 // get entries from some category
 func (CategoryRepository) GetEntriesByCategoryId(catid int, db *sql.DB)([]*models.Entry, error)	{
-	return nil, nil
+	return nil, errors.New("TODO")
 }
