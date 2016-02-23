@@ -6,12 +6,14 @@ import (
 	"github.com/lstern/psilibrary/server/repositories"
 )
 
+var entryTypeRepo repositories.EntryTypeRepository
+
 // EntryTypeUpdate rota teste
 func EntryTypeUpdate(w http.ResponseWriter, r *http.Request) {
 	entryType := new(models.EntryType)
 	f := func(o interface{})(error) { 
 		entry, _ := o.(models.EntryType);
-		return repositories.UpdateEntryType(&entry) 
+		return entryTypeRepo.Update(&entry) 
 	}
 	 
 	GenericUpdate(entryType, r, w, f)
@@ -22,7 +24,7 @@ func EntryTypeUpdate(w http.ResponseWriter, r *http.Request) {
 func EntryTypeShow(w http.ResponseWriter, r *http.Request) {
 	idVar := "entrytypeId"
 	call := func(v int)(interface{}, error){
-		return repositories.GetEntryTypeById(v)
+		return entryTypeRepo.GetById(v)
 	}
 
 	GenericGetByID(w, r, idVar, call)
@@ -34,7 +36,7 @@ func EntryTypeCreate(w http.ResponseWriter, r *http.Request) {
 	entryType := new(models.EntryType)
 	f := func(o interface{})(error) { 
 		entry, _ := o.(models.EntryType);
-		_, err := repositories.CreateEntryType(&entry)
+		_, err := entryTypeRepo.Create(&entry)
 		return err 
 	}
 
@@ -44,7 +46,7 @@ func EntryTypeCreate(w http.ResponseWriter, r *http.Request) {
 // EntryTypeIndex rota teste
 func EntryTypeIndex(w http.ResponseWriter, r *http.Request) {
 	call := func()(interface{}, error){
-		return repositories.ListEntryTypes()
+		return entryTypeRepo.List()
 	}
 
 	GenericList(w, r, call)

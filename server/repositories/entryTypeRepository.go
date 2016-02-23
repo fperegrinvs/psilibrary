@@ -8,7 +8,9 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
-func CreateEntryType(e *models.EntryType) (int, error) {
+type EntryTypeRepository struct{}
+
+func (EntryTypeRepository) Create(e *models.EntryType) (int, error) {
 	db, err := sql.Open(conf.Db, conf.Conn)	
 	defer db.Close()
 
@@ -24,7 +26,7 @@ func CreateEntryType(e *models.EntryType) (int, error) {
 	return  -1, err
 }
 
-func UpdateEntryType(e *models.EntryType) (error) {
+func (EntryTypeRepository) Update(e *models.EntryType) (error) {
 	db, err := sql.Open(conf.Db, conf.Conn)	
 	defer db.Close()
 
@@ -35,7 +37,7 @@ func UpdateEntryType(e *models.EntryType) (error) {
 	return  err
 }
 
-func DeleteEntryType(id int) error{
+func (EntryTypeRepository) Delete(id int) error{
 	db, err := sql.Open(conf.Db, conf.Conn)	
 	defer db.Close()
 
@@ -47,7 +49,7 @@ func DeleteEntryType(id int) error{
 }
 
 
-func GetEntryTypeById(id int) (*models.EntryType, error) {
+func (EntryTypeRepository) GetById(id int) (*models.EntryType, error) {
 	db, err := sql.Open(conf.Db, conf.Conn)	
 	defer db.Close()
 
@@ -65,7 +67,7 @@ func GetEntryTypeById(id int) (*models.EntryType, error) {
 	return nil, err
 }
 
-func ListEntryTypes() ([]*models.EntryType, error) {
+func (EntryTypeRepository) List() ([]*models.EntryType, error) {
 	var entries []*models.EntryType
 
 	db, err := sql.Open(conf.Db, conf.Conn)	

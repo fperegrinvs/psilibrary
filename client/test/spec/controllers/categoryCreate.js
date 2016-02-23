@@ -19,7 +19,7 @@ describe('categoryCreate tests', function() {
           Create: function (category) {
           	deferred = q.defer();
               return deferred.promise;
-          }
+          } 
 		}
 
 		state = {

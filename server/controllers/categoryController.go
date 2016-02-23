@@ -6,14 +6,14 @@ import (
 	"github.com/lstern/psilibrary/server/repositories"
 )
 
-var repository repositories.CategoryRepository
+var catRepository repositories.CategoryRepository
 
 // CategoryUpdate rota teste
 func CategoryUpdate(w http.ResponseWriter, r *http.Request) {
 	category := new(models.Category)
 	f := func(o interface{})(error) { 
 		category, _ := o.(models.Category);
-		return repository.UpdateCategory(&category, nil, repository) 
+		return catRepository.Update(&category, nil, catRepository) 
 	}
 	 
 	GenericUpdate(category, r, w, f)
@@ -24,7 +24,7 @@ func CategoryUpdate(w http.ResponseWriter, r *http.Request) {
 func CategoryShow(w http.ResponseWriter, r *http.Request) {
 	idVar := "ID"
 	call := func(v int)(interface{}, error){
-		return repository.GetCategoryById(v, nil)
+		return catRepository.GetById(v, nil)
 	}
 
 	GenericGetByID(w, r, idVar, call)
@@ -36,7 +36,7 @@ func CategoryCreate(w http.ResponseWriter, r *http.Request) {
 	category := new(models.Category)
 	f := func(o interface{})(error) { 
 		category, _ := o.(models.Category);
-		_, err := repository.CreateCategory(&category, nil, repository)
+		_, err := catRepository.Create(&category, nil, catRepository)
 		return err 
 	}
 
@@ -46,7 +46,7 @@ func CategoryCreate(w http.ResponseWriter, r *http.Request) {
 // CategoryIndex rota teste
 func CategoryIndex(w http.ResponseWriter, r *http.Request) {
 	call := func()(interface{}, error){
-		return repository.ListCategories(nil)
+		return catRepository.List(nil)
 	}
 
 	GenericList(w, r, call)

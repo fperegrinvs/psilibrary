@@ -9,10 +9,10 @@ import (
 )
 
 type CategoryValidator interface{
-	GetCategoryById(int, *sql.DB)(*models.Category, error)
+	GetById(int, *sql.DB)(*models.Category, error)
 	ValidateCategory(*models.Category, CategoryValidator) (bool, error)
 	CheckForUsedCategory(int, CategoryValidator) (CategoryCheckResult, error)
-	GetCategoriesByParentId(int, *sql.DB)([]*models.Category, error)	
+	GetByParentId(int, *sql.DB)([]*models.Category, error)	
 	GetEntriesByCategoryId(int, *sql.DB)([]*models.Entry, error)	
 }
 
@@ -27,7 +27,7 @@ type CategoryRepository struct{}
 var repository CategoryRepository
 
 
-func (CategoryRepository) CreateCategory(e *models.Category, mydb *sql.DB, validator CategoryValidator) (int, error) {
+func (CategoryRepository) Create(e *models.Category, mydb *sql.DB, validator CategoryValidator) (int, error) {
 	valid, err := validator.ValidateCategory(e, repository)
 
 	if !valid {
@@ -52,7 +52,7 @@ func (CategoryRepository) CreateCategory(e *models.Category, mydb *sql.DB, valid
 	return  -1, err
 }
 
-func (CategoryRepository) UpdateCategory(e *models.Category, mydb *sql.DB, validator CategoryValidator) (error) {
+func (CategoryRepository) Update(e *models.Category, mydb *sql.DB, validator CategoryValidator) (error) {
 	valid, err := validator.ValidateCategory(e, repository)
 
 	if !valid {
@@ -77,7 +77,7 @@ func (CategoryRepository) UpdateCategory(e *models.Category, mydb *sql.DB, valid
 	return  err
 }
 
-func (CategoryRepository) DeleteCategory(id int, mydb *sql.DB, validator CategoryValidator) (*CategoryCheckResult, error){
+func (CategoryRepository) Delete(id int, mydb *sql.DB, validator CategoryValidator) (*CategoryCheckResult, error){
 	usedCheck, err := validator.CheckForUsedCategory(id, validator)
 
 	if err != nil {
@@ -111,7 +111,7 @@ func (CategoryRepository) DeleteCategory(id int, mydb *sql.DB, validator Categor
 }
 
 
-func (CategoryRepository) GetCategoryById(id int, mydb *sql.DB) (*models.Category, error) {
+func (CategoryRepository) GetById(id int, mydb *sql.DB) (*models.Category, error) {
 	db, err := OpenSql(conf.Db, conf.Conn, mydb)	
 	defer db.Close()
 
@@ -136,7 +136,7 @@ func (CategoryRepository) GetCategoryById(id int, mydb *sql.DB) (*models.Categor
 // Verifica se a categoria é valida ou não.
 func (CategoryRepository) ValidateCategory(category *models.Category, getter CategoryValidator) (bool, error){
 	if category.ParentId != 0{
-		cat, err := getter.GetCategoryById(category.ParentId, nil)
+		cat, err := getter.GetById(category.ParentId, nil)
 
 		if err != nil || cat == nil {
 			if cat == nil{
@@ -153,7 +153,7 @@ func (CategoryRepository) ValidateCategory(category *models.Category, getter Cat
 func (CategoryRepository) CheckForUsedCategory(id int, validator CategoryValidator) (CategoryCheckResult, error){
 	var result CategoryCheckResult
 
-	cats, err := validator.GetCategoriesByParentId(id, nil)
+	cats, err := validator.GetByParentId(id, nil)
 
 	if err != nil {
 		return result, err
@@ -174,7 +174,7 @@ func (CategoryRepository) CheckForUsedCategory(id int, validator CategoryValidat
 	return result, err
 }
 
-func (CategoryRepository) ListCategories(db *sql.DB) ([]*models.Category, error) {
+func (CategoryRepository) List(db *sql.DB) ([]*models.Category, error) {
 
 	db, err := OpenSql(conf.Db, conf.Conn, db)	
 	
@@ -197,7 +197,7 @@ func (CategoryRepository) ListCategories(db *sql.DB) ([]*models.Category, error)
 }
 
 // get categories by parentID
-func (CategoryRepository) GetCategoriesByParentId(catid int, mydb *sql.DB)([]*models.Category, error){
+func (CategoryRepository) GetByParentId(catid int, mydb *sql.DB)([]*models.Category, error){
 	db, err := OpenSql(conf.Db, conf.Conn, mydb)	
 	defer db.Close()
 
