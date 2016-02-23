@@ -3,25 +3,25 @@ package repositories
 import (
 	"errors"
 	"github.com/lstern/psilibrary/server/models"
-	"github.com/lstern/psilibrary/server/conf"
 	"database/sql"
 	_ "github.com/go-sql-driver/mysql"
 )
 
 type EntryRepository struct{
+	Repository
 }
 
 type EntryValidator interface{
 	ValidateEntry(*models.Entry, EntryValidator) (bool, string, error)
 }
 
-func (EntryRepository) Create(e *models.Entry, mydb *sql.DB, validator EntryValidator) (int, error) {
+func (r EntryRepository) Create(e *models.Entry, validator EntryValidator) (int, error) {
 	//valid, err, msg := validator.ValidateEntry()
-	db, err := OpenSql(conf.Db, conf.Conn, mydb)	
+	db, err := openSql(r.DB)	
 	defer db.Close()
 
 	res, err := db.Exec("insert into Entry (Abstract, Author, Content, EntryTypeID, Journal, PublishData, Title) " +
-		"values (?, ?, ?, ?, ?, ?, ?)", e.Abstract, e.Author, e.Content, e.EntryTypeId, e.Journal, e.PublishDate,
+		"values (?, ?, ?, ?, ?, ?, ?)", e.Abstract, e.Author, e.Content, e.EntryType.ID, e.Journal, e.PublishDate,
 		e.Title)
 
 	if err == nil {

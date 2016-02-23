@@ -11,6 +11,7 @@ type (
 		PublishDate   time.Time        `json:"publishDate"`
 		Author   string        `json:"author"`
 		Journal   string        `json:"journal"`
-		EntryTypeId   int        `json:"entryTypeId"`
+		EntryType   EntryType        `json:"entryTypeId"`
+		Categories []Category 	`json:"categories"`
 	}
 )

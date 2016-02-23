@@ -1,16 +1,18 @@
 package repositories
 import (
 	"database/sql"
+	"github.com/lstern/psilibrary/server/conf"
 )
 
-type openHandler func(string, string, *sql.DB) (*sql.DB, error)
+type Repository struct{
+	DB *sql.DB
+}
 
-
-func OpenSql(dbstr string, conn string, db *sql.DB) (*sql.DB, error){
+func openSql(db *sql.DB) (*sql.DB, error){
 	if (db != nil){
 		return db, nil
 	}
 	
-	db, err := sql.Open(dbstr, conn)
+	db, err := sql.Open(conf.Db, conf.Conn)
 	return db, err	
 }

@@ -13,7 +13,7 @@ func CategoryUpdate(w http.ResponseWriter, r *http.Request) {
 	category := new(models.Category)
 	f := func(o interface{})(error) { 
 		category, _ := o.(models.Category);
-		return catRepository.Update(&category, nil, catRepository) 
+		return catRepository.Update(&category, catRepository) 
 	}
 	 
 	GenericUpdate(category, r, w, f)
@@ -24,7 +24,7 @@ func CategoryUpdate(w http.ResponseWriter, r *http.Request) {
 func CategoryShow(w http.ResponseWriter, r *http.Request) {
 	idVar := "ID"
 	call := func(v int)(interface{}, error){
-		return catRepository.GetById(v, nil)
+		return catRepository.GetById(v)
 	}
 
 	GenericGetByID(w, r, idVar, call)
@@ -36,7 +36,7 @@ func CategoryCreate(w http.ResponseWriter, r *http.Request) {
 	category := new(models.Category)
 	f := func(o interface{})(error) { 
 		category, _ := o.(models.Category);
-		_, err := catRepository.Create(&category, nil, catRepository)
+		_, err := catRepository.Create(&category, catRepository)
 		return err 
 	}
 
@@ -46,7 +46,7 @@ func CategoryCreate(w http.ResponseWriter, r *http.Request) {
 // CategoryIndex rota teste
 func CategoryIndex(w http.ResponseWriter, r *http.Request) {
 	call := func()(interface{}, error){
-		return catRepository.List(nil)
+		return catRepository.List()
 	}
 
 	GenericList(w, r, call)

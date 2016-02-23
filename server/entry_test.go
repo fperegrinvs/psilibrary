@@ -66,11 +66,12 @@ func (fakeEntryValidator) ValidateEntry(entry *Entry, getter repositories.EntryV
 // insert new entry (ok)
 func TestCreatingNewEntry(t *testing.T) {
 	db, mock, err := sqlmock.New()
+	entryRepo.DB = db
 
 	mock.ExpectExec("^insert into Entry .+$").WithArgs(entry1.Abstract, entry1.Author, entry1.Content,
-	entry1.EntryTypeId, entry1.Journal, entry1.PublishDate, entry1.Title).WillReturnResult(sqlmock.NewResult(0, 1))
+	entry1.EntryType.ID, entry1.Journal, entry1.PublishDate, entry1.Title).WillReturnResult(sqlmock.NewResult(0, 1))
 
-	_, err = entryRepo.Create(&entry1, db, entryValidator)
+	_, err = entryRepo.Create(&entry1, entryValidator)
 
 	if err == nil{
 		err =  mock.ExpectationsWereMet()
