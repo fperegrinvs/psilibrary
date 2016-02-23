@@ -8,10 +8,10 @@ import (
 
 type CategoryValidator interface{
 	GetById(int)(*models.Category, error)
-	ValidateCategory(*models.Category, CategoryValidator) (bool, error)
-	CheckForUsedCategory(int, CategoryValidator) (CategoryCheckResult, error)
+	ValidateCategory(*models.Category) (bool, error)
+	CheckForUsedCategory(int) (CategoryCheckResult, error)
 	GetByParentId(int)([]*models.Category, error)	
-	GetEntriesByCategoryId(int)([]*models.Entry, error)	
+	GetEntriesByCategoryId(int)([]*models.Entry, error)
 }
 
 type CategoryCheckResult struct {
@@ -21,14 +21,18 @@ type CategoryCheckResult struct {
 }
 
 type CategoryRepository struct{
+	Validator CategoryValidator
 	Repository
 }
 
 var repository CategoryRepository
 
+func (r CategoryRepository) Create(e *models.Category) (int, error) {
+	if r.Validator == nil {
+		r.Validator = r
+	}
 
-func (r CategoryRepository) Create(e *models.Category, validator CategoryValidator) (int, error) {
-	valid, err := validator.ValidateCategory(e, repository)
+	valid, err := r.Validator.ValidateCategory(e)
 
 	if !valid {
 		return -1, err 
@@ -52,8 +56,12 @@ func (r CategoryRepository) Create(e *models.Category, validator CategoryValidat
 	return  -1, err
 }
 
-func (r CategoryRepository) Update(e *models.Category, validator CategoryValidator) (error) {
-	valid, err := validator.ValidateCategory(e, repository)
+func (r CategoryRepository) Update(e *models.Category) (error) {
+	if r.Validator == nil {
+		r.Validator = r
+	}
+
+	valid, err := r.Validator.ValidateCategory(e)
 
 	if !valid {
 		return err 
@@ -77,8 +85,12 @@ func (r CategoryRepository) Update(e *models.Category, validator CategoryValidat
 	return  err
 }
 
-func (r CategoryRepository) Delete(id int, validator CategoryValidator) (*CategoryCheckResult, error){
-	usedCheck, err := validator.CheckForUsedCategory(id, validator)
+func (r CategoryRepository) Delete(id int) (*CategoryCheckResult, error){
+	if r.Validator == nil {
+		r.Validator = r
+	}
+
+	usedCheck, err := r.Validator.CheckForUsedCategory(id)
 
 	if err != nil {
 		return nil, err
@@ -128,9 +140,13 @@ func (r CategoryRepository) GetById(id int) (*models.Category, error) {
 }
 
 // Verifica se a categoria é valida ou não.
-func (CategoryRepository) ValidateCategory(category *models.Category, getter CategoryValidator) (bool, error){
+func (r CategoryRepository) ValidateCategory(category *models.Category) (bool, error){
+	if r.Validator == nil {
+		r.Validator = r
+	}
+
 	if category.ParentId != 0{
-		cat, err := getter.GetById(category.ParentId)
+		cat, err := r.Validator.GetById(category.ParentId)
 
 		if err != nil || cat == nil {
 			if cat == nil{
@@ -144,10 +160,14 @@ func (CategoryRepository) ValidateCategory(category *models.Category, getter Cat
 	return true, nil
 }
 
-func (CategoryRepository) CheckForUsedCategory(id int, validator CategoryValidator) (CategoryCheckResult, error){
+func (r CategoryRepository) CheckForUsedCategory(id int) (CategoryCheckResult, error){
 	var result CategoryCheckResult
 
-	cats, err := validator.GetByParentId(id)
+	if r.Validator == nil {
+		r.Validator = r
+	}
+
+	cats, err := r.Validator.GetByParentId(id)
 
 	if err != nil {
 		return result, err
@@ -155,7 +175,7 @@ func (CategoryRepository) CheckForUsedCategory(id int, validator CategoryValidat
 
 	result.Categories = cats
 
-	entries, err := validator.GetEntriesByCategoryId(id)
+	entries, err := r.Validator.GetEntriesByCategoryId(id)
 
 	if err != nil {
 		return result, err

@@ -55,7 +55,7 @@ func (fakeCategoryValidator) GetById(id int) (*Category, error) {
 }
 
 // fake para validar categoria
-func (fakeCategoryValidator) ValidateCategory(category *Category, getter repositories.CategoryValidator) (bool, error){
+func (fakeCategoryValidator) ValidateCategory(category *Category) (bool, error){
 	if category.ID == invalidCat.ID {
 		return false, errors.New("Categoria inválida")
 	}
@@ -64,8 +64,9 @@ func (fakeCategoryValidator) ValidateCategory(category *Category, getter reposit
 }
 
 // fake para validar se uma categoria foi usada
-func (fakeCategoryValidator) CheckForUsedCategory(id int, validator repositories.CategoryValidator) (repositories.CategoryCheckResult, error){
-	return repo.CheckForUsedCategory(id, validator)
+func (r fakeCategoryValidator) CheckForUsedCategory(id int) (repositories.CategoryCheckResult, error){
+	repo.Validator = fakeValidator
+	return repo.CheckForUsedCategory(id)
 }
 
 // get categories by parentID
@@ -101,7 +102,8 @@ func TestCreatingNewCategory(t *testing.T) {
 	mock.ExpectExec("^insert into Category .+$").WithArgs(cat2.Name, cat2.ParentId).WillReturnResult(sqlmock.NewResult(0, 1))
 	repo.DB = db
 
-	_, err = repo.Create(&cat2, fakeValidator)
+	repo.Validator = fakeValidator
+	_, err = repo.Create(&cat2)
 
 	if err == nil{
 		err =  mock.ExpectationsWereMet()
@@ -114,7 +116,8 @@ func TestCreatingNewCategory(t *testing.T) {
 
 // insert new category without parent
 func TestCheckCategoryNoParent(t *testing.T){
-	b,_ := repo.ValidateCategory(&cat1, fakeValidator)
+	repo.Validator = fakeValidator
+	b,_ := repo.ValidateCategory(&cat1)
 
 	if b != true{
 		t.Error("Erro ao validar categoria")
@@ -123,7 +126,8 @@ func TestCheckCategoryNoParent(t *testing.T){
 
 // check category with valid parent
 func TestCheckCategoryExistingParent(t *testing.T){
-	b,_ := repo.ValidateCategory(&cat2, fakeValidator)
+	repo.Validator = fakeValidator
+	b,_ := repo.ValidateCategory(&cat2)
 
 	if b != true{
 		t.Error("Erro ao validar categoria")
@@ -132,7 +136,8 @@ func TestCheckCategoryExistingParent(t *testing.T){
 
 // check category with invalid parent
 func TestCheckCategoryInvalidParent(t *testing.T){
-	b,_ := repo.ValidateCategory(&invalidCat, fakeValidator)
+	repo.Validator = fakeValidator
+	b,_ := repo.ValidateCategory(&invalidCat)
 
 	if b == true{
 		t.Error("Erro ao validar categoria, deveria ser falso")
@@ -224,7 +229,8 @@ func TestUpdatingACategory(t *testing.T) {
 
 	mock.ExpectExec("^update .+$").WithArgs(cat2.Name, cat2.ParentId, cat2.ID).WillReturnResult(sqlmock.NewResult(0, 1))
 
-	err = repo.Update(&cat2, fakeValidator)
+	repo.Validator = fakeValidator
+	err = repo.Update(&cat2)
 
 	if err == nil{
 		err =  mock.ExpectationsWereMet()
@@ -242,7 +248,8 @@ func TestUpdatingAnUnknownCategory(t *testing.T) {
 
 	mock.ExpectExec("^update .+$").WithArgs(cat2.Name, cat2.ParentId, cat2.ID).WillReturnResult(sqlmock.NewResult(0, 0))
 
-	err = repo.Update(&cat2, fakeValidator)
+	repo.Validator = fakeValidator
+	err = repo.Update(&cat2)
 
 	if err == nil{
 		err =  mock.ExpectationsWereMet()
@@ -258,7 +265,8 @@ func TestUpdatingAnInvalidCategory(t *testing.T) {
 	db, _, err := sqlmock.New()
 	repo.DB = db
 
-	err = repo.Update(&invalidCat, fakeValidator)
+	repo.Validator = fakeValidator
+	err = repo.Update(&invalidCat)
 
   	if err == nil{
       t.Error("Erro era esperado ao atualizar categoria inválida")
@@ -269,10 +277,11 @@ func TestUpdatingAnInvalidCategory(t *testing.T) {
 func TestDeletingACategory(t *testing.T) {
 	db, mock, err := sqlmock.New()
 	repo.DB = db
+	repo.Validator = repo
 
 	mock.ExpectExec("^delete .+$").WithArgs(cat2.ID).WillReturnResult(sqlmock.NewResult(0, 1))
 
-	_,err = repo.Delete(cat2.ID, fakeValidator)
+	_,err = repo.Delete(cat2.ID,)
 
 	if err == nil{
 		err =  mock.ExpectationsWereMet()
@@ -290,7 +299,8 @@ func TestDeletingUnkownCategory(t *testing.T) {
 
 	mock.ExpectExec("^delete .+$").WithArgs(invalidCat.ID).WillReturnResult(sqlmock.NewResult(0, 0))
 
-	_,err = repo.Delete(invalidCat.ID, fakeValidator)
+	repo.Validator = fakeValidator
+	_,err = repo.Delete(invalidCat.ID)
 
 	if err == nil{
 		err =  mock.ExpectationsWereMet()
@@ -303,7 +313,8 @@ func TestDeletingUnkownCategory(t *testing.T) {
 
 // check unused category is used
 func TestCheckIfUnusedCategoryIsUsed(t *testing.T) {
-	b,_ := repo.CheckForUsedCategory(invalidCat.ID, fakeValidator)
+	repo.Validator = fakeValidator
+	b,_ := repo.CheckForUsedCategory(invalidCat.ID)
 
 	if b.Existing == true{
 		t.Error("Categoria não é utilizada em lugar nenhum")
@@ -312,7 +323,8 @@ func TestCheckIfUnusedCategoryIsUsed(t *testing.T) {
 
 // check if used category (by another category) is used
 func TestCheckIfUsedCategoryIsUsedCategory(t *testing.T) {
-	b,_ := repo.CheckForUsedCategory(cat1.ID, fakeValidator)
+	repo.Validator = fakeValidator
+	b,_ := repo.CheckForUsedCategory(cat1.ID)
 
 	if b.Existing == false || b.Categories == nil {
 		t.Error("Categoria é utilizada por outras categorias")
@@ -321,7 +333,8 @@ func TestCheckIfUsedCategoryIsUsedCategory(t *testing.T) {
 
 // check if used (by entry) category is used
 func TestCheckIfUsedCategoryIsUsedEntry(t *testing.T) {
-	b,_ := repo.CheckForUsedCategory(cat1.ID, fakeValidator)
+	repo.Validator = fakeValidator
+	b,_ := repo.CheckForUsedCategory(cat1.ID)
 
 	if b.Existing == false || b.Entries == nil {
 		t.Error("Categoria é utilizada por registros")
@@ -332,8 +345,9 @@ func TestCheckIfUsedCategoryIsUsedEntry(t *testing.T) {
 func TestDeletingUsedCategory(t *testing.T) {
 	db, _, _ := sqlmock.New()
 	repo.DB = db
+	repo.Validator = fakeValidator
 
-	used,_ := repo.Delete(cat1.ID, fakeValidator)
+	used,_ := repo.Delete(cat1.ID)
 
   	if used.Existing == false{
       t.Error("Erro era esperado ao tentar apagar categoria usada em outros lugares")

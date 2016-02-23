@@ -13,7 +13,7 @@ func CategoryUpdate(w http.ResponseWriter, r *http.Request) {
 	category := new(models.Category)
 	f := func(o interface{})(error) { 
 		category, _ := o.(models.Category);
-		return catRepository.Update(&category, catRepository) 
+		return catRepository.Update(&category) 
 	}
 	 
 	GenericUpdate(category, r, w, f)
@@ -36,7 +36,7 @@ func CategoryCreate(w http.ResponseWriter, r *http.Request) {
 	category := new(models.Category)
 	f := func(o interface{})(error) { 
 		category, _ := o.(models.Category);
-		_, err := catRepository.Create(&category, catRepository)
+		_, err := catRepository.Create(&category)
 		return err 
 	}
 

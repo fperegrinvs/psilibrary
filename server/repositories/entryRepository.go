@@ -3,19 +3,23 @@ package repositories
 import (
 	"errors"
 	"github.com/lstern/psilibrary/server/models"
-	"database/sql"
 	_ "github.com/go-sql-driver/mysql"
 )
 
 type EntryRepository struct{
+	Validator EntryValidator
 	Repository
 }
 
 type EntryValidator interface{
-	ValidateEntry(*models.Entry, EntryValidator) (bool, string, error)
+	ValidateEntry(*models.Entry) (bool, string, error)
 }
 
-func (r EntryRepository) Create(e *models.Entry, validator EntryValidator) (int, error) {
+func (r EntryRepository) Create(e *models.Entry) (int, error) {
+	if r.Validator == nil{
+		r.Validator = r
+	}
+
 	//valid, err, msg := validator.ValidateEntry()
 	db, err := openSql(r.DB)	
 	defer db.Close()
@@ -37,7 +41,7 @@ func (r EntryRepository) Create(e *models.Entry, validator EntryValidator) (int,
 	return  -1, err
 }
 
-func (EntryRepository) ValidateEntry(e *models.Entry, validator EntryValidator) (bool, string, error) {
+func (EntryRepository) ValidateEntry(e *models.Entry) (bool, string, error) {
 	/*_, err := repository.GetCategoryById(e., nil)
 
 	if (err != nil){
@@ -48,19 +52,19 @@ func (EntryRepository) ValidateEntry(e *models.Entry, validator EntryValidator) 
 }
 
 
-func (EntryRepository) Update(e *models.Entry, mydb *sql.DB, validator EntryValidator) (error) {
+func (EntryRepository) Update(e *models.Entry) (error) {
 	return errors.New("TODO")
 }
 
-func (EntryRepository) List(db *sql.DB) ([]*models.Category, error) {
+func (EntryRepository) List() ([]*models.Category, error) {
 	return nil, errors.New("TODO")
 }
 
-func (EntryRepository) GetById(id int, mydb *sql.DB) (*models.Entry, error) {
+func (EntryRepository) GetById(id int) (*models.Entry, error) {
 	return nil, errors.New("TODO")
 }
 
-func (EntryRepository) Delete(id int, mydb *sql.DB) (error){
+func (EntryRepository) Delete(id int) (error){
 	return errors.New("TODO")
 }
 
