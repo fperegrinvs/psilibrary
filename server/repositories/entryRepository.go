@@ -13,6 +13,7 @@ type EntryRepository struct{
 
 type EntryValidator interface{
 	ValidateEntry(*models.Entry) (bool, string, error)
+	GetCategoriesByIdList([]int)([]models.Category, error)
 }
 
 func (r EntryRepository) Create(e *models.Entry) (int, error) {
@@ -41,6 +42,11 @@ func (r EntryRepository) Create(e *models.Entry) (int, error) {
 	return  -1, err
 }
 
+func (r EntryRepository) GetCategoriesByIdList(ids []int ) ([]models.Category, error) {
+	var catRepo = MakeCategoryRepository(nil, r.DB)
+	return catRepo.GetCategoriesByIdList(ids)
+}
+
 func (EntryRepository) ValidateEntry(e *models.Entry) (bool, string, error) {
 	/*_, err := repository.GetCategoryById(e., nil)
 
@@ -50,7 +56,6 @@ func (EntryRepository) ValidateEntry(e *models.Entry) (bool, string, error) {
 */
 	return true, "", nil
 }
-
 
 func (EntryRepository) Update(e *models.Entry) (error) {
 	return errors.New("TODO")

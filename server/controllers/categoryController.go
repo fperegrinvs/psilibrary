@@ -6,7 +6,7 @@ import (
 	"github.com/lstern/psilibrary/server/repositories"
 )
 
-var catRepository repositories.CategoryRepository
+var catRepository = repositories.MakeCategoryRepository(nil, nil)
 
 // CategoryUpdate rota teste
 func CategoryUpdate(w http.ResponseWriter, r *http.Request) {

@@ -2,7 +2,7 @@ package main
 import  (
 	"errors"
 	"testing"
-	//"strings"
+	"strings"
 	//"database/sql"
 	. "github.com/lstern/psilibrary/server/models"
 	"github.com/lstern/psilibrary/server/repositories"
@@ -32,7 +32,27 @@ func init(){
 		ID: 2,
 		Title: "Entry 2",
 		Abstract: "another abstract",
+	}
+
+	cat1 = Category {
+		ID: 1,
+		Name: "Parent",
+		ParentId: 0,
 	}	
+	cat2 = Category {
+		ID: 2,
+		Name: "Cat2",
+		ParentId: 1,
+	}	
+	invalidCat = Category {
+		ID: 323,
+		Name: "Cat3",
+		ParentId: 900,
+	}
+
+
+	entry2.Categories = []Category{cat1, cat2, invalidCat}
+	
 }
 
 /////////
@@ -83,7 +103,6 @@ func TestCreatingNewEntry(t *testing.T) {
 	}
 }
 
-// valida insert e edit
 func TestCheckOkEntry(t *testing.T){
 	entryRepo.Validator = entryValidator
 	b,_,_ := entryRepo.ValidateEntry(&entry1)
@@ -94,15 +113,15 @@ func TestCheckOkEntry(t *testing.T){
 	}
 }
 
-/*
-func TestCheckInvalidCategory(t *testing.T){
-	b,msg,_ := entryRepo.ValidateEntry(&entry2, entryValidator)
+func TestCheckEntryWithInvalidCategory(t *testing.T){
+	entryRepo.Validator = entryValidator
+	b,msg,_ := entryRepo.ValidateEntry(&entry2)
 
 	if b == true || !strings.Contains(msg, "categoria") { 
 		t.Error("Erro ao validar registro. Ele deveria ser inválido")
 	}
 }
-
+/*
 func TestCheckInvalidEntryType(t *testing.T){
 	b, _, msg := entryRepo.ValidateEntry(&entry3, entryValidator)
 

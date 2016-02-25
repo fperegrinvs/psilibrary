@@ -2,6 +2,8 @@ package repositories
 
 import (
 	"errors"
+	"database/sql"
+	"github.com/jmoiron/sqlx"
 	"github.com/lstern/psilibrary/server/models"
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -25,7 +27,12 @@ type CategoryRepository struct{
 	Repository
 }
 
-var repository CategoryRepository
+func MakeCategoryRepository(validator CategoryValidator, db *sql.DB) CategoryRepository{
+	var repo CategoryRepository
+	repo.Validator = validator
+	repo.DB = db
+	return repo
+}
 
 func (r CategoryRepository) Create(e *models.Category) (int, error) {
 	if r.Validator == nil {
@@ -230,6 +237,24 @@ func (r CategoryRepository) GetByParentId(catid int)([]*models.Category, error){
 
 	return entries, err
 }	
+
+func (r CategoryRepository) GetCategoriesByIdList(ids []int ) ([]models.Category, error) {
+	db, err := openSql(r.DB)	
+	defer db.Close()
+
+	query, args, err := sqlx.In("SELECT * FROM Category WHERE ID IN (?);", ids)
+
+	if err != nil {
+		return nil, err
+	}
+
+	query = db.Rebind(query)
+
+	cats := []models.Category{}	
+	err = db.Select(&cats, query, args...)
+
+	return cats, err
+}
 
 // get entries from some category
 func (CategoryRepository) GetEntriesByCategoryId(catid int)([]*models.Entry, error)	{
