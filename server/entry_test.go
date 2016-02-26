@@ -74,7 +74,7 @@ func (fakeCategoryValidator) GetCategoryById(id int, mydb *sql.DB) (*Category, e
 */
 // fake para validar categoria
 func (fakeEntryValidator) ValidateEntry(entry *Entry) (bool, string, error){
-	if entry.ID == entry1.ID {
+	if entry.ID == entry2.ID {
 		return false, "", errors.New("Registro inválido")
 	}
 
@@ -151,20 +151,25 @@ func TestCheckInvalidEntryType(t *testing.T){
 		t.Error("Erro ao validar registro. Ele deveria ser inválido")
 	}
 }
-/*
+
 func TestUpdateValidEntry(t *testing.T){
 	db, mock, err := sqlmock.New()
 
+	mock.ExpectBegin()
 	mock.ExpectExec("^update Entry .+$").WithArgs(entry1.Abstract, entry1.Author, entry1.Content,
-	entry1.EntryTypeId, entry1.Journal, entry1.PublishDate, entry1.Title, entry1.ID).WillReturnResult(sqlmock.NewResult(0, 1))
+	entry1.EntryType.ID, entry1.Journal, entry1.PublishDate, entry1.Title, entry1.ID).WillReturnResult(sqlmock.NewResult(0, 1))
+	mock.ExpectCommit()
 
-	err = entryRepo.UpdateEntry(&entry1, db, entryValidator)
+	entryRepo.DB = db
+	entryRepo.Validator = entryValidator
+	err = entryRepo.Update(&entry1)
 
 	if (err != nil){
-		t.Error("Erro ao atualizar um registro válido")
+		t.Error("Erro ao atualizar um registro válido: " + err.Error())
 	}
 }
 
+/*
 func TestUpdateInvalidEntry(t *testing.T){
 	db, _, _ := sqlmock.New()
 

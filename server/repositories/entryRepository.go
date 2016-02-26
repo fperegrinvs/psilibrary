@@ -73,7 +73,7 @@ func (r EntryRepository) ValidateEntry(e *models.Entry) (bool, string, error) {
 	}
 
 	entryType, err := r.Validator.GetEntryTypeById(e.EntryType.ID)
-	
+
 	if (err != nil){
 		return false, err.Error(), err
 	}
@@ -85,8 +85,45 @@ func (r EntryRepository) ValidateEntry(e *models.Entry) (bool, string, error) {
 	return true, "", nil
 }
 
-func (EntryRepository) Update(e *models.Entry) (error) {
-	return errors.New("TODO")
+func (r EntryRepository) Update(e *models.Entry) (error) {
+	if r.Validator == nil {
+		r.Validator = r
+	}
+
+	valid, _, err := r.Validator.ValidateEntry(e)
+
+	if !valid {
+		return err 
+	}
+
+	db, err := openSql(r.DB)	
+	defer db.Close()
+
+	tx := db.MustBegin()
+
+
+	rows, err := tx.Exec("update Entry set Abstract = ?, Author = ?,  Content = ?, EntryTypeID = ?, Journal = ?," +
+		" PublishDate = ?, Title = ? where EntryID = ?", e.Abstract, e.Author, e.Content, e.EntryType.ID, e.Journal,
+		e.PublishDate, e.Title, e.ID)
+	
+	if err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	err = tx.Commit()
+
+	if err!= nil {
+		return err
+	}
+
+	count, err := rows.RowsAffected()
+
+	if err == nil && count == 0{
+		err = errors.New("Nenhum registro afetado")
+	}
+
+	return  err
 }
 
 func (EntryRepository) List() ([]*models.Category, error) {
