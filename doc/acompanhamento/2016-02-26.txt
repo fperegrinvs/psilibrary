@@ -1,0 +1,11 @@
+Seguem algumas avaliações após alguns dias desenvolvendo o projeto seguindo os princípios do TDD:
+
+O TDD forçou que o projeto fosse refatorado diversas vezes e também exigiu um conhecimento da linguagem GO maior do que a equipe dispunha no momento
+O código está mais robusto e seguindo melhores padrões do Go ao custo de um enorme esforço para implementar os testes.
+O projeto está atrasado e um novo replanejamento será feito após escopo da sprint atual ser concluido
+A rigor, uma sprint não deve ser atrasada, ela deve ser finalizada mesmo que incompleta e uma nova sprint iniciada logo em sequência. 
+Optou-se por atrasar a sprint para permitir uma experiência mais completa com o TDD necessário para planejamento mais assertivo das próximas atividades.
+
+Lições aprendidas:
+Não é produtivo utilizar mocks para realizar testes envolvendo banco de dados, testes integrados são mais rápido e mais assertivos.
+Typescript está sendo utilizado e deve ser removido para simplificar o projeto

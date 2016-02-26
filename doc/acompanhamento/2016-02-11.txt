@@ -1,0 +1,5 @@
+Projeto foi paralizado no final de 2015 após dificuldades em conciliar o cronograma com outras atvidades e somado ao fato de que a conclusão do curso não seria mais possível em 2015
+
+Feito replaning do projeto atualizando o cronograma.
+Desenvolvimento do projeto seguirá o modelo TDD para garantir maior qualidade.
+A equipe de desenvolvimento não possui experiência plena em utilizar TDD, é esperado que alguns atrasos possam ocorrer até que o processo fique maduro
