@@ -51,7 +51,9 @@ func init(){
 	}
 
 
+	entry1.EntryType.ID = 1
 	entry2.Categories = []Category{cat1, cat2, invalidCat}
+	entry3.EntryType.ID = -1
 	
 }
 
@@ -77,6 +79,26 @@ func (fakeEntryValidator) ValidateEntry(entry *Entry) (bool, string, error){
 	}
 
 	return true, "", nil
+}
+
+func (fakeEntryValidator) GetCategoriesByIdList(ids []int ) ([]Category, error) {
+	for _, id := range ids {
+		if id == invalidCat.ID {
+			return nil, errors.New("Categoria inválida")
+		}
+	}
+
+	db, _, _ := sqlmock.New()
+	var catRepo = repositories.MakeCategoryRepository(nil, db)
+	return catRepo.GetCategoriesByIdList(ids)
+}
+
+func (fakeEntryValidator) GetEntryTypeById(id int) (*EntryType, error) {
+	if id == -1 {
+		return nil, errors.New("tipo de registro não encontrado")
+	}
+
+	return new(EntryType), nil
 }
 
 /////////
@@ -105,31 +127,31 @@ func TestCreatingNewEntry(t *testing.T) {
 
 func TestCheckOkEntry(t *testing.T){
 	entryRepo.Validator = entryValidator
-	b,_,_ := entryRepo.ValidateEntry(&entry1)
-
+	b, msg, _ := entryRepo.ValidateEntry(&entry1)
 
 	if b!= true {
-		t.Error("Erro ao validar registro. Ele deveria ser ok")
+		t.Error("Erro ao validar registro. Ele deveria ser ok: " + msg)
 	}
 }
 
 func TestCheckEntryWithInvalidCategory(t *testing.T){
 	entryRepo.Validator = entryValidator
-	b,msg,_ := entryRepo.ValidateEntry(&entry2)
+	b,msg, _ := entryRepo.ValidateEntry(&entry2)
 
-	if b == true || !strings.Contains(msg, "categoria") { 
-		t.Error("Erro ao validar registro. Ele deveria ser inválido")
+	if b == true || !strings.Contains(msg, "Categoria") { 
+		t.Error("Erro ao validar registro. Ele deveria ser inválido ")
 	}
 }
-/*
+
 func TestCheckInvalidEntryType(t *testing.T){
-	b, _, msg := entryRepo.ValidateEntry(&entry3, entryValidator)
+	entryRepo.Validator = entryValidator
+	b, msg, _ := entryRepo.ValidateEntry(&entry3)
 
 	if b == true || !strings.Contains(msg, "tipo de registro") { 
 		t.Error("Erro ao validar registro. Ele deveria ser inválido")
 	}
 }
-
+/*
 func TestUpdateValidEntry(t *testing.T){
 	db, mock, err := sqlmock.New()
 

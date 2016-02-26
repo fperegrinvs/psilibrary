@@ -2,16 +2,23 @@ package repositories
 
 import (
 	"log"
-	"github.com/lstern/psilibrary/server/models"
-	"github.com/lstern/psilibrary/server/conf"
 	"database/sql"
+	"github.com/lstern/psilibrary/server/models"
 	_ "github.com/go-sql-driver/mysql"
 )
 
-type EntryTypeRepository struct{}
+type EntryTypeRepository struct{
+	Repository
+}
 
-func (EntryTypeRepository) Create(e *models.EntryType) (int, error) {
-	db, err := sql.Open(conf.Db, conf.Conn)	
+func MakeEntryTypeRepository(db *sql.DB) EntryTypeRepository{
+	var repo EntryTypeRepository
+	repo.DB = db
+	return repo
+}
+
+func (r EntryTypeRepository) Create(e *models.EntryType) (int, error) {
+	db, err := openSql(r.DB)	
 	defer db.Close()
 
 	res, err := db.Exec("insert into EntryType (Name) values (?)", e.Name)
@@ -26,8 +33,8 @@ func (EntryTypeRepository) Create(e *models.EntryType) (int, error) {
 	return  -1, err
 }
 
-func (EntryTypeRepository) Update(e *models.EntryType) (error) {
-	db, err := sql.Open(conf.Db, conf.Conn)	
+func (r EntryTypeRepository) Update(e *models.EntryType) (error) {
+	db, err := openSql(r.DB)	
 	defer db.Close()
 
 	_, err = db.Exec("update EntryType set Name = ? where entryTypeId = ?", e.Name, e.ID)
@@ -37,8 +44,8 @@ func (EntryTypeRepository) Update(e *models.EntryType) (error) {
 	return  err
 }
 
-func (EntryTypeRepository) Delete(id int) error{
-	db, err := sql.Open(conf.Db, conf.Conn)	
+func (r EntryTypeRepository) Delete(id int) error{
+	db, err := openSql(r.DB)	
 	defer db.Close()
 
 	_, err = db.Exec("delete from EntryType where EntryTypeId = ?", id)
@@ -49,8 +56,8 @@ func (EntryTypeRepository) Delete(id int) error{
 }
 
 
-func (EntryTypeRepository) GetById(id int) (*models.EntryType, error) {
-	db, err := sql.Open(conf.Db, conf.Conn)	
+func (r EntryTypeRepository) GetById(id int) (*models.EntryType, error) {
+	db, err := openSql(r.DB)	
 	defer db.Close()
 
 	rows, err := db.Query("SELECT EntryTypeId, Name FROM entrytype where EntryTypeId = ?", id)
@@ -67,10 +74,10 @@ func (EntryTypeRepository) GetById(id int) (*models.EntryType, error) {
 	return nil, err
 }
 
-func (EntryTypeRepository) List() ([]*models.EntryType, error) {
+func (r EntryTypeRepository) List() ([]*models.EntryType, error) {
 	var entries []*models.EntryType
 
-	db, err := sql.Open(conf.Db, conf.Conn)	
+	db, err := openSql(r.DB)	
 	defer db.Close()
 
 	rows, err := db.Query("SELECT EntryTypeId, Name FROM entrytype")

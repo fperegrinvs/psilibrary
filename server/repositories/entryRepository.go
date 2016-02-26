@@ -14,6 +14,7 @@ type EntryRepository struct{
 type EntryValidator interface{
 	ValidateEntry(*models.Entry) (bool, string, error)
 	GetCategoriesByIdList([]int)([]models.Category, error)
+	GetEntryTypeById(int) (*models.EntryType, error)
 }
 
 func (r EntryRepository) Create(e *models.Entry) (int, error) {
@@ -47,13 +48,40 @@ func (r EntryRepository) GetCategoriesByIdList(ids []int ) ([]models.Category, e
 	return catRepo.GetCategoriesByIdList(ids)
 }
 
-func (EntryRepository) ValidateEntry(e *models.Entry) (bool, string, error) {
-	/*_, err := repository.GetCategoryById(e., nil)
+func (r EntryRepository) GetEntryTypeById(id int) (*models.EntryType, error) {
+	return MakeEntryTypeRepository(r.DB).GetById(id)
+}
 
-	if (err != nil){
-		return false, "Categoria inválida", err
+func (r EntryRepository) ValidateEntry(e *models.Entry) (bool, string, error) {
+	size := len(e.Categories)
+
+	if size > 0 {
+		ids := make([]int, len(e.Categories))
+		for i,cat  := range e.Categories {
+			ids[i] = cat.ID
+		}
+
+		cats, err := r.Validator.GetCategoriesByIdList(ids)
+
+		if err != nil {
+			return false, err.Error(), err
+		}
+
+		if len(cats) < len(ids) {
+			return false, "Categoria inexistente", nil
+		}
 	}
-*/
+
+	entryType, err := r.Validator.GetEntryTypeById(e.EntryType.ID)
+	
+	if (err != nil){
+		return false, err.Error(), err
+	}
+
+	if entryType == nil {
+		return false, "tipo de registro não encontrado", nil
+	}
+
 	return true, "", nil
 }
 
