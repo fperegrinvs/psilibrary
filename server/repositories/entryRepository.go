@@ -15,8 +15,6 @@ type EntryRepository struct{
 
 type EntryValidator interface{
 	ValidateEntry(*models.Entry) (error)
-	//GetCategoriesByIdList([]int)([]models.Category, error)
-	//GetEntryTypeById(int) (*models.EntryType, error)
 }
 
 func MakeEntryRepository(v EntryValidator) EntryRepository {
@@ -101,37 +99,6 @@ func (r EntryRepository) ValidateEntry(e *models.Entry) (error) {
 
 
 	return nil
-/*	size := len(e.Categories)
-
-	if size > 0 {
-		ids := make([]int, len(e.Categories))
-		for i,cat  := range e.Categories {
-			ids[i] = cat.ID
-		}
-
-		cats, err := r.Validator.GetCategoriesByIdList(ids)
-
-		if err != nil {
-			return false, err.Error(), err
-		}
-
-		if len(cats) < len(ids) {
-			return false, "Categoria inexistente", nil
-		}
-	}
-
-	entryType, err := r.Validator.GetEntryTypeById(e.EntryType.ID)
-
-	if (err != nil){
-		return false, err.Error(), err
-	}
-
-	if entryType == nil {
-		return false, "tipo de registro não encontrado", nil
-	}
-
-	return true, "", nil
-	*/
 }
 
 func (r EntryRepository) Update(e *models.Entry) (error) {
@@ -153,7 +120,7 @@ func (r EntryRepository) Update(e *models.Entry) (error) {
 
 	rows, err := tx.Exec("update Entry set Abstract = ?, Author = ?,  Content = ?, EntryTypeID = ?, Journal = ?," +
 		" PublishDate = ?, Title = ? where EntryID = ?", e.Abstract, e.Author, e.Content, e.EntryType.ID, e.Journal,
-		e.PublishDate, e.Title, e.ID)
+		e.PublishDate, e.Title, e.EntryId)
 	
 	if err != nil {
 		tx.Rollback()
@@ -179,11 +146,23 @@ func (EntryRepository) List() ([]*models.Category, error) {
 	return nil, errors.New("TODO")
 }
 
-func (EntryRepository) GetById(id int) (*models.Entry, error) {
-	return nil, errors.New("TODO")
+func (r EntryRepository) GetById(id int) (*models.Entry, error) {
+	db, err := openSql(r.DB)
+
+	if err != nil {
+		return nil, err
+	}	
+
+	defer db.Close()
+
+	result := models.Entry{}
+	err = db.Get(&result, "SELECT * FROM Entry where EntryId = ? LIMIT 1", id)
+
+	return &result, err
 }
 
 func (EntryRepository) Delete(id int) (error){
+
 	return errors.New("TODO")
 }
 

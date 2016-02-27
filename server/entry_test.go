@@ -72,7 +72,7 @@ func Test_validate_without_abstract_fail(t *testing.T){
 	}	
 }
 
-func Test_check_is_validation_is_called_on_insert(t *testing.T) {
+func Test_check_if_validation_is_called_on_insert(t *testing.T) {
 	obj := createObject()
 	repo := repositories.MakeEntryRepository(validator)
 
@@ -121,3 +121,58 @@ func Test_check_invalid_category(t *testing.T) {
 		t.Error("Validação deveria falhar")
 	}
 }
+
+
+func Test_validation_is_called_on_update(t *testing.T){
+	obj := createObject()
+	repo := repositories.MakeEntryRepository(validator)
+
+	err := repo.Update(&obj)
+
+	if err == nil || err.Error() != "fake" {
+		t.Error("Método de validação não foi acionado")
+	} 
+}
+
+func Test_update_ok(t *testing.T){
+	obj := createObject()
+	repo := repositories.MakeEntryRepository(nil)
+
+	id, _ := repo.Create(&obj)
+	obj.EntryId = id
+	obj.Title = "Updated"
+
+	err := repo.Update(&obj)
+
+	if err != nil {
+		t.Error("Erro atualizando registro: " + err.Error())
+	}
+}
+
+func Test_update_invalid_id(t *testing.T) {
+	obj := createObject()
+	obj.EntryId = 999999
+
+	repo := repositories.MakeEntryRepository(nil)
+	err := repo.Update(&obj)	
+
+	if err == nil {
+		t.Error("Deveria dar erro ao atualizar o registro")
+	}
+}
+
+func Test_test_select_ok(t *testing.T) {
+	obj := createObject()
+	repo := repositories.MakeEntryRepository(nil)
+
+	id, _ := repo.Create(&obj)
+
+	selected, err := repo.GetById(id)
+
+	if err != nil || selected.Title != obj.Title {
+		t.Error("Erro ao recuperar registro" + err.Error())
+	}
+}
+
+//do a complete object compare
+// insert /update categories 
