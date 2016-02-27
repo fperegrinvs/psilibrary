@@ -3,6 +3,7 @@
 package main_test
 
 import (
+  "github.com/lstern/psilibrary/server"
   "github.com/lstern/psilibrary/server/models"
   "github.com/lstern/psilibrary/server/repositories"
   "errors"
@@ -293,4 +294,74 @@ func Test_delete_invalid_entry(t *testing.T) {
 
 }
 
-// map categories and publishdate
+func Test_select_including_cats(t *testing.T){
+	obj := createObject()
+	obj.Categories = []models.Category{models.Category{ID:2},models.Category{ID:3}}
+
+	repo := repositories.MakeEntryRepository(nil)
+	obj.EntryId, _ = repo.Create(&obj)
+
+	selected, err := repo.GetById(obj.EntryId)	
+
+	if selected.Categories == nil || len(selected.Categories) != len(obj.Categories) || selected.Categories[1].Name != "ESP"  {
+		t.Error("Erro ao selecionar registro com categorias" + err.Error())
+	}
+}
+
+func Test_select_include_entryType(t *testing.T){
+	obj := createObject()
+
+	repo := repositories.MakeEntryRepository(nil)
+	obj.EntryId, _ = repo.Create(&obj)
+
+	selected, err := repo.GetById(obj.EntryId)	
+
+	if selected == nil || selected.EntryType.Name != "Livro"   {
+		t.Error("Erro ao inserir registro com tipo de registro", err)
+	}
+}
+
+func Test_check_publishDate(t *testing.T) {
+	obj := createObject()
+
+	repo := repositories.MakeEntryRepository(nil)
+	obj.EntryId, _ = repo.Create(&obj)
+
+	selected, err := repo.GetById(obj.EntryId)	
+	
+	if selected.PublishDate.Format("2006-01-02") != obj.PublishDate.Format("2006-01-02")   {
+		t.Error("Erro ao inserir registro com tipo de data de publicação", err)
+	}
+}
+
+func Test_list(t *testing.T) {
+	repo := repositories.MakeEntryRepository(nil)
+	list, err := repo.List()
+
+	if err != nil || list == nil || len(*list) < 2 || (*list)[0].Title != "Artigo dummy" {
+		t.Error("Falha ao listar registros", err)
+	}
+}
+
+// check is routes are ok
+func Test_CheckEntryMethodsRoutes(t *testing.T){
+	router := main.NewRouter()
+
+	if router.Get("EntryIndex") == nil {
+		t.Error("rota de lista de registros não está registrada")
+	}
+
+	if router.Get("EntryCreate") == nil {
+		t.Error("rota de criação de registros não está registrada")
+	}
+
+	if router.Get("EntryUpdate") == nil {
+		t.Error("rota de atualização de registro não está registrada")
+	}
+
+	if router.Get("EntryGet") == nil {
+		t.Error("rota para recuperar dados de registro não está registrada")
+	}	
+}
+
+// list

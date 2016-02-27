@@ -86,4 +86,36 @@ var routes = Routes{
 		"/category/{CategoryId}",
 		controllers.CategoryShow,
 	},
+
+	//Entry
+	Route{
+		"EntryIndex",
+		[]string{"GET","OPTIONS"},
+		"/entry",
+		controllers.EntryIndex,
+	},
+	Route{
+		"EntryUpdate",
+		[]string{"POST"},
+		"/entry/update",
+		controllers.EntryUpdate,
+	},
+	Route{
+		"EntryUpdateOptions",
+		[]string{"OPTIONS"},
+		"/entry/{value}",
+		controllers.OptionsHandler,
+	},
+	Route{
+		"EntryCreate",
+		[]string{"POST"},
+		"/entry/create",
+		controllers.EntryCreate,
+	},
+	Route{
+		"EntryGet",
+		[]string{"GET"},
+		"/entry/{CategoryId}",
+		controllers.EntryUShow,
+	},
 }

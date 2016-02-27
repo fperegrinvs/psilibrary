@@ -238,11 +238,11 @@ func (r CategoryRepository) GetByParentId(catid int)([]*models.Category, error){
 	return entries, err
 }	
 
-func (r CategoryRepository) GetCategoriesByIdList(ids []int ) ([]models.Category, error) {
+func (r CategoryRepository) GetCategoriesByIdList(ids []int64 ) ([]models.Category, error) {
 	db, err := openSql(r.DB)	
 	defer db.Close()
 
-	query, args, err := sqlx.In("SELECT * FROM Category WHERE ID IN (?);", ids)
+	query, args, err := sqlx.In("SELECT * FROM Category WHERE CategoryId IN (?);", ids)
 
 	if err != nil {
 		return nil, err

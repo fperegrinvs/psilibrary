@@ -101,11 +101,6 @@ func (r EntryRepository) Create(e *models.Entry) (int, error) {
 	return  -1, err
 }
 
-func (r EntryRepository) GetCategoriesByIdList(ids []int ) ([]models.Category, error) {
-	var catRepo = MakeCategoryRepository(nil, r.DB)
-	return catRepo.GetCategoriesByIdList(ids)
-}
-
 func (r EntryRepository) GetEntryTypeById(id int) (*models.EntryType, error) {
 	return MakeEntryTypeRepository(r.DB).GetById(id)
 }
@@ -208,8 +203,56 @@ func (r EntryRepository) Update(e *models.Entry) (error) {
 	return  err
 }
 
-func (EntryRepository) List() ([]*models.Category, error) {
-	return nil, errors.New("TODO")
+func (r EntryRepository) List() (*[]models.Entry, error) {
+	db, err := openSql(r.DB)
+
+	if err != nil {
+		return nil, err
+	}	
+
+	defer db.Close()
+
+	result := []models.Entry{}
+	err = db.Select(&result, "SELECT * FROM Entry")
+
+	if err != nil {
+		return nil, err
+	}
+
+	for _, item := range result {
+		_, err := r.completeEntry(&item)
+
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	return &result, nil
+}
+
+func (r EntryRepository) completeEntry(result *models.Entry) (*models.Entry, error){
+	if result.EntryTypeId > 0 {
+		entry_type, err := MakeEntryTypeRepository(nil).GetById(result.EntryTypeId)
+
+		if err != nil {
+			return nil, err
+		}
+
+		result.EntryType = *entry_type
+	}
+
+	cats, err := r.GetEntryCategories(result.EntryId)
+
+	if err != nil {
+		return nil, err
+	}
+
+	if len(cats) > 0 {
+		catRepo := MakeCategoryRepository(nil, nil)
+		result.Categories, err = catRepo.GetCategoriesByIdList(cats)
+	}
+
+	return result, err	
 }
 
 func (r EntryRepository) GetById(id int) (*models.Entry, error) {
@@ -224,7 +267,12 @@ func (r EntryRepository) GetById(id int) (*models.Entry, error) {
 	result := models.Entry{}
 	err = db.Get(&result, "SELECT * FROM Entry where EntryId = ? LIMIT 1", id)
 
-	return &result, err
+
+	if err != nil {
+		return nil, err
+	}
+
+	return r.completeEntry(&result)
 }
 
 func (r EntryRepository) GetEntryCategories(id int) ([]int64, error) {
@@ -244,6 +292,8 @@ func (r EntryRepository) GetEntryCategories(id int) ([]int64, error) {
 
 func (r EntryRepository) Delete(id int) (error){
 	db, err := openSql(r.DB)
+
+	defer db.Close()
 
 	result, err := db.Exec("Delete from Entry where EntryId = ?", id)
 	rows, _ := result.RowsAffected()
