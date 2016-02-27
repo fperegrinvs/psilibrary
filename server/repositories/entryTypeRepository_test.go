@@ -1,9 +1,10 @@
-// +build integration
+// +build integrations
 
 package repositories
 
 import (
   "github.com/lstern/psilibrary/server/models"
+  "github.com/lstern/psilibrary/server/repositories"
   "testing"
 )
 

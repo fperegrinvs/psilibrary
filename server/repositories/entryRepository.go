@@ -4,6 +4,8 @@ import (
 	"errors"
 	"github.com/lstern/psilibrary/server/models"
 	_ "github.com/go-sql-driver/mysql"
+	//"time"
+	//"database/sql"
 )
 
 type EntryRepository struct{
@@ -12,9 +14,15 @@ type EntryRepository struct{
 }
 
 type EntryValidator interface{
-	ValidateEntry(*models.Entry) (bool, string, error)
-	GetCategoriesByIdList([]int)([]models.Category, error)
-	GetEntryTypeById(int) (*models.EntryType, error)
+	ValidateEntry(*models.Entry) (error)
+	//GetCategoriesByIdList([]int)([]models.Category, error)
+	//GetEntryTypeById(int) (*models.EntryType, error)
+}
+
+func MakeEntryRepository(v EntryValidator) EntryRepository {
+	var r EntryRepository
+	r.Validator = v
+	return r
 }
 
 func (r EntryRepository) Create(e *models.Entry) (int, error) {
@@ -22,13 +30,20 @@ func (r EntryRepository) Create(e *models.Entry) (int, error) {
 		r.Validator = r
 	}
 
+	err := r.Validator.ValidateEntry(e)
+
+	if err != nil {
+		return -1, err
+	}
+
 	//valid, err, msg := validator.ValidateEntry()
 	db, err := openSql(r.DB)	
 	defer db.Close()
 
-	res, err := db.Exec("insert into Entry (Abstract, Author, Content, EntryTypeID, Journal, PublishData, Title) " +
-		"values (?, ?, ?, ?, ?, ?, ?)", e.Abstract, e.Author, e.Content, e.EntryType.ID, e.Journal, e.PublishDate,
-		e.Title)
+	//var date = time.Now()
+	res, err := db.Exec("insert into Entry (Abstract, Author, Content, EntryTypeID, Journal, PublishDate, Title) " +
+		"values (?, ?, ?, ?, ?, ?, ?)", e.Abstract, e.Author, e.Content, e.EntryType.ID, e.Journal,
+		 e.PublishDate.Format("2006-01-02"), e.Title)
 
 	if err == nil {
         id, err := res.LastInsertId()
@@ -52,8 +67,41 @@ func (r EntryRepository) GetEntryTypeById(id int) (*models.EntryType, error) {
 	return MakeEntryTypeRepository(r.DB).GetById(id)
 }
 
-func (r EntryRepository) ValidateEntry(e *models.Entry) (bool, string, error) {
-	size := len(e.Categories)
+func (r EntryRepository) ValidateEntry(e *models.Entry) (error) {
+	if e.Title == "" {
+		return errors.New("o título é obrigatório")
+	}
+
+	if e.Abstract == "" {
+		return errors.New("O campo resumo é obrigatório")
+	}
+
+	repo := MakeEntryTypeRepository(nil)
+	entry_type, err := repo.GetById(e.EntryType.ID)
+
+	if err != nil {
+		return err
+	}
+
+	if entry_type == nil || entry_type.ID != e.EntryType.ID {
+		return errors.New("Tipo de registro não encontrado")
+	}
+
+	catRepo := MakeCategoryRepository(nil, nil)
+	for _, cat := range e.Categories {
+		rcat, err := catRepo.GetById(cat.ID)
+		if err != nil {
+			return err
+		}
+
+		if rcat.ID != cat.ID {
+			return errors.New("Categoria inválida")
+		}
+	}
+
+
+	return nil
+/*	size := len(e.Categories)
 
 	if size > 0 {
 		ids := make([]int, len(e.Categories))
@@ -83,6 +131,7 @@ func (r EntryRepository) ValidateEntry(e *models.Entry) (bool, string, error) {
 	}
 
 	return true, "", nil
+	*/
 }
 
 func (r EntryRepository) Update(e *models.Entry) (error) {
@@ -90,9 +139,9 @@ func (r EntryRepository) Update(e *models.Entry) (error) {
 		r.Validator = r
 	}
 
-	valid, _, err := r.Validator.ValidateEntry(e)
+	err := r.Validator.ValidateEntry(e)
 
-	if !valid {
+	if err != nil {
 		return err 
 	}
 
