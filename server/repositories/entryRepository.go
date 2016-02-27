@@ -5,7 +5,7 @@ import (
 	"github.com/lstern/psilibrary/server/models"
 	_ "github.com/go-sql-driver/mysql"
 	//"time"
-	//"database/sql"
+	"github.com/jmoiron/sqlx"
 )
 
 type EntryRepository struct{
@@ -23,6 +23,40 @@ func MakeEntryRepository(v EntryValidator) EntryRepository {
 	return r
 }
 
+func (r EntryRepository) insertEntryCategory(entryId int, categoryId int, transaction *sqlx.Tx) error{
+	res, err := transaction.Exec("insert into CategoryEntry (EntryId, CategoryId) values (?, ?)", entryId, categoryId)
+
+	if err == nil {
+        id, err := res.RowsAffected()
+
+        if err != nil {
+        	return err
+        }
+
+        if id != 1 {
+        	return errors.New("Categoria não foi inserida")
+        }
+    }
+	
+	return  err
+}
+
+func (r EntryRepository) InsertEntryCategory(entryId int, categoryId int,) (error) {
+	db, err := openSql(r.DB)	
+	defer db.Close()
+
+	tx := db.MustBegin()
+	r.insertEntryCategory(entryId, categoryId, tx)
+
+	if err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	tx.Commit()
+	return nil
+}
+
 func (r EntryRepository) Create(e *models.Entry) (int, error) {
 	if r.Validator == nil{
 		r.Validator = r
@@ -34,25 +68,36 @@ func (r EntryRepository) Create(e *models.Entry) (int, error) {
 		return -1, err
 	}
 
-	//valid, err, msg := validator.ValidateEntry()
 	db, err := openSql(r.DB)	
 	defer db.Close()
 
-	//var date = time.Now()
-	res, err := db.Exec("insert into Entry (Abstract, Author, Content, EntryTypeID, Journal, PublishDate, Title) " +
+	tx := db.MustBegin()
+
+	res, err := tx.Exec("insert into Entry (Abstract, Author, Content, EntryTypeID, Journal, PublishDate, Title) " +
 		"values (?, ?, ?, ?, ?, ?, ?)", e.Abstract, e.Author, e.Content, e.EntryType.ID, e.Journal,
 		 e.PublishDate.Format("2006-01-02"), e.Title)
 
 	if err == nil {
         id, err := res.LastInsertId()
 
-        if err != nil {
-        	return -1, err
-        }
+        if err == nil {
+        	if len(e.Categories) > 0 {
+        		for _, cat := range e.Categories {
+        			err = r.insertEntryCategory(int(id), cat.ID, tx)
 
-        return int(id), nil
+        			if err != nil {
+        				tx.Rollback()
+        				return -1, err
+        			}
+        		}
+        	}
+
+	        tx.Commit()
+	        return int(id), nil
+        }
     }
 	
+	tx.Rollback()
 	return  -1, err
 }
 
@@ -86,6 +131,7 @@ func (r EntryRepository) ValidateEntry(e *models.Entry) (error) {
 	}
 
 	catRepo := MakeCategoryRepository(nil, nil)
+	catsMap := map[int]*models.Category{}
 	for _, cat := range e.Categories {
 		rcat, err := catRepo.GetById(cat.ID)
 		if err != nil {
@@ -95,6 +141,12 @@ func (r EntryRepository) ValidateEntry(e *models.Entry) (error) {
 		if rcat.ID != cat.ID {
 			return errors.New("Categoria inválida")
 		}
+
+		catsMap[rcat.ID] = &cat
+	}
+
+	if len(catsMap) < len(e.Categories) {
+		return errors.New("Categoria duplicada")
 	}
 
 
@@ -126,6 +178,20 @@ func (r EntryRepository) Update(e *models.Entry) (error) {
 		tx.Rollback()
 		return err
 	}
+
+	tx.MustExec("delete from categoryEntry where EntryID = ?", e.EntryId)
+
+   	if len(e.Categories) > 0 {
+		for _, cat := range e.Categories {
+			err = r.insertEntryCategory(e.EntryId, cat.ID, tx)
+
+			if err != nil {
+				tx.Rollback()
+				return err
+			}
+		}
+	}
+
 
 	err = tx.Commit()
 
@@ -161,8 +227,31 @@ func (r EntryRepository) GetById(id int) (*models.Entry, error) {
 	return &result, err
 }
 
-func (EntryRepository) Delete(id int) (error){
+func (r EntryRepository) GetEntryCategories(id int) ([]int64, error) {
+	db, err := openSql(r.DB)
 
-	return errors.New("TODO")
+	if err != nil {
+		return nil, err
+	}	
+
+	defer db.Close()
+
+	var result []int64
+	err = db.Select(&result, "SELECT CategoryId FROM CategoryEntry where EntryId = ?", id)
+
+	return result, err
+}
+
+func (r EntryRepository) Delete(id int) (error){
+	db, err := openSql(r.DB)
+
+	result, err := db.Exec("Delete from Entry where EntryId = ?", id)
+	rows, _ := result.RowsAffected()
+
+	if rows != 1 {
+		return errors.New("Nenhum registro foi removido")
+	}
+
+	return err
 }
 
