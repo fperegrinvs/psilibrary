@@ -1,33 +1,8 @@
 describe('categoryList tests', function() {
-  beforeEach(module('client'))
- 	var listCtl, scope, list, service, q, deferred, state, nextState;
+  test_init();
 
-	beforeEach(function(){
-		service = {
-          List: function () {
-          	deferred = q.defer();
-              return deferred.promise;
-          },
-          Get: function (id) {
-          	deferred = q.defer();
-              return deferred.promise;
-          },
-          Update: function (category) {
-          	deferred = q.defer();
-              return deferred.promise;
-          },
-          Create: function (category) {
-          	deferred = q.defer();
-              return deferred.promise;
-          }
-		}
-
-		state = {
-			go: function(s, p) {
-				nextState = {name:s, params: p};
-			}
-		}
-	});
+  beforeEach(mockState);
+  beforeEach(mockGenericService);
 
 
 	beforeEach(inject(function($controller, $rootScope, $q){

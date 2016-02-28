@@ -1,27 +1,8 @@
 describe('categoryCreate tests', function() {
-  beforeEach(module('client'))
- 	var listCtl, scope, list, service, q, deferred, state, nextState, dummy;
+  test_init()
 
-	beforeEach(function(){
-		service = {
-          List: function () {
-          	deferred = q.defer();
-              return deferred.promise;
-          },
-          Get: function (id) {
-          	deferred = q.defer();
-              return deferred.promise;
-          },
-          Update: function (category) {
-          	deferred = q.defer();
-              return deferred.promise;
-          },
-          Create: function (category) {
-          	deferred = q.defer();
-              return deferred.promise;
-          } 
-		}
-
+	beforeEach(mockGenericService); 
+  beforeEach(function(){
 		state = {
       params: { 
         id: 39
