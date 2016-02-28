@@ -21,7 +21,7 @@ mockGenericService = function(){
 
 mockState = function() {
     window.state = {
-      //params: p, 
+      params: stateParams, 
       go: function(s, p) {
         nextState = {name:s, params: p};
       }
@@ -32,7 +32,7 @@ mockState = function() {
 
 test_init = function() {
   window.listCtl, window.scope, window.list, window.service, window.q, window.deferred, window.state, window.nextState,
-  window.dummy;
+  window.dummy; window.stateParams = {};
 
   beforeEach(module('client'))
 }

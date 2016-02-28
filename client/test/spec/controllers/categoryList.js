@@ -42,4 +42,10 @@ describe('categoryList tests', function() {
     expect(nextState.params.id).toBe(1);
   });
 
+  it('should store error message if and error is passed on state params', function(){
+    state.params = {error: 'An error'};
+    scope.init()
+    expect(scope.msg).toEqual(state.params);
+ })
+
 });

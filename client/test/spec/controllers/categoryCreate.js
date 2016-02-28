@@ -1,21 +1,18 @@
 describe('categoryCreate tests', function() {
   test_init()
 
-	beforeEach(mockGenericService); 
+  //global variables
   beforeEach(function(){
-		state = {
-      params: { 
-        id: 39
-      }, 
-			go: function(s, p) {
-				nextState = {name:s, params: p};
-			}
-		};
-
     dummy = {
       id: 39
     }
-	});
+
+    stateParams = {id: 39}
+  });
+
+	beforeEach(mockGenericService);
+  beforeEach(mockState);
+ 
 
 
 	beforeEach(inject(function($controller, $rootScope, $q){
