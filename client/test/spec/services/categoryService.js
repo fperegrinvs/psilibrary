@@ -1,9 +1,8 @@
 describe('Category Service tests', function() {
-  beforeEach(module('client'))
- 	//var service, dummy, http;
+    test_init()
 
     // instantiate service
-    var categoryService, $httpBackend, configSettings, baseUrl, dummy, error;
+    var categoryService, configSettings, baseUrl;
 
     beforeEach(inject(function (_$httpBackend_, _categoryService_, config) {
         categoryService = _categoryService_;
@@ -13,36 +12,6 @@ describe('Category Service tests', function() {
         dummy = null;
         error = null;
     }));
-
-    getResult = function(data){
-      dummy = data;
-    }
-
-    getError = function(e){
-        error = e;
-    }
-
-    serviceOk = function(method, param, url, response, body){
-        var call = !body ? $httpBackend.expectGET(url) : $httpBackend.expectPOST(url, body);
-        call.respond(200, response);
-
-        method(param).then(getResult, getError);
-
-        $httpBackend.flush();
-        expect(dummy).not.toBe(null);
-        expect(error).toBe(null)
-      }
-
-    serviceFail = function(method, param, url, response, body){
-        var call = !body ? $httpBackend.expectGET(url) : $httpBackend.expectPOST(url, body);
-        call.respond(500, response);
-
-        method(param).then(getResult, getError);
-
-        $httpBackend.flush();
-        expect(dummy).toBe(null);
-        expect(error).not.toBe(undefined)
-      }
 
 
     it('test list, ok', function () {
@@ -80,6 +49,4 @@ describe('Category Service tests', function() {
        var body = {foo: "bar"};
         serviceFail(categoryService.Update, body, baseUrl + '/category/update', body, body);
     });
-
-
 });
