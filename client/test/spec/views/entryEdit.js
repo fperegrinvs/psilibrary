@@ -55,7 +55,7 @@ describe('Testing EntryEdit View', function () {
     expect($scope.dataForm.title.$error.required).not.toBe(undefined)
   });
 
-  it('Checking the author feild', function() {
+  it('Checking the author field', function() {
     createController({author: 'test'});
     expect($scope.dataForm.author.$modelValue).toEqual('test')
   });
@@ -64,6 +64,16 @@ describe('Testing EntryEdit View', function () {
     createController({});
     $scope.dataForm.$setSubmitted();
     expect($scope.dataForm.author.$error.required).not.toBe(undefined)
+  });
+
+  it('should have tile "Novo registro" if creating a new entry', function(){
+    createController({});
+    expect(view.find(".title").text()).toEqual('Novo registro')
+  });
+
+  it('should have tile "Editando registro" when editing an existing entry', function(){
+    createController({id: 3});
+    expect(view.find(".title").text()).toEqual('Editando registro')
   });
 
 });

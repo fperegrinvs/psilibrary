@@ -1,4 +1,5 @@
-angular.module('psilibrary.directives', [])
+
+angular.module('psilibrary.providers')
 .provider('showErrorsConfig', function () {
   var _showSuccess;
   _showSuccess = false;
@@ -8,4 +9,4 @@ angular.module('psilibrary.directives', [])
   this.$get = function () {
     return { showSuccess: _showSuccess };
   };
-});
+})

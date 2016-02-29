@@ -1,5 +1,5 @@
 // copy from http://blog.yodersolutions.com/bootstrap-form-validation-done-right-in-angularjs/
-angular.module('psilibrary.directives', [])
+angular.module('psilibrary.directives')
 .directive('showErrors', function ($timeout, showErrorsConfig) {
       var getShowSuccess, linkFn;
       getShowSuccess = function (options) {

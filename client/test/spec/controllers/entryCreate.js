@@ -23,6 +23,7 @@ describe('entryCreate tests', function() {
 
   it('should have a save method that calls service create', function(){
   	spyOn(service, 'Create').and.callThrough();
+    scope.data = {title: 'Oi', author: 'Hello'}
   	scope.save();
     expect(service.Create).toHaveBeenCalled();
   })
