@@ -1,6 +1,7 @@
 'use strict'; // http://stackoverflow.com/questions/1335851/what-does-use-strict-do-in-javascript-and-what-is-the-reasoning-behind-it
 angular.module('psilibrary.controllers')
-    .controller('entryEditCtl', ['$scope', 'entryService', '$state', function ($scope, entryService, $state) {
+    .controller('entryEditCtl', ['$scope', 'entryService', '$state', 'categoryService', 
+    	function ($scope, entryService, $state, categoryService) {
 
 	$scope.init = function(){
         if (!$state.params.id){
@@ -8,6 +9,7 @@ angular.module('psilibrary.controllers')
         }
 
         entryService.Get($state.params.id);
+        $scope.categories = categoryService.List();
 	}
 
 	$scope.save = function(){

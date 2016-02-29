@@ -10,5 +10,6 @@ angular.module('psilibrary.controllers')
                 $state.go('category');
             });
         };
+        
         $scope.init();
     }]);

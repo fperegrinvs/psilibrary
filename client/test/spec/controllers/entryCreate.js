@@ -1,9 +1,13 @@
 describe('entryCreate tests', function() { 	
   test_init()
 
+  window.categories = [{id:1, name:'cat1'},{id:2, name:'cat2'}]
   // mock service
   beforeEach(mockState);
   beforeEach(mockGenericService);
+  categoryService = {
+    List: function() {return window.categories;}
+  }
 
   beforeEach(inject(function($controller, $rootScope, $q, $state){
     q = $q;
@@ -12,7 +16,8 @@ describe('entryCreate tests', function() {
     listCtl = $controller('entryCreateCtl', {
       $scope: scope,
       entryService: service,
-      $state: state
+      $state: state,
+      categoryService: categoryService,
     })
   }))
 
@@ -53,6 +58,11 @@ describe('entryCreate tests', function() {
   it('check if edit rounte exists', function() {
     var r = realState.get('entryCreate');
     expect(r).not.toBe(null);
+  })
+
+  it('should load a categories list', function(){
+    scope.init();
+    expect(scope.categories).toEqual(window.categories);
   })
 
 });

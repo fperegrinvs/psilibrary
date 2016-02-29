@@ -12,6 +12,11 @@ describe('entryEdit tests', function() {
     }
 
     stateParams = {id: 39}
+
+    window.categories = [{id:1, name:'cat1'},{id:2, name:'cat2'}]
+    window.categoryService = {
+      List: function() {return window.categories;}
+    }
   });
 
   beforeEach(inject(function($controller, $rootScope, $q, $state){
@@ -21,7 +26,8 @@ describe('entryEdit tests', function() {
     listCtl = $controller('entryEditCtl', {
       $scope: scope,
       entryService: service,
-      $state: state
+      $state: state,
+      categoryService: categoryService,
     })
   }))
 
@@ -76,4 +82,8 @@ describe('entryEdit tests', function() {
   	expect(r).not.toBe(null);
   })
 
+  it('should load a categories list', function(){
+    scope.init();
+    expect(scope.categories).toEqual(window.categories);
+  })
 });

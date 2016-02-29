@@ -17,6 +17,10 @@
             <input type="text" class="form-control" ng-model="data.author" id="author" name="author" ng-required="true">
             <p class="help-block author-required-error" ng-if="dataForm.author.$error.required">O autor é obrigatório</p>
         </div>
+        <div class="form-group" show-errors>
+            <label for="publishDate">Data de publicação</label>
+            <input class="form-control" ng-model="data.publishDate" type="date" name="publishDate" />
+        </div>
         <button type="submit" class="btn btn-primary save" ng-click="save()">Salvar</button>
     </form>
 </div>

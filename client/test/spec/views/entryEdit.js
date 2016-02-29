@@ -2,6 +2,7 @@ describe('Testing EntryEdit View', function () {
 
   // setup
   beforeEach(module('client'));
+  beforeEach(mockGenericService);
 
   var TestCtrl, $rootScope, $compile, createController, $scope;
   beforeEach(inject(function($controller, $templateCache, _$rootScope_, _$compile_, _$httpBackend_) {
@@ -66,14 +67,20 @@ describe('Testing EntryEdit View', function () {
     expect($scope.dataForm.author.$error.required).not.toBe(undefined)
   });
 
-  it('should have tile "Novo registro" if creating a new entry', function(){
+  it('should have title "Novo registro" if creating a new entry', function(){
     createController({});
     expect(view.find(".title").text()).toEqual('Novo registro')
   });
 
-  it('should have tile "Editando registro" when editing an existing entry', function(){
+  it('should have title "Editando registro" when editing an existing entry', function(){
     createController({id: 3});
     expect(view.find(".title").text()).toEqual('Editando registro')
   });
+
+  it('should have an input for publishdate', function(){
+    date = new Date()
+    createController({publishDate: date});
+    expect($scope.dataForm.publishDate.$modelValue).toEqual(date)
+  })
 
 });
