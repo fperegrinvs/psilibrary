@@ -53,5 +53,17 @@ describe('Testing EntryEdit View', function () {
     createController({});
     $scope.dataForm.$setSubmitted();
     expect($scope.dataForm.title.$error.required).not.toBe(undefined)
-  })
+  });
+
+  it('Checking the author feild', function() {
+    createController({author: 'test'});
+    expect($scope.dataForm.author.$modelValue).toEqual('test')
+  });
+
+  it('Author field should be required', function() {
+    createController({});
+    $scope.dataForm.$setSubmitted();
+    expect($scope.dataForm.author.$error.required).not.toBe(undefined)
+  });
+
 });
