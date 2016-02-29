@@ -32,7 +32,7 @@ mockState = function() {
 
 test_init = function() {
   window.listCtl, window.scope, window.list, window.service, window.q, window.deferred, window.state, window.nextState,
-  window.dummy; window.stateParams = {}; window.error; window.$httpBackend
+  window.dummy; window.stateParams = {}; window.error; window.$httpBackend; window.route; window.view;
 
   beforeEach(module('client'))
 }
@@ -67,3 +67,14 @@ test_init = function() {
       expect(error).not.toBe(undefined)
     }
 
+getColumn = function(column, row) {
+  if (!row) {
+    row = 0;
+  }
+  
+  return $($(view).find('#table-data tbody tr')[row]).find('td')[column]
+}
+
+triggerValidation = function() {
+    angular.element($('form')).scope().dataForm.$setSubmitted();
+}

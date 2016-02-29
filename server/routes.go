@@ -116,6 +116,6 @@ var routes = Routes{
 		"EntryGet",
 		[]string{"GET"},
 		"/entry/{CategoryId}",
-		controllers.EntryUShow,
+		controllers.EntryShow,
 	},
 }

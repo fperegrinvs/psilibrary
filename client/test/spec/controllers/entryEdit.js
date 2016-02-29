@@ -14,8 +14,9 @@ describe('entryEdit tests', function() {
     stateParams = {id: 39}
   });
 
-  beforeEach(inject(function($controller, $rootScope, $q){
+  beforeEach(inject(function($controller, $rootScope, $q, $state){
     q = $q;
+    realState = $state
     scope = $rootScope.$new();
     listCtl = $controller('entryEditCtl', {
       $scope: scope,
@@ -68,6 +69,11 @@ describe('entryEdit tests', function() {
   	deferred.reject('error');
     scope.$root.$digest();
   	expect(scope.msg.error).toBe('error');
+  })
+
+  it('check if edit rounte exists', function() {
+  	var r = realState.get('entryEdit');
+  	expect(r).not.toBe(null);
   })
 
 });

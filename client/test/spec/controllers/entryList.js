@@ -5,8 +5,10 @@ describe('entryList tests', function() {
   beforeEach(mockState);
   beforeEach(mockGenericService);
 
-  beforeEach(inject(function($controller, $rootScope, $q){
+  beforeEach(inject(function($controller, $rootScope, $q, $route, $state){
     q = $q;
+    realState = $state
+    route = $route
     scope = $rootScope.$new();
     listCtl = $controller('entryListCtl', {
       $scope: scope,
@@ -60,5 +62,11 @@ describe('entryList tests', function() {
     scope.init()
     expect(scope.msg).toEqual(state.params);
  })
+
+
+  it('check if list route exist', function(){
+    r = realState.get('entry')
+    expect(r).not.toBe(null)
+  })
 
 });

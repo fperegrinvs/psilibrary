@@ -21,7 +21,7 @@ func EntryUpdate(w http.ResponseWriter, r *http.Request) {
 
 
 // CategoryShow TodoShow rota teste
-func EntryUShow(w http.ResponseWriter, r *http.Request) {
+func EntryShow(w http.ResponseWriter, r *http.Request) {
 	idVar := "ID"
 	call := func(v int)(interface{}, error){
 		return entryRepo.GetById(v)

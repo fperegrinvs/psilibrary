@@ -5,8 +5,9 @@ describe('entryCreate tests', function() {
   beforeEach(mockState);
   beforeEach(mockGenericService);
 
-  beforeEach(inject(function($controller, $rootScope, $q){
+  beforeEach(inject(function($controller, $rootScope, $q, $state){
     q = $q;
+    realState = $state
     scope = $rootScope.$new();
     listCtl = $controller('entryCreateCtl', {
       $scope: scope,
@@ -39,12 +40,18 @@ describe('entryCreate tests', function() {
     scope.$root.$digest();
     expect(scope.msg.success).not.toBe(undefined);
     expect(scope.msg.error).toBe(undefined);
-});
+  });
 
   it('should store error message if create fails', function(){
   	scope.save();
     deferred.reject('Error');
     scope.$root.$digest();
     expect(scope.msg).toEqual({error: 'Error'});
+  });
+
+  it('check if edit rounte exists', function() {
+    var r = realState.get('entryCreate');
+    expect(r).not.toBe(null);
   })
+
 });
