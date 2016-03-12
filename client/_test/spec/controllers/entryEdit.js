@@ -23,6 +23,7 @@ describe('entryEdit tests', function() {
     q = $q;
     realState = $state
     scope = $rootScope.$new();
+    categoryService = jQuery.extend(true, {}, service);
     listCtl = $controller('entryEditCtl', {
       $scope: scope,
       entryService: service,
@@ -84,6 +85,15 @@ describe('entryEdit tests', function() {
 
   it('should load a categories list', function(){
     scope.init();
+    deferred.resolve(window.categories);
+    scope.$root.$digest();
     expect(scope.categories).toEqual(window.categories);
   })
+
+  it('method removeCategory should remove a category from scope.data', function(){
+    scope.data = {title: 'Oi', author: 'Hello', categories: categories};
+    scope.removeCategory(categories[0]);
+    expect(scope.data.categories.length).toEqual(1);
+  })
+  
 });

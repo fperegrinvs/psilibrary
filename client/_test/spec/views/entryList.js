@@ -12,7 +12,7 @@ describe('Testing EntryList View', function () {
     $httpBackend.whenGET(/^.*/).respond('');
 
     createController = function(data) {
-      var html = '<div>' + $templateCache.get('templates/entryList.html') + '</div>';
+      var html = '<div>' + $templateCache.get('app/templates/entryList.html') + '</div>';
       TestCtrl = $controller('entryListCtl', { $scope: $scope, $rootScope: $rootScope });
       $scope.data = data;
       view = $compile(angular.element(html))($scope);

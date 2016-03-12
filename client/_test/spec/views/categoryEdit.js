@@ -12,7 +12,7 @@ describe('Testing CategoryEdit View', function () {
     $httpBackend.whenGET(/^.*/).respond('');
 
     createController = function(data) {
-      var html = '<div>' + $templateCache.get('templates/categoryEdit.html') + '</div>';
+      var html = '<div>' + $templateCache.get('app/templates/categoryEdit.html') + '</div>';
       TestCtrl = $controller('categoryCreateCtl', { $scope: $scope, $rootScope: $rootScope });
       $scope.data = data;
       view = $compile(angular.element(html))($scope);

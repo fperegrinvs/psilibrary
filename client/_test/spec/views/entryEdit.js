@@ -5,6 +5,7 @@ describe('Testing EntryEdit View', function () {
   beforeEach(mockGenericService);
 
   var TestCtrl, $rootScope, $compile, createController, $scope;
+  var categories = [{id: 1, name: 'oi'}, {id: 2, name: 'teste'}];
   beforeEach(inject(function($controller, $templateCache, _$rootScope_, _$compile_, _$httpBackend_) {
     $rootScope = _$rootScope_;
     $scope = $rootScope.$new();
@@ -12,10 +13,15 @@ describe('Testing EntryEdit View', function () {
     $httpBackend = _$httpBackend_
     $httpBackend.whenGET(/^.*/).respond('');
 
-    createController = function(data) {
-      var html = '<div>' + $templateCache.get('templates/entryEdit.html') + '</div>';
+    createController = function(data, categories) {
+      var html = '<div>' + $templateCache.get('app/templates/entryEdit.html') + '</div>';
       TestCtrl = $controller('entryCreateCtl', { $scope: $scope, $rootScope: $rootScope });
       $scope.data = data;
+
+      if (categories) {
+        $scope.categories = categories;
+      }
+
       view = $compile(angular.element(html))($scope);
       $scope.$digest();
       return $scope;
@@ -82,5 +88,27 @@ describe('Testing EntryEdit View', function () {
     createController({publishDate: date});
     expect($scope.dataForm.publishDate.$modelValue).toEqual(date)
   })
+
+  it('should have a input with a list of categories', function(){
+    createController({id: 3}, categories);
+    expect(view.find(".categoriesList").children().length).toEqual(3);
+  })
+
+  it('should have a list of entry`s categories', function(){
+    createController({id: 3, categories: categories}, categories);
+    expect(view.find(".category").length).toEqual(2);
+  });
+
+  it('it should have a button to remove a category', function(){
+    createController({id: 3, categories: categories}, categories);
+    expect(view.find(".remove-category").length).toEqual(2);
+  });
+
+  it('the remove button should call the removeCategory method', function(){
+    createController({id: 3, categories: categories}, categories);
+    spyOn($scope, 'removeCategory');
+    $(view).find('.remove-category')[0].click();
+    expect($scope.removeCategory).toHaveBeenCalledWith(categories[0]);
+  });
 
 });

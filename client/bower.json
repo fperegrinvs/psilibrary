@@ -1,25 +1,34 @@
 {
-  "name": "client",
-  "version": "0.0.0",
+  "name": "brunch-app",
+  "description": "Description",
+  "main": "public/app.js",
+  "authors": [
+    "Your Name"
+  ],
+  "license": "MIT",
+  "moduleType": [],
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
   "dependencies": {
-    "angular": "*",
-    "angular-resource": "*",
-    "angular-cookies": "*",
-    "angular-sanitize": "*",
-    "angular-route": "*",
-    "angular-animate": "*",
-    "angular-ui-utils": "*",
-    "angular-bootstrap": "*",
-    "angular-ui-router": "*",
-    "ng-grid": "*",
-    "jquery": "*",
-    "bootstrap": "*",
-    "bootstrap-table": "*",
-    "angular-mocks": "^1.5.0"
-  },
-  "devDependencies": {
-    "angular-mocks": "*",
-    "angular-scenario": "*"
-  },
-  "overrides": {}
+    "angular": "1.5.0",
+    "angular-resource": "1.5.0",
+    "angular-cookies": "1.5.0",
+    "angular-sanitize": "1.5.0",
+    "angular-route": "1.5.0",
+    "angular-animate": "1.5.0",
+    "angular-ui-utils": "3.0.0",
+    "angular-bootstrap": "1.1.2",
+    "angular-ui-router": "0.2.18",
+    "angular-bootstrap": "^1.2.4",
+    "angular-bootstrap-duallistbox": "^0.1.0",
+    "bootstrap-table": "^1.10.1",
+    "angular-mocks": "^1.5.0",
+    "angular-ui-router": "^0.2.18"
+  }
 }

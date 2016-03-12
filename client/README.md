@@ -1,43 +1,16 @@
- client WebApp!
-=====================
+# Brunch app
 
----------------
+This is HTML5 application, built with [Brunch](http://brunch.io).
 
-This is an Angular.js App and is powered by [Boom Angular Generator](https://npmjs.org/package/generator-boom)
-
-
-
-Installation
----------
-
-Install the Boom Generator first.
-
-```sh
-    git clone [clone-url] app
-    cd app
-```
-
-Install [Boom Angular Generator](https://npmjs.org/package/generator-boom)
-
-```sh
-    npm install -g generator-boom
-```
-
-Then install all develpment dependencies
-
-```sh
-    npm start
-```
-
-Finally, fire up the server
-
-```
-    gulp
-```
-
-**Thats it!**
-
-
-
-----------
-
+## Getting started
+* Install (if you don't have them):
+    * [Node.js](http://nodejs.org): `brew install node` on OS X
+    * [Brunch](http://brunch.io): `npm install -g brunch`
+    * Brunch plugins and app dependencies: `npm install`
+* Run:
+    * `brunch watch --server` — watches the project with continuous rebuild. This will also launch HTTP server with [pushState](https://developer.mozilla.org/en-US/docs/Web/Guide/API/DOM/Manipulating_the_browser_history).
+    * `brunch build --production` — builds minified project for production
+* Learn:
+    * `public/` dir is fully auto-generated and served by HTTP server.  Write your code in `app/` dir.
+    * Place static files you want to be copied from `app/assets/` to `public/`.
+    * [Brunch site](http://brunch.io), [Getting started guide](https://github.com/brunch/brunch-guide#readme)

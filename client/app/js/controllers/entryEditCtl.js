@@ -8,8 +8,21 @@ angular.module('psilibrary.controllers')
             $state.go('entryList', {error: 'Registro não encontrado'});
         }
 
-        entryService.Get($state.params.id);
-        $scope.categories = categoryService.List();
+        var entryCall = entryService.Get($state.params.id);
+        entryCall.then(function(data){
+            $scope.data = data;
+        },
+        function(err){
+            $scope.msg = {error: err}
+        });
+
+        var call = categoryService.List();
+        call.then(function(data){
+            $scope.categories = data;
+        },
+        function(err){
+            $scope.msg = {error: err};
+        });
 	}
 
 	$scope.save = function(){
@@ -21,6 +34,16 @@ angular.module('psilibrary.controllers')
 				$scope.msg = {error: err};
 			});
 	}
+
+    $scope.removeCategory = function(category){
+        for (var i = 0; i < $scope.data.categories.length; i++) {
+            if ($scope.data.categories[i].id == category.id) {
+                $scope.data.categories.splice(i, 1);
+                break;
+            }
+        }
+    }
+
 
 	$scope.init();
 }]);

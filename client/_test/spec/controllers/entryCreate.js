@@ -10,6 +10,7 @@ describe('entryCreate tests', function() {
   }
 
   beforeEach(inject(function($controller, $rootScope, $q, $state){
+    categoryService = jQuery.extend(true, {}, service);
     q = $q;
     realState = $state
     scope = $rootScope.$new();
@@ -62,7 +63,14 @@ describe('entryCreate tests', function() {
 
   it('should load a categories list', function(){
     scope.init();
+    deferred.resolve(window.categories);
+    scope.$root.$digest();
     expect(scope.categories).toEqual(window.categories);
   })
 
+  it('method removeCategory should remove a category from scope.data', function(){
+    scope.data = {title: 'Oi', author: 'Hello', categories: categories};
+    scope.removeCategory(categories[0]);
+    expect(scope.data.categories.length).toEqual(1);
+  })
 });

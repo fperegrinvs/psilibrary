@@ -8,7 +8,7 @@ var Psilibrary;
 (function (Psilibrary) {
     var app = angular.module('client', ["ngCookies", "ngResource", "ngSanitize", "ngRoute", "ngAnimate", "ui.utils", "ui.bootstrap", 
         "ui.router", "psilibrary.controllers", 'psilibrary.templates', 'psilibrary.config', 'psilibrary.services', 'psilibrary.directives', 
-        'psilibrary.providers']);
+        'psilibrary.providers', 'frapontillo.bootstrap-duallistbox', 'templates']);
     angular.module("psilibrary.controllers", []);
     angular.module("psilibrary.templates", []);
     angular.module("psilibrary.services", []);
@@ -86,7 +86,7 @@ var Psilibrary;
             $urlRouterProvider.otherwise('/404');
             var createState = function (name, url, partial, controllerName, view) {
                 var views = {};
-                views[view + "@"] = { templateUrl: "templates/" + partial + ".html", controller: controllerName + "Ctl" };
+                views[view + "@"] = { templateUrl: "app/templates/" + partial + ".html", controller: controllerName + "Ctl" };
                 return $stateProvider.state(name, { url: url, views: views });
             };
             var stateTree = [
