@@ -30,5 +30,21 @@
     "bootstrap-table": "^1.10.1",
     "angular-mocks": "^1.5.0",
     "angular-ui-router": "^0.2.18"
-  }
+  },
+  "overrides": {
+    "bootstrap": {
+      "main": [
+        "dist/css/bootstrap.css",
+        "dist/js/bootstrap.js",
+        "dist/fonts/glyphicons-halflings-regular.eot",
+        "dist/fonts/glyphicons-halflings-regular.svg",
+        "dist/fonts/glyphicons-halflings-regular.ttf",
+        "dist/fonts/glyphicons-halflings-regular.woff",
+        "dist/fonts/glyphicons-halflings-regular.woff2"
+      ],
+      "dependencies": {
+        "jquery": ">= 1.9.1"
+      }
+    }
+  }  
 }
