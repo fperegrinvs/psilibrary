@@ -89,11 +89,5 @@ describe('entryEdit tests', function() {
     scope.$root.$digest();
     expect(scope.categories).toEqual(window.categories);
   })
-
-  it('method removeCategory should remove a category from scope.data', function(){
-    scope.data = {title: 'Oi', author: 'Hello', categories: categories};
-    scope.removeCategory(categories[0]);
-    expect(scope.data.categories.length).toEqual(1);
-  })
   
 });

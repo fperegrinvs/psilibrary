@@ -89,26 +89,14 @@ describe('Testing EntryEdit View', function () {
     expect($scope.dataForm.publishDate.$modelValue).toEqual(date)
   })
 
+// usando plugin bootstrap
   it('should have a input with a list of categories', function(){
     createController({id: 3}, categories);
-    expect(view.find(".categoriesList").children().length).toEqual(3);
+    expect(view.find("#bootstrap-duallistbox-nonselected-list_").children().length).toEqual(2);
   })
 
   it('should have a list of entry`s categories', function(){
     createController({id: 3, categories: categories}, categories);
-    expect(view.find(".category").length).toEqual(2);
+    expect(view.find("#bootstrap-duallistbox-selected-list_").children().length).toEqual(2);
   });
-
-  it('it should have a button to remove a category', function(){
-    createController({id: 3, categories: categories}, categories);
-    expect(view.find(".remove-category").length).toEqual(2);
-  });
-
-  it('the remove button should call the removeCategory method', function(){
-    createController({id: 3, categories: categories}, categories);
-    spyOn($scope, 'removeCategory');
-    $(view).find('.remove-category')[0].click();
-    expect($scope.removeCategory).toHaveBeenCalledWith(categories[0]);
-  });
-
 });

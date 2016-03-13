@@ -35,15 +35,5 @@ angular.module('psilibrary.controllers')
 			});
 	}
 
-    $scope.removeCategory = function(category){
-        for (var i = 0; i < $scope.data.categories.length; i++) {
-            if ($scope.data.categories[i].id == category.id) {
-                $scope.data.categories.splice(i, 1);
-                break;
-            }
-        }
-    }
-
-
 	$scope.init();
 }]);
