@@ -99,4 +99,14 @@ describe('Testing EntryEdit View', function () {
     createController({id: 3, categories: categories}, categories);
     expect(view.find("#bootstrap-duallistbox-selected-list_").children().length).toEqual(2);
   });
+
+  it('should have a input with entry abstract', function(){
+    createController({abstract: 'hello world'});
+    expect($scope.dataForm.abstract.$modelValue).toEqual('hello world')
+  });
+
+  it('shoud have a input with entry content', function(){
+  createController({content: 'hello world'});
+    expect($scope.dataForm.content.$modelValue).toEqual('hello world')
+  })
 });

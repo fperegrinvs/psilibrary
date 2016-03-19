@@ -1,0 +1,2 @@
+Simplificando o processo de build do projeto e deixando de utilizar alguns recursos como typescript e scss que não estavam sendo devidamente aproveitados.
+Tais alterações devem facilitar a manutenção do projeto. É necessário atualizar a documentação do projeto.
