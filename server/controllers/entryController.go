@@ -1,6 +1,9 @@
 package controllers
 
 import (
+	"errors"
+	"fmt"
+	"reflect"
 	"net/http"
 	"github.com/lstern/psilibrary/server/models"
 	"github.com/lstern/psilibrary/server/repositories"
@@ -34,9 +37,19 @@ func EntryShow(w http.ResponseWriter, r *http.Request) {
 // CategoryCreate TodoCreate rota teste
 func EntryCreate(w http.ResponseWriter, r *http.Request) {
 	entry := new(models.Entry)
+
 	f := func(o interface{})(error) { 
-		entry, _ := o.(models.Entry);
-		_, err := entryRepo.Create(&entry)
+		entry, ok := o.(*models.Entry);
+
+		if !ok  {
+			print("Erro ao converter tipo:\n")
+			fmt.Println(reflect.TypeOf(o))
+			return errors.New("Erro ao converter tipo");
+		}
+
+		_, err := entryRepo.Create(entry)
+		
+
 		return err 
 	}
 

@@ -11,7 +11,7 @@ type (
 		PublishDate   time.Time        `json:"publishDate" db:"PublishDate"`
 		Author   string        `json:"author" db:"Author"`
 		Journal   string        `json:"journal" db:"Journal"`
-		EntryType   EntryType        `json:"entryTypeId"`
+		EntryType   EntryType        `json:"entryType"`
 		EntryTypeId int `db:"EntryTypeId"`
 		Categories []Category 	`json:"categories" db:"Categories"`
 	}
