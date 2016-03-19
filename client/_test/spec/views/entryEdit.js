@@ -106,7 +106,31 @@ describe('Testing EntryEdit View', function () {
   });
 
   it('shoud have a input with entry content', function(){
-  createController({content: 'hello world'});
+   createController({content: 'hello world'});
     expect($scope.dataForm.content.$modelValue).toEqual('hello world')
+  });
+
+  it('shoud have a input with journal', function(){
+   createController({journal: 'hello world'});
+    expect($scope.dataForm.journal.$modelValue).toEqual('hello world')
+  });
+
+  it('should have a selection box to select the entry type', function(){
+    var entryType = {id: 1, name: 'teste'};
+    createController({entryType: entryType});
+    expect($scope.dataForm.entryType.$modelValue).toEqual(entryType)
+  });
+
+  it('entry type should be required', function(){
+    createController({});
+    $scope.dataForm.$setSubmitted();
+    expect($scope.dataForm.entryType.$error.required).not.toBe(undefined)
   })
+
+  it('abstract should be required', function(){
+    createController({});
+    $scope.dataForm.$setSubmitted();
+    expect($scope.dataForm.abstract.$error.required).not.toBe(undefined)
+  })
+
 });

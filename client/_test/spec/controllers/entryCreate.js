@@ -2,23 +2,27 @@ describe('entryCreate tests', function() {
   test_init()
 
   window.categories = [{id:1, name:'cat1'},{id:2, name:'cat2'}]
+  window.deferred2 = null;
   // mock service
   beforeEach(mockState);
   beforeEach(mockGenericService);
-  categoryService = {
-    List: function() {return window.categories;}
-  }
+  
 
   beforeEach(inject(function($controller, $rootScope, $q, $state){
-    categoryService = jQuery.extend(true, {}, service);
     q = $q;
-    realState = $state
+    categoryService = jQuery.extend(true, {}, service);
+    entryTypeService = {List: function () {
+        deferred2 = q.defer();
+        return deferred2.promise;
+    }};
+    realState = $state;
     scope = $rootScope.$new();
     listCtl = $controller('entryCreateCtl', {
       $scope: scope,
       entryService: service,
       $state: state,
       categoryService: categoryService,
+      entryTypeService: entryTypeService,
     })
   }))
 
@@ -66,6 +70,13 @@ describe('entryCreate tests', function() {
     deferred.resolve(window.categories);
     scope.$root.$digest();
     expect(scope.categories).toEqual(window.categories);
+  })
+
+  it('should load entry type list', function(){
+    scope.init();
+    deferred2.resolve(window.categories);
+    scope.$root.$digest();
+    expect(scope.entryTypes).toEqual(window.categories);
   })
 
 });

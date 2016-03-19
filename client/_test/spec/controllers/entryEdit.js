@@ -1,6 +1,7 @@
 describe('entryEdit tests', function() { 	
   test_init()
 
+  window.deferred2 = null;
   beforeEach(mockGenericService);
   beforeEach(mockState);
 
@@ -14,6 +15,10 @@ describe('entryEdit tests', function() {
     stateParams = {id: 39}
 
     window.categories = [{id:1, name:'cat1'},{id:2, name:'cat2'}]
+    entryTypeService = {List: function () {
+        deferred2 = q.defer();
+        return deferred2.promise;
+    }};
     window.categoryService = {
       List: function() {return window.categories;}
     }
@@ -29,6 +34,7 @@ describe('entryEdit tests', function() {
       entryService: service,
       $state: state,
       categoryService: categoryService,
+      entryTypeService: entryTypeService
     })
   }))
 
@@ -76,18 +82,24 @@ describe('entryEdit tests', function() {
   	deferred.reject('error');
     scope.$root.$digest();
   	expect(scope.msg.error).toBe('error');
-  })
+  });
 
   it('check if edit rounte exists', function() {
   	var r = realState.get('entryEdit');
   	expect(r).not.toBe(null);
-  })
+  });
 
   it('should load a categories list', function(){
     scope.init();
     deferred.resolve(window.categories);
     scope.$root.$digest();
     expect(scope.categories).toEqual(window.categories);
-  })
-  
+  });
+
+  it('should load entry type list', function(){
+    scope.init();
+    deferred2.resolve(window.categories);
+    scope.$root.$digest();
+    expect(scope.entryTypes).toEqual(window.categories);
+  })  
 });
