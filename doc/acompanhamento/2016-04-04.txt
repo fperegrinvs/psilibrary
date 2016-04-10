@@ -1,0 +1,22 @@
+Após finalizar boa parte da importação de dados do medline , foi observado que o sistema ainda não possui sistema de login e a implementação do mesmo também exige revisão de parte dos testes escritos até agora para que seja exigido e validado o controle de a negação de acesso quando o usuário não está logada.
+
+O projeto está atrasado e não será possível contemplar todo o escopo inicialmente previsto e, tendo em vista o fracasso em faze-lo, forço me a questionar os motivos e a planejar alternativas viáveis.
+
+No TDD, o desenvolvimento inicial das funcionalidades é bem mais lento (talvez 50% mais) que o observado em outras abordagens de desenvolvimento mas que proporciona a criação de sistemas com menos bugs e maior qualidade. 
+
+Faz-se necessário, no entanto, observar que apesar da abordagem proporcionar o desenvolvimento iterativo com boa qualidade e ser flexível para acomodar novos requisitos e alterações de escopo, percebe-se que não é ferramenta muito eficiente para ser utilizada no desenvolvimento exploratório onde os requisitos não são bem entendidos de início e vão sendo definidos no decorrer do projeto.
+
+O atual projeto não possui escopo detalhado e por utilizar algumas tecnologias até então desconhecidas pela equipe, possui natureza fortemente exploratória. Neste sentido, avalia-se que teria sido mais eficiente criar primeiro um protótipo funcional mas descartável capaz de executar as funções previstas no escopo da forma mais simples possível e crua possível, ignorando validações de erro e outros refinamentos para só depois iniciar o desenvolvimento da versão final do projeto.
+
+A criação de um protótipo simples no início do projeto possibilitaria que uma parte maior do escopo inicial tivesse sido contemplada.
+
+Tais considerações devem ser encaradas apenas como reflexões e não como soluções pois desenvolver um protótipo na etapa final de desenvolvimento negaria grande parte dos possíveis benefícios do mesmo e uma vez iniciado o processo de TDD, o mesmo deve ser levado até o fim cabendo apenas a redefinição do escopo e replanejamento do projeto.
+
+Para finalizar o projeto da forma mantendo as funcionalidades mínimas que caracterizariam uma biblioteca virtual é necessário implementar os seguintes recursos:
+
+Login
+Busca Simples
+Exibição dos resultados de busca, com paginação 
+
+Todos os demais itens devem ser considerados como aperfeiçoamentos a serem desenvolvidos após a entrega do projeto.
+ 

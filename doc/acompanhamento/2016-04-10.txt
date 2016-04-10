@@ -1,0 +1,5 @@
+Notas sobre produtividade:
+
+- Programar em GO exige muito código boilerplate e isto tem tornado o processo de testes um pouco desgastante. Procurei por exemplos na internet para encontrar boas práticas que reduzam a quantidade de boilerplate mas só encontro projetos pequenos desenvolvidos, projetos menos estruturados ou sem testes. Desconfio que seja um restrição da linguagem por possuir filosofia minimalista e o fato de não existirem ORMs completos em Go só reforça esta idéia.
+
+- Seria muito melhor desenvolver usando TDD se eu tivesse 2 monitores. É necessário alternar frequentemente entre a janela de status dos testes e a janela de desenvolvimento ou dividir a tela entre as duas janelas. 
