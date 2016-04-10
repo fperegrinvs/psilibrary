@@ -5,6 +5,7 @@ import (
     "time"
     "encoding/xml"
     "github.com/lstern/psilibrary/server/medline/generated"
+    "github.com/lstern/psilibrary/server/repositories"
     "github.com/lstern/psilibrary/server/models"
 )
 
@@ -80,6 +81,28 @@ func (m Medline) ConvertArticle(citation *generated.TMedlineCitation) *models.En
 
     return entry;    
 }
+
+func (m Medline) InsertFromXml(xml string) ([]*models.Entry, error) {
+    result := m.ParseXML(xml)
+
+    repo := repositories.MakeEntryRepository(nil)
+    var entries []*models.Entry;
+
+    for _, pubmedArticle := range result.PubmedArticles {
+        entry := m.ConvertArticle(pubmedArticle.MedlineCitation);
+        id, err := repo.Create(entry);
+
+        if (err != nil) {
+            return entries, err;
+        }
+
+        entry.EntryId = id;
+        entries = append(entries, entry);
+    }
+
+    return entries, nil;
+}
+
 
 func (m Medline) ReadXML() string { 
 return `<?xml version="1.0"?>

@@ -86,7 +86,7 @@ func TestAvoidDuplicatedMedlineId(t *testing.T){
 	article := result.MedlineCitation;
 	entry := ml.ConvertArticle(article);
 	entry.Content = "Test Duplicate";
-	
+
 	repo := repositories.MakeEntryRepository(nil);
 
 	id, err := repo.Create(entry);
@@ -103,4 +103,19 @@ func TestAvoidDuplicatedMedlineId(t *testing.T){
 	}
 
 	repo.Delete(id);
+}
+
+func TestInsertAllFromXml(t *testing.T) {
+	xml := ml.ReadXML();
+	entries, err := ml.InsertFromXml(xml);
+
+	repo := repositories.MakeEntryRepository(nil);
+	for _, entry := range entries {
+		repo.Delete(entry.EntryId);
+	}
+
+	if (err != nil){
+		t.Error("Erro ao inserir artigos do xml");
+		return;
+	}
 }
