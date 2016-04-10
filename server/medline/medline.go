@@ -1,8 +1,11 @@
 package medline
 
 import (
+    "strconv"
+    "time"
     "encoding/xml"
     "github.com/lstern/psilibrary/server/medline/generated"
+    "github.com/lstern/psilibrary/server/models"
 )
 
 // reference https://gist.github.com/kwmt/6135123#file-parsetvdb-go
@@ -21,6 +24,59 @@ func (m Medline) ParseXML(file string) *PubmedArticleSet {
 	a := new (PubmedArticleSet);
 	xml.Unmarshal(bytes, a)
 	return a;
+}
+
+func (m Medline) ConvertArticle(citation *generated.TMedlineCitation) *models.Entry{
+    article := citation.Article;
+    entry := new(models.Entry);
+    entry.Abstract = article.Abstract.AbstractTexts[0].XCDATA;
+    entry.Title = article.ArticleTitle.XCDATA;
+    entry.Content = "";
+
+    if (article.Journal != nil){
+        if (article.Journal.JournalIssue != nil && article.Journal.JournalIssue.PubDate != nil){
+            year, _ := strconv.Atoi(article.Journal.JournalIssue.PubDate.Year.String())
+            month := time.January;
+            day := 1;
+
+            if (article.Journal.JournalIssue.PubDate.XHasElem_Month.Walk() == nil){
+
+                if (len(article.Journal.JournalIssue.PubDate.Month.String()) > 2) {
+                    
+                    test, err := time.Parse("January", article.Journal.JournalIssue.PubDate.Month.String());
+                    if (err == nil){
+                        month = test.Month();
+                    }               
+                }
+
+                if (article.Journal.JournalIssue.PubDate.XHasElem_Day.Walk() == nil){
+                    nday, err := strconv.Atoi(article.Journal.JournalIssue.PubDate.Day.String())
+                    if (err == nil){
+                        day = nday;
+                    }
+                }
+            }
+
+
+            entry.PublishDate = time.Date(year, month, day, 0, 0, 0, 0, time.Local);
+            entry.Journal = article.Journal.Title.String();
+        }
+
+        if (article.AuthorList != nil){
+            entry.Author = "";
+            for i:= 0; i < len(article.AuthorList.Authors); i++  {
+                author := article.AuthorList.Authors[i];
+                entry.Author += author.LastName.String() + ", " + author.ForeName.String();
+                if i + 1 < len(article.AuthorList.Authors) {
+                    entry.Author += "; ";
+                }
+            }
+        }
+    }
+
+    entry.MedlineId = citation.Pmid.XCDATA;
+
+    return entry;    
 }
 
 func (m Medline) ReadXML() string { 

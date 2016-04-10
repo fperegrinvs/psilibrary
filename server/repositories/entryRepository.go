@@ -275,6 +275,26 @@ func (r EntryRepository) GetById(id int) (*models.Entry, error) {
 	return r.completeEntry(&result)
 }
 
+func (r EntryRepository) GetByMedlineId(id string) (*models.Entry, error) {
+	db, err := openSql(r.DB)
+
+	if err != nil {
+		return nil, err
+	}	
+
+	defer db.Close()
+
+	result := models.Entry{}
+	err = db.Get(&result, "SELECT * FROM Entry where MedlineId = ? LIMIT 1", id)
+
+
+	if err != nil {
+		return nil, err
+	}
+
+	return r.completeEntry(&result)
+}
+
 func (r EntryRepository) GetEntryCategories(id int) ([]int64, error) {
 	db, err := openSql(r.DB)
 

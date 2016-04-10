@@ -368,3 +368,34 @@ func Test_CheckEntryMethodsRoutes(t *testing.T){
 		t.Error("rota para recuperar dados de registro não está registrada")
 	}	
 }
+
+func Test_insertWithMedlineId(t *testing.T){
+	obj := createObject()
+	obj.MedlineId = "12345"
+
+	repo := repositories.MakeEntryRepository(nil)
+	obj.EntryId, _ = repo.Create(&obj)
+	selected, err := repo.GetById(obj.EntryId)
+
+	if (err != nil) {
+		t.Error("Erro ao inserir registro com medlineId: ", err)
+	}
+
+	if  selected.MedlineId != obj.MedlineId  {
+		t.Error("Código medlineId é diferente ", selected.MedlineId)
+	}
+}
+
+func Test_GetByMedlineId(t *testing.T){
+	obj := createObject()
+	obj.MedlineId = "123"
+
+	repo := repositories.MakeEntryRepository(nil)
+	obj.EntryId, _ = repo.Create(&obj)
+	selected, err := repo.GetByMedlineId(obj.MedlineId)
+	repo.Delete(obj.EntryId)	
+
+	if selected == nil || selected.MedlineId != obj.MedlineId  {
+		t.Error("Erro ao selecionar registro por medlineid", err)
+	}
+}
