@@ -4,6 +4,7 @@ import  (
 	"time"
 	"testing"
     "github.com/lstern/psilibrary/server/models"
+   "github.com/lstern/psilibrary/server/repositories"
 )
 
 var ( 
@@ -32,7 +33,7 @@ func TestParseXmlHaveOneElement(t *testing.T) {
 	}
 }
 
-func TestInsertEntry(t *testing.T) {
+func TestConvertEntry(t *testing.T) {
 	xml := ml.ReadXML();
 	result := ml.ParseXML(xml).PubmedArticles[0];
 
@@ -47,4 +48,59 @@ func TestInsertEntry(t *testing.T) {
 	if (entry.Title != reference.Title || entry.PublishDate != reference.PublishDate || entry.MedlineId != reference.MedlineId){
 		t.Error("Erro ao converter artigo");
 	}
+}
+
+func TestInsertEntry(t *testing.T) {
+	xml := ml.ReadXML();
+	result := ml.ParseXML(xml).PubmedArticles[0];
+
+	article := result.MedlineCitation;
+	entry := ml.ConvertArticle(article);
+	entry.Content = "Test Insert";
+	repo := repositories.MakeEntryRepository(nil);
+
+	id, err := repo.Create(entry);
+
+	if (err != nil){
+		t.Error("Erro ao inserir artigo medline", err);
+		return;
+	}
+
+	newEntry, _ := repo.GetById(id);
+	err = repo.Delete(id);
+
+	if (err != nil){
+		t.Error("Erro ao deletar artigo: ", err)
+	}
+
+
+	if (newEntry.MedlineId != "26886152"){
+		t.Error("Erro ao inserir artigo medline")
+	}
+}
+
+func TestAvoidDuplicatedMedlineId(t *testing.T){
+	xml := ml.ReadXML();
+	result := ml.ParseXML(xml).PubmedArticles[0];
+
+	article := result.MedlineCitation;
+	entry := ml.ConvertArticle(article);
+	entry.Content = "Test Duplicate";
+	
+	repo := repositories.MakeEntryRepository(nil);
+
+	id, err := repo.Create(entry);
+
+	if (err != nil){
+		t.Error("Erro ao inserir artigo medline", err);
+	}
+
+	id2, err := repo.Create(entry);
+
+	if (err == nil){
+		t.Error("Deveria ocorrer um erro ao inserir artigo com id de medline já existente");
+		repo.Delete(id2);
+	}
+
+	repo.Delete(id);
 }

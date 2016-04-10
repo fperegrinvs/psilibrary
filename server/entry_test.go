@@ -384,6 +384,8 @@ func Test_insertWithMedlineId(t *testing.T){
 	if  selected.MedlineId != obj.MedlineId  {
 		t.Error("Código medlineId é diferente ", selected.MedlineId)
 	}
+
+	repo.Delete(obj.EntryId)
 }
 
 func Test_GetByMedlineId(t *testing.T){

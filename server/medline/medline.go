@@ -32,6 +32,8 @@ func (m Medline) ConvertArticle(citation *generated.TMedlineCitation) *models.En
     entry.Abstract = article.Abstract.AbstractTexts[0].XCDATA;
     entry.Title = article.ArticleTitle.XCDATA;
     entry.Content = "";
+    entry.EntryType = *new(models.EntryType);
+    entry.EntryType.ID = 2;
 
     if (article.Journal != nil){
         if (article.Journal.JournalIssue != nil && article.Journal.JournalIssue.PubDate != nil){

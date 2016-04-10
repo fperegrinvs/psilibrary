@@ -144,6 +144,14 @@ func (r EntryRepository) ValidateEntry(e *models.Entry) (error) {
 		return errors.New("Categoria duplicada")
 	}
 
+	if (e.MedlineId != "") {
+		o, err := r.GetByMedlineId(e.MedlineId);
+
+		if (err == nil && o.MedlineId == e.MedlineId) {
+			return errors.New("MedlineId já existente: " + e.MedlineId);
+		}
+	}
+
 
 	return nil
 }
