@@ -133,4 +133,10 @@ describe('Testing EntryEdit View', function () {
     expect($scope.dataForm.abstract.$error.required).not.toBe(undefined)
   })
 
+  it('include a read-only field with medlineId', function(){
+    medlineId = '123'
+    createController({medlineId: medlineId});
+    expect($scope.dataForm.medlineId.$modelValue).toEqual(medlineId)
+  })
+
 });

@@ -14,5 +14,6 @@ type (
 		EntryType   EntryType        `json:"entryType"`
 		EntryTypeId int `db:"EntryTypeId"`
 		Categories []Category 	`json:"categories" db:"Categories"`
+		MedlineId string `json:"medlineId" db:"MedlineId"`
 	}
 )

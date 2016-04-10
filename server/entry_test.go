@@ -31,7 +31,7 @@ func (fakeValidator) ValidateEntry(*models.Entry) (error) {
 
 func CompareEntry(obj1 *models.Entry, obj2 *models.Entry) (bool) {
 	return !(obj1.Title != obj2.Title || obj1.Abstract != obj2.Abstract || obj1.Author != obj2.Author ||
-		obj1.Content != obj2.Content || obj1.EntryId != obj2.EntryId ||	obj1.Journal != obj2.Journal)
+		obj1.Content != obj2.Content || obj1.EntryId != obj2.EntryId ||	obj1.Journal != obj2.Journal || obj1.MedlineId != obj2.MedlineId)
 }
 
 func createObject() models.Entry {
@@ -43,6 +43,7 @@ func createObject() models.Entry {
 		EntryType: models.EntryType{ID: 2},
 		Journal:"Some journal",
 		PublishDate:time.Now(),
+		MedlineId:"",
 	}
 }
 
@@ -189,8 +190,12 @@ func Test_select_ok(t *testing.T) {
 
 	selected, err := repo.GetById(id)
 
-	if err != nil || !CompareEntry(selected, &obj) {
+	if err != nil {
 		t.Error("Erro ao recuperar registro" + err.Error())
+	}
+
+	if  !CompareEntry(selected, &obj) {
+		t.Error("Registros nào são iguais")
 	}
 }
 
@@ -363,5 +368,3 @@ func Test_CheckEntryMethodsRoutes(t *testing.T){
 		t.Error("rota para recuperar dados de registro não está registrada")
 	}	
 }
-
-// list

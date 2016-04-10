@@ -73,9 +73,9 @@ func (r EntryRepository) Create(e *models.Entry) (int, error) {
 
 	tx := db.MustBegin()
 
-	res, err := tx.Exec("insert into Entry (Abstract, Author, Content, EntryTypeID, Journal, PublishDate, Title) " +
-		"values (?, ?, ?, ?, ?, ?, ?)", e.Abstract, e.Author, e.Content, e.EntryType.ID, e.Journal,
-		 e.PublishDate.Format("2006-01-02"), e.Title)
+	res, err := tx.Exec("insert into Entry (Abstract, Author, Content, EntryTypeID, Journal, PublishDate, Title, MedlineId) " +
+		"values (?, ?, ?, ?, ?, ?, ?, ?)", e.Abstract, e.Author, e.Content, e.EntryType.ID, e.Journal,
+		 e.PublishDate.Format("2006-01-02"), e.Title, e.MedlineId)
 
 	if err == nil {
         id, err := res.LastInsertId()
@@ -166,8 +166,8 @@ func (r EntryRepository) Update(e *models.Entry) (error) {
 
 
 	rows, err := tx.Exec("update Entry set Abstract = ?, Author = ?,  Content = ?, EntryTypeID = ?, Journal = ?," +
-		" PublishDate = ?, Title = ? where EntryID = ?", e.Abstract, e.Author, e.Content, e.EntryType.ID, e.Journal,
-		e.PublishDate, e.Title, e.EntryId)
+		" PublishDate = ?, Title = ?, MedlineId = ? where EntryID = ?", e.Abstract, e.Author, e.Content, e.EntryType.ID, e.Journal,
+		e.PublishDate, e.Title, e.MedlineId, e.EntryId)
 	
 	if err != nil {
 		tx.Rollback()
