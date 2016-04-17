@@ -118,4 +118,10 @@ var routes = Routes{
 		"/entry/{CategoryId}",
 		controllers.EntryShow,
 	},
+	Route{
+		"FacebookCallback",
+		[]string{"GET"},
+		"/auth/facebook/callback",
+		controllers.FacebookCallback,
+	},
 }
