@@ -1,0 +1,16 @@
+Usar ou não usar gantt para acompanhar o projeto ?
+
+https://www.scruminc.com/why-gantt-charts-were-banned-in-first/
+
+Como controlar o cronograma da entrega ?
+
+http://hansoft.com/blog/scrum-kanban-and-gantt-scheduling-in-one-project-nonsense-or-necessity/
+
+Discussion:
+
+http://www.techdarkside.com/the-demise-of-the-gantt-chart-in-agile-software-projects
+
+Sprints, milestones, burndown, progresso da sprint
+
+Sugestões para o futuro
+testes de regrassão automatizados, testes automáticos, sprins
