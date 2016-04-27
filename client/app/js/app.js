@@ -92,6 +92,7 @@ var Psilibrary;
             var stateTree = [
                 'home',
                 'home2',
+                'login',
                 'entryType',
                 'entryTypeCreate',
                 'entryTypeEdit',
@@ -102,10 +103,13 @@ var Psilibrary;
                 'entry',
                 'entryCreate',
                 'entryEdit',
+                'facebookcallback',
+                'search'
             ];
             var stateConfigs = {
                 'home': { url: '', partial: 'home', controller: 'home', target: 'miolo' },
                 'home2': { url: '/', partial: 'home', controller: 'home', target: 'miolo' },
+                'login': { url: '/login', controller: 'login', partial: 'login', target: 'miolo'},
                 'entryType': { url: '/entryType', controller: 'entryTypeList', partial: 'entryTypeList', target: 'miolo' },
                 'entryTypeEdit': { url: '/entryType/{id}', controller: 'entryTypeEdit', partial: 'entryTypeEdit', target: 'miolo' },
                 'entryTypeCreate': { url: '/entryType/new', controller: 'entryTypeCreate', partial: 'entryTypeEdit', target: 'miolo' },
@@ -116,6 +120,8 @@ var Psilibrary;
                 'entry': { url: '/entry', partial: 'entryList', controller: 'entryList', target: 'miolo' },
                 'entryCreate': { url: '/entry/new', partial: 'entryEdit', controller: 'entryCreate', target: 'miolo' },
                 'entryEdit': { url: '/entry/{id}', partial: 'entryEdit', controller: 'entryEdit', target: 'miolo' },
+                'facebookcallback' : { url: '/auth/facebook/callback', partial: 'home', controller: 'home', target: 'miolo'},
+                'search': {url: '/search', partial: 'search', controller: 'search', target: 'miolo'}
             };
 
             stateTree = addSubStates(stateTree);

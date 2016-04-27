@@ -1,5 +1,7 @@
+<div id="breadcrumb" class="col-xl-12">
+</div>
 <div id="custom-search-input">
-    <div class="input-group col-md-12">
+    <div class="input-group col-xl-12">
         <input type="text" class="  search-query form-control" placeholder="Search" />
         <span class="input-group-btn">
             <button class="btn btn-danger" type="button">
@@ -7,4 +9,35 @@
             </button>
         </span>
     </div>
+</div>
+<div class="results">
+	<div id="categories" class="col-xl-3">
+	</div>
+	<div id="articles" class="col-xl-9">
+	</div>
+</div>
+<div id="pagination" class="col-xl-12">
+	<nav>
+	  <ul class="pagination">
+	    
+	    <li class="page-item">
+	      <a class="page-link" href="#" aria-label="Anterior">
+	        <span aria-hidden="true">&laquo;</span>
+	        <span class="sr-only">Anterior</span>
+	      </a>
+	    </li>
+	    
+	    <li ng-repeat="page in pagination.pages" class="page-item" 
+	    	ng-class="{'page-item': true, 'active': page.current, 'disabled': !page.active}">
+	    	<a class="page-link" href="#">{{page.name}}</a>
+	    </li>
+
+	    <li class="page-item">
+	      <a class="page-link" href="#" aria-label="Next">
+	        <span aria-hidden="true">&raquo;</span>
+	        <span class="sr-only">Next</span>
+	      </a>
+	    </li>
+	  </ul>
+	</nav>
 </div>

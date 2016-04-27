@@ -1,12 +1,14 @@
 package repositories
 
 import (
-	//"log"
 	"time"
 	"database/sql"
+	"net/url"
 	"github.com/lstern/psilibrary/server/models"
-	//_ "github.com/go-sql-driver/mysql"
 	"github.com/twinj/uuid"
+	"github.com/stretchr/gomniauth"
+	"github.com/stretchr/gomniauth/common"
+	"github.com/stretchr/objx"
 )
 
 type AuthRepository struct{
@@ -57,4 +59,49 @@ func (a AuthRepository) GetToken(sessionId string) (*models.Token, error) {
 	}
 
 	return result, nil
+}
+
+func (a AuthRepository) CheckSession(sessionId string, login string, token *models.Token) bool{
+	if (token == nil || login != token.Login || sessionId != token.ID || token.Expiration.IsZero())  {
+		return false
+	}
+
+	if token.Expiration.Before(time.Now()){
+		return false
+	}
+
+	return true
+}
+
+func (a AuthRepository) GetFacebookUrl() (string, error){
+	provider, err := gomniauth.Provider("facebook")
+
+	if err != nil {
+		return "", err
+	}
+
+	state := gomniauth.NewState("after", "success")
+	authUrl, err := provider.GetBeginAuthURL(state, nil)
+
+	return authUrl, err
+
+}
+
+func (a AuthRepository) ProcessFacebookCallback(rawurl string) (*common.Credentials, error){
+	provider, err := gomniauth.Provider("facebook")
+	if err != nil {
+		return nil, err
+	}
+
+	url_obj, _ := url.Parse(rawurl)
+
+
+	omap, err := objx.FromURLQuery(url_obj.RawQuery)
+	if err != nil {
+		return nil, err
+	}
+
+	creds, err := provider.CompleteAuth(omap)
+
+	return creds, err
 }

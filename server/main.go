@@ -15,7 +15,7 @@ func Setup() {
 	router = NewRouter()
 	gomniauth.SetSecurityKey("hPIgpDjBNmZxEMU7leIxm892FhK7HG5cArZUj1lQl7Qmy55izmlfkL3OsAzHnTYZ")
 	gomniauth.WithProviders(
-		facebook.New("268751096793071", "02b6546587caca852c3e9c117a2d6024", "http://localhost:8080/auth/facebook/callback"),
+		facebook.New("268751096793071", "02b6546587caca852c3e9c117a2d6024", "http://psi-library.azurewebsites.net/auth/facebook/callback"),
 	)
 }
 
