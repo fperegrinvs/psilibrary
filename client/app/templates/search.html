@@ -1,8 +1,9 @@
-<div id="breadcrumb" class="col-xl-12">
+<div class="container-fluid">
+<div id="breadcrumb" class="col-lg-12">
 </div>
-<div id="custom-search-input">
-    <div class="input-group col-xl-12">
-        <input type="text" class="  search-query form-control" placeholder="Search" />
+<div id="search-bar">
+    <div class="input-group col-lg-12">
+        <input type="text" class="  search-query form-control" placeholder="Buscar" />
         <span class="input-group-btn">
             <button class="btn btn-danger" type="button">
                 <span class=" glyphicon glyphicon-search"></span>
@@ -10,34 +11,67 @@
         </span>
     </div>
 </div>
-<div class="results">
-	<div id="categories" class="col-xl-3">
-	</div>
-	<div id="articles" class="col-xl-9">
+
+<!-- left -->
+<div class="col-lg-3">
+	<div class="panel panel-primary">
+		<div class="panel-heading">
+			Categorias
+		</div>
+		<div class="panel-body">
+		<div ng-repeat="category in categories" class="btn btn-default btn-block">{{category.title}}</div>
+		</div>
 	</div>
 </div>
-<div id="pagination" class="col-xl-12">
-	<nav>
-	  <ul class="pagination">
-	    
-	    <li class="page-item">
-	      <a class="page-link" href="#" aria-label="Anterior">
-	        <span aria-hidden="true">&laquo;</span>
-	        <span class="sr-only">Anterior</span>
-	      </a>
-	    </li>
-	    
-	    <li ng-repeat="page in pagination.pages" class="page-item" 
-	    	ng-class="{'page-item': true, 'active': page.current, 'disabled': !page.active}">
-	    	<a class="page-link" href="#">{{page.name}}</a>
-	    </li>
 
-	    <li class="page-item">
-	      <a class="page-link" href="#" aria-label="Next">
-	        <span aria-hidden="true">&raquo;</span>
-	        <span class="sr-only">Next</span>
-	      </a>
-	    </li>
-	  </ul>
-	</nav>
+<!-- right -->
+<div class="col-lg-9">
+	<div class="">
+		<div ng-repeat="result in results" class="panel panel-primary">
+			<div class="result-title panel-heading">
+				{{result.title}}
+			</div>
+	        <div class="panel-body">
+				<h3 class="result-author">
+					{{result.author}}
+				</h3>
+				<h4 class="result-journal">
+					{{result.journal}}
+				</h4>
+				<div class="result-abstract text-justify">
+					{{result.abstract}}
+				</div>
+				<div>
+				<br/>
+				<button type="button" class="btn btn-primary">Ler Mais</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="pagination" class="col-lg-12 text-center">
+		<nav>
+		  <ul class="pagination">
+		    <li class="page-item">
+		      <a class="page-link" href="#" aria-label="Anterior">
+		        <span aria-hidden="true">&laquo;</span>
+		        <span class="sr-only">Anterior</span>
+		      </a>
+		    </li>
+		    
+		    <li ng-repeat="page in pagination.pages" class="page-item" 
+		    	ng-class="{'page-item': true, 'active': page.current, 'disabled': !page.active}">
+		    	<a class="page-link" href="#">{{page.name}}</a>
+		    </li>
+
+		    <li class="page-item">
+		      <a class="page-link" href="#" aria-label="Next">
+		        <span aria-hidden="true">&raquo;</span>
+		        <span class="sr-only">Next</span>
+		      </a>
+		    </li>
+		  </ul>
+		</nav>
+	</div>
+</div>
+
 </div>

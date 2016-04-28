@@ -9,3 +9,21 @@
 .form-group.has-error .help-block {
   display: block;
 }
+
+/** navbar vetical **/
+.row{
+    margin-left:0px;
+    margin-right:0px;
+}
+
+#wrapper {
+    padding-left: 70px;
+    transition: all .4s ease 0s;
+    height: 100%
+}
+
+#search-bar {
+	margin-bottom: 30px;
+}
+
+
