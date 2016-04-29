@@ -1,5 +1,7 @@
 package models
 
+ const Order_Date = "Date Desc"
+
 type (
 	SearchQuery struct {
 		Query     string 			 `json:"query"`
