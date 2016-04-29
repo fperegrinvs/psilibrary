@@ -1,5 +1,6 @@
-//+build integration
+//+build oauth
 
+// como páginas são desacopladas a autenticação deve ficar no angularjs
 package main_test
 
 import (
@@ -127,6 +128,7 @@ func Test_create_redirect_url(t *testing.T) {
 	}
 }
 
+/* 
 func Test_callback_url(t *testing.T){
 	main.Setup();
 	repo := repositories.MakeAuthRepository(nil)
@@ -141,3 +143,4 @@ func Test_callback_url(t *testing.T){
 		t.Error("Erro ao processar callback")
 	}
 }
+*/

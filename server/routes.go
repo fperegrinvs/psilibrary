@@ -124,4 +124,18 @@ var routes = Routes{
 		"/auth/facebook/callback",
 		controllers.FacebookCallback,
 	},
+	Route{
+		"SearchOptions",
+		[]string{"OPTIONS"},
+		"/search",
+		controllers.OptionsHandler,
+	},
+
+	Route{
+		"Search",
+		[]string{"POST"},
+		"/search",
+		controllers.Search,
+	},
+
 }
