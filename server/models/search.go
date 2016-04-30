@@ -13,7 +13,7 @@ type (
 
 	SearchResults struct {
 		Query     SearchQuery 	 `json:"query"`
-		Results   []Entry        `json:"results"`
+		Results   []*Entry        `json:"results"`
 		Navigation Navigation     `json:"navigation"`
 		Facets []Facet 			`json:"facets"`
 	}
@@ -30,7 +30,7 @@ type (
 		PageStart	int         `json:"pageStart"`
 		PageEnd 	int         `json:"pageEnd"`
 		TotalPages   int        `json:"totalPages"`
-		TotalProducts int 		`json:"totalProducts"`
+		TotalCount int 		`json:"totalCount"`
 	}
 
 	Facet struct {
