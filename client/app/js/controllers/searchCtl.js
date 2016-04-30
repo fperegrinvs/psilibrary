@@ -77,7 +77,7 @@ angular.module('psilibrary.controllers')
     		]
     	};
 
-    $scope.search = function(catid) {
+    $scope.search = function(facets) {
         var query = {};
 
         if ($scope.query && $scope.query.length > 0){
@@ -88,8 +88,8 @@ angular.module('psilibrary.controllers')
             query['page'] = $scope.page;
         }
 
-        if (catid) {
-            query['filters'] = {'category' : [catid]};
+        if (facets) {
+            query['filters'] = facets;
         }        
 
         var call = searchService.Search(query);

@@ -69,10 +69,17 @@ describe('SearchController tests', function() {
     expect(searchService.Search).toHaveBeenCalledWith({"page":2})
   });
 
-  it('search method allow filter by category as param', function(){
+  it('search method allow filter by facet as param', function(){
     spyOn(searchService, 'Search').and.callThrough();
-    scope.search('2');
+    scope.search({'category': ['2']});
     expect(searchService.Search).toHaveBeenCalledWith({"filters":{'category': ['2']}})
-  })
-
+  });
+/*
+  it('should move categories filter to data', function() {
+    scope.init();
+    deferred.resolve({'facets': });
+    scope.$root.$digest();
+    expect(scope.data).toBe('ok');
+  });
+*/
 });
