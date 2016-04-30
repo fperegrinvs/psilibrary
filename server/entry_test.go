@@ -341,7 +341,7 @@ func Test_check_publishDate(t *testing.T) {
 
 func Test_list(t *testing.T) {
 	repo := repositories.MakeEntryRepository(nil)
-	list, err := repo.List()
+	list, err := repo.List(0,99999)
 
 	if err != nil || list == nil || len(*list) < 2 || (*list)[0].Title != "Artigo dummy" {
 		t.Error("Falha ao listar registros", err)

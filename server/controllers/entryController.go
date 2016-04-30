@@ -59,7 +59,7 @@ func EntryCreate(w http.ResponseWriter, r *http.Request) {
 // CategoryIndex rota teste
 func EntryIndex(w http.ResponseWriter, r *http.Request) {
 	call := func()(interface{}, error){
-		return entryRepo.List()
+		return entryRepo.List(0,99999)
 	}
 
 	GenericList(w, r, call)

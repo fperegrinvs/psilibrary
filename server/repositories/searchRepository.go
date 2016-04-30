@@ -38,7 +38,51 @@ func (s SearchRepository) ProcessInput(query *models.SearchQuery) (*models.Searc
 }
 
 func (s SearchRepository) Search(query *models.SearchQuery) (*models.SearchResults, error){
+	query, _ = s.ProcessInput(query)
+
+
 	return nil, nil
+}
+
+func (s SearchRepository) ExecuteSearch(query *models.SearchQuery) ([]*models.Entry, error){
+	category := query.Filters["category"]
+
+	db, err := openSql(s.DB)
+
+	if err != nil {
+		return nil, err
+	}	
+
+	defer db.Close()
+
+	result := []models.Entry{}
+	start := (query.Page - 1) * query.PageSize 
+	if query.Query == "" {
+		if category == nil {
+			err = db.Select(&result, "SELECT * FROM Entry limit ?,?", start, query.PageSize)
+		} else {
+			catid,_ := strconv.Atoi(category[0])
+			err = db.Select(&result, "SELECT e.* FROM Entry e inner join CategoryEntry ce on ce.EntryId = e.EntryId where ce.CategoryId = ? limit ?,?", catid,  start, query.PageSize)
+		}
+	} else {
+		if category == nil {
+			err = db.Select(&result, "call search(?,?,?)", query.Query, start, query.PageSize)
+		} else {
+			catid, _ := strconv.Atoi(category[0])
+			err = db.Select(&result, "call SearchByCategory(?,?,?,?)", query.Query, catid, start, query.PageSize)
+		}
+	}
+
+	if err != nil {
+		return nil, err
+	}
+
+	var results = []*models.Entry{}
+ 	for _, r := range result {
+		results = append(results, &r)
+ 	}
+
+	return results, nil
 }
 
 func (s SearchRepository) ProcessResultsNavigation(query *models.SearchQuery, results []*models.Entry, total int) (*models.SearchResults, error){
@@ -46,13 +90,11 @@ func (s SearchRepository) ProcessResultsNavigation(query *models.SearchQuery, re
 
 	response.Navigation.TotalPages =  int(math.Ceil(float64(total) / float64(query.PageSize)))
 	response.Navigation.PageStart = 1 + query.PageSize * (query.Page - 1)
-	response.Navigation.PageEnd = response.Navigation.PageStart + int(math.Min(float64(len(results)), float64(query.PageSize))) - 1
+	response.Navigation.PageEnd = int(math.Min(float64(response.Navigation.PageStart + query.PageSize - 1), float64(total)))
 	response.Navigation.CurentPage = query.Page
 	response.Navigation.TotalCount = total
 
 	response.Results = results
-
-
 	return response, nil
 }
 

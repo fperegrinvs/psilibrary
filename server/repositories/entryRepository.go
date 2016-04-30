@@ -211,7 +211,7 @@ func (r EntryRepository) Update(e *models.Entry) (error) {
 	return  err
 }
 
-func (r EntryRepository) List() (*[]models.Entry, error) {
+func (r EntryRepository) List(start int, stop int) (*[]models.Entry, error) {
 	db, err := openSql(r.DB)
 
 	if err != nil {
@@ -221,7 +221,7 @@ func (r EntryRepository) List() (*[]models.Entry, error) {
 	defer db.Close()
 
 	result := []models.Entry{}
-	err = db.Select(&result, "SELECT * FROM Entry")
+	err = db.Select(&result, "SELECT * FROM Entry limit ?,?", start, stop)
 
 	if err != nil {
 		return nil, err
