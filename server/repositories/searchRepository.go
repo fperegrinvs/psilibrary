@@ -38,10 +38,31 @@ func (s SearchRepository) ProcessInput(query *models.SearchQuery) (*models.Searc
 }
 
 func (s SearchRepository) Search(query *models.SearchQuery) (*models.SearchResults, error){
-	query, _ = s.ProcessInput(query)
+	query, err := s.ProcessInput(query)
 
+	if err != nil {
+		return nil, err
+	}
 
-	return nil, nil
+	results, total, err := s.ExecuteSearch(query)
+
+	if err != nil {
+		return nil, err
+	}
+
+	response, err := s.ProcessResultsNavigation(query, results, total)
+
+	if err != nil {
+		return nil, err
+	}
+
+	response, err = s.ProcessFacets(response)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return response, nil
 }
 
 func (s SearchRepository) ExecuteSearch(query *models.SearchQuery) ([]*models.Entry, int, error){
