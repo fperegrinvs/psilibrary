@@ -3,7 +3,7 @@
 </div>
 <div id="search-bar">
     <div class="input-group col-lg-12">
-        <input type="text" class="  search-query form-control" placeholder="Buscar" />
+        <input type="text" name="query" id="query" ng-model="query" class="search-query form-control" placeholder="Buscar" />
         <span class="input-group-btn">
             <button class="btn btn-danger" type="button">
                 <span class=" glyphicon glyphicon-search"></span>
@@ -14,12 +14,12 @@
 
 <!-- left -->
 <div class="col-lg-3">
-	<div class="panel panel-primary">
+	<div class="panel panel-primary" ng-repeat="facet in data.facets">
 		<div class="panel-heading">
-			Categorias
+			{{facet.name}}
 		</div>
 		<div class="panel-body">
-		<div ng-repeat="category in categories" class="btn btn-default btn-block">{{category.title}}</div>
+		<div ng-repeat="option in facet.options" ng-class="'facet-' + facet.id + '-item'" class="btn btn-default btn-block" ng-click="filter(facet['id'], option['id'])">{{option.name}}</div>
 		</div>
 	</div>
 </div>
@@ -27,7 +27,7 @@
 <!-- right -->
 <div class="col-lg-9">
 	<div class="">
-		<div ng-repeat="result in results" class="panel panel-primary">
+		<div ng-repeat="result in data.results" class="panel panel-primary result-item">
 			<div class="result-title panel-heading">
 				{{result.title}}
 			</div>

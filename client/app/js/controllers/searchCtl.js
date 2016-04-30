@@ -1,81 +1,13 @@
 'use strict'; // http://stackoverflow.com/questions/1335851/what-does-use-strict-do-in-javascript-and-what-is-the-reasoning-behind-it
 angular.module('psilibrary.controllers')
     .controller('searchCtl', ['$scope', 'Facebook', 'searchService', function ($scope, Facebook, searchService) {
-    	$scope.categories = [
-    			{id: 1, title: 'cat1'},
-    			{id: 2, title: 'cat2'},
-    			{id: 3, title: 'cat3'},
-    			{id: 4, title: 'cat4'},
-    			{id: 5, title: 'cat5'},
-    			 ]
-    	$scope.results = [{id: 1, title:'Sample Title', abstract:
-    	'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce euismod ac neque at viverra. Cras lobortis turpis ut nisl convallis, ac semper mauris luctus. In ut risus eleifend, lobortis sem sit amet, tristique neque. Ut a lorem nibh. Sed eget fringilla ex. Etiam vel varius velit. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam augue nulla, fringilla in vulputate ac, imperdiet a nisi. Donec pulvinar quam in aliquet luctus. Aenean sagittis, justo sit amet finibus imperdiet, tellus quam blandit ipsum, in commodo sapien sapien ut ligula. Aliquam pretium justo mi, a aliquet orci ultricies et. Fusce ultricies turpis eu urna convallis, quis venenatis augue pellentesque. Praesent mollis nunc sapien, eu consequat eros fringilla ut. Nulla ut mauris gravida, interdum tortor pellentesque, lacinia tellus.<br/><br/>' +
-		'Pellentesque sed nisi blandit, maximus lacus quis, facilisis justo. Phasellus consequat euismod elit vehicula lobortis. Ut molestie aliquet neque sit amet consectetur. Sed pharetra felis sit amet ligula consequat, sagittis porta quam aliquam. Aliquam blandit velit ipsum, a feugiat leo dictum nec. Ut risus felis, fermentum nec iaculis vel, egestas non sem. In in mauris ut urna ultricies vehicula. Nunc ut mi diam.<br/><br/>' +
-        'Morbi consequat eu dui laoreet imperdiet. Curabitur tincidunt quam in quam aliquam, non suscipit dui vulputate. Praesent fermentum ligula ut est aliquet dapibus. Curabitur malesuada mattis purus, sit amet lobortis est ultricies sit amet. Quisque dignissim ante in magna scelerisque vulputate quis non odio. Etiam volutpat, lorem vitae condimentum volutpat, dui quam porta augue, id porta mi felis quis nisl. Vestibulum at diam pulvinar, pretium dui id, mollis metus. Nulla pulvinar arcu et urna rhoncus elementum. In a ultrices nulla. Nulla accumsan elementum lacus condimentum mattis. Sed tempus efficitur quam. Nam rutrum lectus quam, sed blandit lacus tincidunt vitae. Nulla dapibus at neque nec malesuada. Mauris faucibus massa ut felis venenatis gravida. Integer libero purus, fermentum quis aliquet in, pellentesque a nisl.',
-    	author: 'John Doe', 'journal': 'Journal of Sample'},
-    	{id: 2, title:'Sample Title 2', abstract:
-    	'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce euismod ac neque at viverra. Cras lobortis turpis ut nisl convallis, ac semper mauris luctus. In ut risus eleifend, lobortis sem sit amet, tristique neque. Ut a lorem nibh. Sed eget fringilla ex. Etiam vel varius velit. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam augue nulla, fringilla in vulputate ac, imperdiet a nisi. Donec pulvinar quam in aliquet luctus. Aenean sagittis, justo sit amet finibus imperdiet, tellus quam blandit ipsum, in commodo sapien sapien ut ligula. Aliquam pretium justo mi, a aliquet orci ultricies et. Fusce ultricies turpis eu urna convallis, quis venenatis augue pellentesque. Praesent mollis nunc sapien, eu consequat eros fringilla ut. Nulla ut mauris gravida, interdum tortor pellentesque, lacinia tellus.<br/><br/>' +
-		'Pellentesque sed nisi blandit, maximus lacus quis, facilisis justo. Phasellus consequat euismod elit vehicula lobortis. Ut molestie aliquet neque sit amet consectetur. Sed pharetra felis sit amet ligula consequat, sagittis porta quam aliquam. Aliquam blandit velit ipsum, a feugiat leo dictum nec. Ut risus felis, fermentum nec iaculis vel, egestas non sem. In in mauris ut urna ultricies vehicula. Nunc ut mi diam.<br/><br/>' +
-        'Morbi consequat eu dui laoreet imperdiet. Curabitur tincidunt quam in quam aliquam, non suscipit dui vulputate. Praesent fermentum ligula ut est aliquet dapibus. Curabitur malesuada mattis purus, sit amet lobortis est ultricies sit amet. Quisque dignissim ante in magna scelerisque vulputate quis non odio. Etiam volutpat, lorem vitae condimentum volutpat, dui quam porta augue, id porta mi felis quis nisl. Vestibulum at diam pulvinar, pretium dui id, mollis metus. Nulla pulvinar arcu et urna rhoncus elementum. In a ultrices nulla. Nulla accumsan elementum lacus condimentum mattis. Sed tempus efficitur quam. Nam rutrum lectus quam, sed blandit lacus tincidunt vitae. Nulla dapibus at neque nec malesuada. Mauris faucibus massa ut felis venenatis gravida. Integer libero purus, fermentum quis aliquet in, pellentesque a nisl.',
-    	author: 'John Doe', 'journal': 'Journal of Sample'},
-		{id: 3, title:'Sample Title 3', abstract:
-    	'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce euismod ac neque at viverra. Cras lobortis turpis ut nisl convallis, ac semper mauris luctus. In ut risus eleifend, lobortis sem sit amet, tristique neque. Ut a lorem nibh. Sed eget fringilla ex. Etiam vel varius velit. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam augue nulla, fringilla in vulputate ac, imperdiet a nisi. Donec pulvinar quam in aliquet luctus. Aenean sagittis, justo sit amet finibus imperdiet, tellus quam blandit ipsum, in commodo sapien sapien ut ligula. Aliquam pretium justo mi, a aliquet orci ultricies et. Fusce ultricies turpis eu urna convallis, quis venenatis augue pellentesque. Praesent mollis nunc sapien, eu consequat eros fringilla ut. Nulla ut mauris gravida, interdum tortor pellentesque, lacinia tellus.<br/><br/>' +
-		'Pellentesque sed nisi blandit, maximus lacus quis, facilisis justo. Phasellus consequat euismod elit vehicula lobortis. Ut molestie aliquet neque sit amet consectetur. Sed pharetra felis sit amet ligula consequat, sagittis porta quam aliquam. Aliquam blandit velit ipsum, a feugiat leo dictum nec. Ut risus felis, fermentum nec iaculis vel, egestas non sem. In in mauris ut urna ultricies vehicula. Nunc ut mi diam.<br/><br/>' +
-        'Morbi consequat eu dui laoreet imperdiet. Curabitur tincidunt quam in quam aliquam, non suscipit dui vulputate. Praesent fermentum ligula ut est aliquet dapibus. Curabitur malesuada mattis purus, sit amet lobortis est ultricies sit amet. Quisque dignissim ante in magna scelerisque vulputate quis non odio. Etiam volutpat, lorem vitae condimentum volutpat, dui quam porta augue, id porta mi felis quis nisl. Vestibulum at diam pulvinar, pretium dui id, mollis metus. Nulla pulvinar arcu et urna rhoncus elementum. In a ultrices nulla. Nulla accumsan elementum lacus condimentum mattis. Sed tempus efficitur quam. Nam rutrum lectus quam, sed blandit lacus tincidunt vitae. Nulla dapibus at neque nec malesuada. Mauris faucibus massa ut felis venenatis gravida. Integer libero purus, fermentum quis aliquet in, pellentesque a nisl.',
-    	author: 'John Doe', 'journal': 'Journal of Sample'},    	
-		{id: 4, title:'Sample Title 4', abstract:
-    	'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce euismod ac neque at viverra. Cras lobortis turpis ut nisl convallis, ac semper mauris luctus. In ut risus eleifend, lobortis sem sit amet, tristique neque. Ut a lorem nibh. Sed eget fringilla ex. Etiam vel varius velit. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam augue nulla, fringilla in vulputate ac, imperdiet a nisi. Donec pulvinar quam in aliquet luctus. Aenean sagittis, justo sit amet finibus imperdiet, tellus quam blandit ipsum, in commodo sapien sapien ut ligula. Aliquam pretium justo mi, a aliquet orci ultricies et. Fusce ultricies turpis eu urna convallis, quis venenatis augue pellentesque. Praesent mollis nunc sapien, eu consequat eros fringilla ut. Nulla ut mauris gravida, interdum tortor pellentesque, lacinia tellus.<br/><br/>' +
-		'Pellentesque sed nisi blandit, maximus lacus quis, facilisis justo. Phasellus consequat euismod elit vehicula lobortis. Ut molestie aliquet neque sit amet consectetur. Sed pharetra felis sit amet ligula consequat, sagittis porta quam aliquam. Aliquam blandit velit ipsum, a feugiat leo dictum nec. Ut risus felis, fermentum nec iaculis vel, egestas non sem. In in mauris ut urna ultricies vehicula. Nunc ut mi diam.<br/><br/>' +
-        'Morbi consequat eu dui laoreet imperdiet. Curabitur tincidunt quam in quam aliquam, non suscipit dui vulputate. Praesent fermentum ligula ut est aliquet dapibus. Curabitur malesuada mattis purus, sit amet lobortis est ultricies sit amet. Quisque dignissim ante in magna scelerisque vulputate quis non odio. Etiam volutpat, lorem vitae condimentum volutpat, dui quam porta augue, id porta mi felis quis nisl. Vestibulum at diam pulvinar, pretium dui id, mollis metus. Nulla pulvinar arcu et urna rhoncus elementum. In a ultrices nulla. Nulla accumsan elementum lacus condimentum mattis. Sed tempus efficitur quam. Nam rutrum lectus quam, sed blandit lacus tincidunt vitae. Nulla dapibus at neque nec malesuada. Mauris faucibus massa ut felis venenatis gravida. Integer libero purus, fermentum quis aliquet in, pellentesque a nisl.',
-    	author: 'John Doe', 'journal': 'Journal of Sample'},    	
-		{id: 5, title:'Sample Title 5', abstract:
-    	'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce euismod ac neque at viverra. Cras lobortis turpis ut nisl convallis, ac semper mauris luctus. In ut risus eleifend, lobortis sem sit amet, tristique neque. Ut a lorem nibh. Sed eget fringilla ex. Etiam vel varius velit. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam augue nulla, fringilla in vulputate ac, imperdiet a nisi. Donec pulvinar quam in aliquet luctus. Aenean sagittis, justo sit amet finibus imperdiet, tellus quam blandit ipsum, in commodo sapien sapien ut ligula. Aliquam pretium justo mi, a aliquet orci ultricies et. Fusce ultricies turpis eu urna convallis, quis venenatis augue pellentesque. Praesent mollis nunc sapien, eu consequat eros fringilla ut. Nulla ut mauris gravida, interdum tortor pellentesque, lacinia tellus.<br/><br/>' +
-		'Pellentesque sed nisi blandit, maximus lacus quis, facilisis justo. Phasellus consequat euismod elit vehicula lobortis. Ut molestie aliquet neque sit amet consectetur. Sed pharetra felis sit amet ligula consequat, sagittis porta quam aliquam. Aliquam blandit velit ipsum, a feugiat leo dictum nec. Ut risus felis, fermentum nec iaculis vel, egestas non sem. In in mauris ut urna ultricies vehicula. Nunc ut mi diam.<br/><br/>' +
-        'Morbi consequat eu dui laoreet imperdiet. Curabitur tincidunt quam in quam aliquam, non suscipit dui vulputate. Praesent fermentum ligula ut est aliquet dapibus. Curabitur malesuada mattis purus, sit amet lobortis est ultricies sit amet. Quisque dignissim ante in magna scelerisque vulputate quis non odio. Etiam volutpat, lorem vitae condimentum volutpat, dui quam porta augue, id porta mi felis quis nisl. Vestibulum at diam pulvinar, pretium dui id, mollis metus. Nulla pulvinar arcu et urna rhoncus elementum. In a ultrices nulla. Nulla accumsan elementum lacus condimentum mattis. Sed tempus efficitur quam. Nam rutrum lectus quam, sed blandit lacus tincidunt vitae. Nulla dapibus at neque nec malesuada. Mauris faucibus massa ut felis venenatis gravida. Integer libero purus, fermentum quis aliquet in, pellentesque a nisl.',
-    	author: 'John Doe', 'journal': 'Journal of Sample'},    	
-		{id: 6, title:'Sample Title 6', abstract:
-    	'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce euismod ac neque at viverra. Cras lobortis turpis ut nisl convallis, ac semper mauris luctus. In ut risus eleifend, lobortis sem sit amet, tristique neque. Ut a lorem nibh. Sed eget fringilla ex. Etiam vel varius velit. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam augue nulla, fringilla in vulputate ac, imperdiet a nisi. Donec pulvinar quam in aliquet luctus. Aenean sagittis, justo sit amet finibus imperdiet, tellus quam blandit ipsum, in commodo sapien sapien ut ligula. Aliquam pretium justo mi, a aliquet orci ultricies et. Fusce ultricies turpis eu urna convallis, quis venenatis augue pellentesque. Praesent mollis nunc sapien, eu consequat eros fringilla ut. Nulla ut mauris gravida, interdum tortor pellentesque, lacinia tellus.<br/><br/>' +
-		'Pellentesque sed nisi blandit, maximus lacus quis, facilisis justo. Phasellus consequat euismod elit vehicula lobortis. Ut molestie aliquet neque sit amet consectetur. Sed pharetra felis sit amet ligula consequat, sagittis porta quam aliquam. Aliquam blandit velit ipsum, a feugiat leo dictum nec. Ut risus felis, fermentum nec iaculis vel, egestas non sem. In in mauris ut urna ultricies vehicula. Nunc ut mi diam.<br/><br/>' +
-        'Morbi consequat eu dui laoreet imperdiet. Curabitur tincidunt quam in quam aliquam, non suscipit dui vulputate. Praesent fermentum ligula ut est aliquet dapibus. Curabitur malesuada mattis purus, sit amet lobortis est ultricies sit amet. Quisque dignissim ante in magna scelerisque vulputate quis non odio. Etiam volutpat, lorem vitae condimentum volutpat, dui quam porta augue, id porta mi felis quis nisl. Vestibulum at diam pulvinar, pretium dui id, mollis metus. Nulla pulvinar arcu et urna rhoncus elementum. In a ultrices nulla. Nulla accumsan elementum lacus condimentum mattis. Sed tempus efficitur quam. Nam rutrum lectus quam, sed blandit lacus tincidunt vitae. Nulla dapibus at neque nec malesuada. Mauris faucibus massa ut felis venenatis gravida. Integer libero purus, fermentum quis aliquet in, pellentesque a nisl.',
-    	author: 'John Doe', 'journal': 'Journal of Sample'},    	
-		{id: 7, title:'Sample Title 7', abstract:
-    	'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce euismod ac neque at viverra. Cras lobortis turpis ut nisl convallis, ac semper mauris luctus. In ut risus eleifend, lobortis sem sit amet, tristique neque. Ut a lorem nibh. Sed eget fringilla ex. Etiam vel varius velit. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam augue nulla, fringilla in vulputate ac, imperdiet a nisi. Donec pulvinar quam in aliquet luctus. Aenean sagittis, justo sit amet finibus imperdiet, tellus quam blandit ipsum, in commodo sapien sapien ut ligula. Aliquam pretium justo mi, a aliquet orci ultricies et. Fusce ultricies turpis eu urna convallis, quis venenatis augue pellentesque. Praesent mollis nunc sapien, eu consequat eros fringilla ut. Nulla ut mauris gravida, interdum tortor pellentesque, lacinia tellus.<br/><br/>' +
-		'Pellentesque sed nisi blandit, maximus lacus quis, facilisis justo. Phasellus consequat euismod elit vehicula lobortis. Ut molestie aliquet neque sit amet consectetur. Sed pharetra felis sit amet ligula consequat, sagittis porta quam aliquam. Aliquam blandit velit ipsum, a feugiat leo dictum nec. Ut risus felis, fermentum nec iaculis vel, egestas non sem. In in mauris ut urna ultricies vehicula. Nunc ut mi diam.<br/><br/>' +
-        'Morbi consequat eu dui laoreet imperdiet. Curabitur tincidunt quam in quam aliquam, non suscipit dui vulputate. Praesent fermentum ligula ut est aliquet dapibus. Curabitur malesuada mattis purus, sit amet lobortis est ultricies sit amet. Quisque dignissim ante in magna scelerisque vulputate quis non odio. Etiam volutpat, lorem vitae condimentum volutpat, dui quam porta augue, id porta mi felis quis nisl. Vestibulum at diam pulvinar, pretium dui id, mollis metus. Nulla pulvinar arcu et urna rhoncus elementum. In a ultrices nulla. Nulla accumsan elementum lacus condimentum mattis. Sed tempus efficitur quam. Nam rutrum lectus quam, sed blandit lacus tincidunt vitae. Nulla dapibus at neque nec malesuada. Mauris faucibus massa ut felis venenatis gravida. Integer libero purus, fermentum quis aliquet in, pellentesque a nisl.',
-    	author: 'John Doe', 'journal': 'Journal of Sample'},    	
-		{id: 8, title:'Sample Title 8', abstract:
-    	'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce euismod ac neque at viverra. Cras lobortis turpis ut nisl convallis, ac semper mauris luctus. In ut risus eleifend, lobortis sem sit amet, tristique neque. Ut a lorem nibh. Sed eget fringilla ex. Etiam vel varius velit. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam augue nulla, fringilla in vulputate ac, imperdiet a nisi. Donec pulvinar quam in aliquet luctus. Aenean sagittis, justo sit amet finibus imperdiet, tellus quam blandit ipsum, in commodo sapien sapien ut ligula. Aliquam pretium justo mi, a aliquet orci ultricies et. Fusce ultricies turpis eu urna convallis, quis venenatis augue pellentesque. Praesent mollis nunc sapien, eu consequat eros fringilla ut. Nulla ut mauris gravida, interdum tortor pellentesque, lacinia tellus.<br/><br/>' +
-		'Pellentesque sed nisi blandit, maximus lacus quis, facilisis justo. Phasellus consequat euismod elit vehicula lobortis. Ut molestie aliquet neque sit amet consectetur. Sed pharetra felis sit amet ligula consequat, sagittis porta quam aliquam. Aliquam blandit velit ipsum, a feugiat leo dictum nec. Ut risus felis, fermentum nec iaculis vel, egestas non sem. In in mauris ut urna ultricies vehicula. Nunc ut mi diam.<br/><br/>' +
-        'Morbi consequat eu dui laoreet imperdiet. Curabitur tincidunt quam in quam aliquam, non suscipit dui vulputate. Praesent fermentum ligula ut est aliquet dapibus. Curabitur malesuada mattis purus, sit amet lobortis est ultricies sit amet. Quisque dignissim ante in magna scelerisque vulputate quis non odio. Etiam volutpat, lorem vitae condimentum volutpat, dui quam porta augue, id porta mi felis quis nisl. Vestibulum at diam pulvinar, pretium dui id, mollis metus. Nulla pulvinar arcu et urna rhoncus elementum. In a ultrices nulla. Nulla accumsan elementum lacus condimentum mattis. Sed tempus efficitur quam. Nam rutrum lectus quam, sed blandit lacus tincidunt vitae. Nulla dapibus at neque nec malesuada. Mauris faucibus massa ut felis venenatis gravida. Integer libero purus, fermentum quis aliquet in, pellentesque a nisl.',
-    	author: 'John Doe', 'journal': 'Journal of Sample'},    	
-		{id: 9, title:'Sample Title 9', abstract:
-    	'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce euismod ac neque at viverra. Cras lobortis turpis ut nisl convallis, ac semper mauris luctus. In ut risus eleifend, lobortis sem sit amet, tristique neque. Ut a lorem nibh. Sed eget fringilla ex. Etiam vel varius velit. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam augue nulla, fringilla in vulputate ac, imperdiet a nisi. Donec pulvinar quam in aliquet luctus. Aenean sagittis, justo sit amet finibus imperdiet, tellus quam blandit ipsum, in commodo sapien sapien ut ligula. Aliquam pretium justo mi, a aliquet orci ultricies et. Fusce ultricies turpis eu urna convallis, quis venenatis augue pellentesque. Praesent mollis nunc sapien, eu consequat eros fringilla ut. Nulla ut mauris gravida, interdum tortor pellentesque, lacinia tellus.<br/><br/>' +
-		'Pellentesque sed nisi blandit, maximus lacus quis, facilisis justo. Phasellus consequat euismod elit vehicula lobortis. Ut molestie aliquet neque sit amet consectetur. Sed pharetra felis sit amet ligula consequat, sagittis porta quam aliquam. Aliquam blandit velit ipsum, a feugiat leo dictum nec. Ut risus felis, fermentum nec iaculis vel, egestas non sem. In in mauris ut urna ultricies vehicula. Nunc ut mi diam.<br/><br/>' +
-        'Morbi consequat eu dui laoreet imperdiet. Curabitur tincidunt quam in quam aliquam, non suscipit dui vulputate. Praesent fermentum ligula ut est aliquet dapibus. Curabitur malesuada mattis purus, sit amet lobortis est ultricies sit amet. Quisque dignissim ante in magna scelerisque vulputate quis non odio. Etiam volutpat, lorem vitae condimentum volutpat, dui quam porta augue, id porta mi felis quis nisl. Vestibulum at diam pulvinar, pretium dui id, mollis metus. Nulla pulvinar arcu et urna rhoncus elementum. In a ultrices nulla. Nulla accumsan elementum lacus condimentum mattis. Sed tempus efficitur quam. Nam rutrum lectus quam, sed blandit lacus tincidunt vitae. Nulla dapibus at neque nec malesuada. Mauris faucibus massa ut felis venenatis gravida. Integer libero purus, fermentum quis aliquet in, pellentesque a nisl.',
-    	author: 'John Doe', 'journal': 'Journal of Sample'},    	
-		{id: 10, title:'Sample Title 10', abstract:
-    	'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce euismod ac neque at viverra. Cras lobortis turpis ut nisl convallis, ac semper mauris luctus. In ut risus eleifend, lobortis sem sit amet, tristique neque. Ut a lorem nibh. Sed eget fringilla ex. Etiam vel varius velit. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam augue nulla, fringilla in vulputate ac, imperdiet a nisi. Donec pulvinar quam in aliquet luctus. Aenean sagittis, justo sit amet finibus imperdiet, tellus quam blandit ipsum, in commodo sapien sapien ut ligula. Aliquam pretium justo mi, a aliquet orci ultricies et. Fusce ultricies turpis eu urna convallis, quis venenatis augue pellentesque. Praesent mollis nunc sapien, eu consequat eros fringilla ut. Nulla ut mauris gravida, interdum tortor pellentesque, lacinia tellus.<br/><br/>' +
-		'Pellentesque sed nisi blandit, maximus lacus quis, facilisis justo. Phasellus consequat euismod elit vehicula lobortis. Ut molestie aliquet neque sit amet consectetur. Sed pharetra felis sit amet ligula consequat, sagittis porta quam aliquam. Aliquam blandit velit ipsum, a feugiat leo dictum nec. Ut risus felis, fermentum nec iaculis vel, egestas non sem. In in mauris ut urna ultricies vehicula. Nunc ut mi diam.<br/><br/>' +
-        'Morbi consequat eu dui laoreet imperdiet. Curabitur tincidunt quam in quam aliquam, non suscipit dui vulputate. Praesent fermentum ligula ut est aliquet dapibus. Curabitur malesuada mattis purus, sit amet lobortis est ultricies sit amet. Quisque dignissim ante in magna scelerisque vulputate quis non odio. Etiam volutpat, lorem vitae condimentum volutpat, dui quam porta augue, id porta mi felis quis nisl. Vestibulum at diam pulvinar, pretium dui id, mollis metus. Nulla pulvinar arcu et urna rhoncus elementum. In a ultrices nulla. Nulla accumsan elementum lacus condimentum mattis. Sed tempus efficitur quam. Nam rutrum lectus quam, sed blandit lacus tincidunt vitae. Nulla dapibus at neque nec malesuada. Mauris faucibus massa ut felis venenatis gravida. Integer libero purus, fermentum quis aliquet in, pellentesque a nisl.',
-    	author: 'John Doe', 'journal': 'Journal of Sample'}    	
-    	];
-
-    	$scope.pagination = {page: 8, total_pages: 20, total_results: 390, start: 141, end: 160, min_page:1, max_page: 15, pages: [
-    		{name: '2', current: false, active: true},
-    		{name: '3', current: false, active: true},
-    		{name: '4', current: false, active: true},
-    		{name: '5', current: false, active: true},
-    		{name: '6', current: false, active: true},
-    		{name: '7', current: false, active: true},
-    		{name: '8', current: true, active: true},
-    		{name: '9', current: false, active: true},
-    		{name: '10', current: false, active: true},
-    		{name: '11', current: false, active: true},
-    		{name: '12', current: false, active: true},
-    		{name: '13', current: false, active: true},
-    		{name: '14', current: false, active: true},
-    		]
-    	};
+    $scope.filter = function(facet, facet_option) {
+        facet_id = facet.id;
+        option_id = facet_option.id;
+        filters = {};
+        filters[facet_id] = [option_id];
+        $scope.search({'filters': filters});
+    }
 
     $scope.search = function(facets) {
         var query = {};
@@ -96,13 +28,41 @@ angular.module('psilibrary.controllers')
         call.then(
             function(data){
                 $scope.data = data;
+                $scope.processNavigation(data.navigation);
             },
             function(err){
                 $scope.msg = {error: err};
             });
     }
 
+    $scope.processNavigation = function(data) {
+        if (!data) {
+            return;
+        }
+
+        p = {};
+        p.page = data["currentPage"];
+        p.total_pages = data['totalPages'];
+        p.total_results = data['totalCount'];
+        p.start = data['pageStart'];
+        p.end = data['pageEnd'];
+        p.min_page = Math.max(1, p.page - 7);
+        visiblePages = p.page - p.min_page + 1;
+        p.max_page = Math.min(p.total_pages, p.page + 15 - visiblePages);
+        p.pages = [];
+
+        for (var i = p.min_page; i <= p.max_page; i++) {
+            pageData = {};
+            pageData['name'] = '' + i;
+            pageData['current'] = p.page == i;
+            p.pages.push(pageData);
+        }
+
+        $scope.pagination = p;
+    }
+
     $scope.init = function() {
         $scope.search();
     };
 }]);
+

@@ -74,12 +74,23 @@ describe('SearchController tests', function() {
     scope.search({'category': ['2']});
     expect(searchService.Search).toHaveBeenCalledWith({"filters":{'category': ['2']}})
   });
-/*
-  it('should move categories filter to data', function() {
+
+  it('should generate pagination info', function(){
     scope.init();
-    deferred.resolve({'facets': });
+    result = {"navigation":{"order":"","currentPage":1,"pageSize":0,"pageStart":1,"pageEnd":20,
+      "totalPages":136,"totalCount":2713}};
+
+    deferred.resolve(result);
     scope.$root.$digest();
-    expect(scope.data).toBe('ok');
+
+    p = scope.pagination;
+    expect(p.page).toBe(1);
+    expect(p.total_pages).toBe(136);
+    expect(p.total_results).toBe(2713);
+    expect(p.start).toBe(1);
+    expect(p.end).toBe(20);
+    expect(p.min_page).toBe(1);
+    expect(p.max_page).toBe(15);
+    expect(p.pages.length).toBe(15);
   });
-*/
 });
