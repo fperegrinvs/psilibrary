@@ -4,11 +4,11 @@ package models
 
 type (
 	SearchQuery struct {
-		Query     string 			 `json:"query"`
-		Filters   []SearchFilter     `json:"filters"`
-		PageSize int			     `json:"pageSize"`
-		Page int  					 `json:"page"`
-		Order string 				 `json:"order"`
+		Query     string 			 	  `json:"query"`
+		Filters   map[string][]string     `json:"filters"`
+		PageSize int			     	  `json:"pageSize"`
+		Page int  						  `json:"page"`
+		Order string 				 	  `json:"order"`
 	}
 
 	SearchResults struct {
@@ -34,7 +34,7 @@ type (
 	}
 
 	Facet struct {
-		Id int          	`json:"id"` 
+		Id string          	`json:"id"` 
 		Name string         `json:"name"` 
 		IsSelected bool		`json:"isSelected"`
 		Options []FacetOption  `json:"options"`

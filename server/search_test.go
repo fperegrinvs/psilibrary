@@ -168,20 +168,55 @@ func Test_Process_Result_Navigation_Page_2(t *testing.T){
 	}
 }
 
-func Test_Process_Facets_Category(t *testing.T) {
-	results := 
-		[]*models.Entry{
-			&models.Entry{EntryId:1, Categories: []models.Category{models.Category{ID:1}}}, 
-			&models.Entry{EntryId:2}, 
-			&models.Entry{EntryId:3}}
+
+func Test_Process_Facets_Category_No_Filter(t *testing.T) {
+	results := []*models.Entry{}
 
 	query_result := new(models.SearchResults)
 	query_result.Results = results
 
-	response, err := repo.ProcessCategoryFacet(query_result)
+	response, err := repo.ProcessFacets(query_result)
 
 	if err != nil || response == nil {
 		t.Error("Erro ao processar facets ", err)
+		return
+	}
+
+	if len(response.Facets) == 0 {
+		t.Error("Nenhuma facet encontrado")
+	}
+}
+
+func Test_Process_Facets_Category_Filter(t *testing.T) {
+	results := []*models.Entry{}
+
+	query_result := new(models.SearchResults)
+	query_result.Results = results
+
+	filters := make(map[string][]string)
+	filters["category"] = []string{"2"}
+	query_result.Query.Filters = filters
+
+
+	response, err := repo.ProcessFacets(query_result)
+
+	if err != nil || response == nil {
+		t.Error("Erro ao processar facets ", err)
+		return
+	}
+
+	if len(response.Facets) != 1 {
+		t.Error("Um facet deveria ser encontrado")
+		return
+	}
+
+	if response.Facets[0].Id != "category" {
+		t.Error("Facet retornado deveria ser o de categoria")
+		return
+	}
+
+	if len(response.Facets[0].Options) != 1 {
+		t.Error("Facet de categoria deveria ter apenas uma opçào: " + strconv.Itoa( len(response.Facets[0].Options)))
 		return
 	}
 

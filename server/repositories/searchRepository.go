@@ -3,6 +3,7 @@ package repositories
 import (
 	"errors"
 	"math"
+	"strconv"
     "github.com/lstern/psilibrary/server/conf"
 	"github.com/lstern/psilibrary/server/models"
 )
@@ -55,6 +56,50 @@ func (s SearchRepository) ProcessResultsNavigation(query *models.SearchQuery, re
 	return response, nil
 }
 
-func (s SearchRepository) ProcessCategoryFacet(results *models.SearchResults) (*models.SearchResults, error){
+func (s SearchRepository) ProcessFacets(results *models.SearchResults) (*models.SearchResults, error){
+	category := results.Query.Filters["category"]
+
+	cat_repo := MakeCategoryRepository(nil, nil)
+	cats := []*models.Category{}
+	var filtered bool
+
+	if category == nil {
+		filtered = false
+		cats, _ = cat_repo.List();
+	} else {
+		filtered = true
+   		var ids = []int64{}
+
+   	    for _, i := range category {
+	        j, err := strconv.Atoi(i)
+	        if err != nil {
+	            panic(err)
+	        }
+	        ids = append(ids, int64(j))
+	    }
+
+		cats_p, _ := cat_repo.GetCategoriesByIdList(ids);
+		for _, cat := range cats_p {
+			cats = append(cats, &cat)
+		}
+	}
+
+	var options = []models.FacetOption{}
+	for _, cat := range cats {
+		option := models.FacetOption{}
+		option.Id = cat.ID
+		option.Name = cat.Name
+		option.IsSelected = filtered
+		options = append(options, option)
+	}
+
+	facet := models.Facet{}
+	facet.Id = "category"
+	facet.Name = "Categorias"
+	facet.Options = options
+	facet.IsSelected = filtered
+
+	results.Facets = []models.Facet{facet}
+
 	return results, nil
 }
