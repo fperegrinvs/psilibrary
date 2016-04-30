@@ -1,6 +1,6 @@
 'use strict'; // http://stackoverflow.com/questions/1335851/what-does-use-strict-do-in-javascript-and-what-is-the-reasoning-behind-it
 angular.module('psilibrary.controllers')
-    .controller('searchCtl', ['$scope', 'Facebook', function ($scope, Facebook) {
+    .controller('searchCtl', ['$scope', 'Facebook', 'searchService', function ($scope, Facebook, searchService) {
     	$scope.categories = [
     			{id: 1, title: 'cat1'},
     			{id: 2, title: 'cat2'},
@@ -76,4 +76,33 @@ angular.module('psilibrary.controllers')
     		{name: '14', current: false, active: true},
     		]
     	};
+
+    $scope.search = function(catid) {
+        var query = {};
+
+        if ($scope.query && $scope.query.length > 0){
+            query['query'] = $scope.query;
+        }
+
+        if ($scope.page) {
+            query['page'] = $scope.page;
+        }
+
+        if (catid) {
+            query['filters'] = {'category' : [catid]};
+        }        
+
+        var call = searchService.Search(query);
+        call.then(
+            function(data){
+                $scope.data = data;
+            },
+            function(err){
+                $scope.msg = {error: err};
+            });
+    }
+
+    $scope.init = function() {
+        $scope.search();
+    };
 }]);
