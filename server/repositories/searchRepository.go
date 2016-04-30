@@ -44,37 +44,55 @@ func (s SearchRepository) Search(query *models.SearchQuery) (*models.SearchResul
 	return nil, nil
 }
 
-func (s SearchRepository) ExecuteSearch(query *models.SearchQuery) ([]*models.Entry, error){
+func (s SearchRepository) ExecuteSearch(query *models.SearchQuery) ([]*models.Entry, int, error){
 	category := query.Filters["category"]
 
 	db, err := openSql(s.DB)
 
 	if err != nil {
-		return nil, err
+		return nil, 0, err
 	}	
 
 	defer db.Close()
 
 	result := []models.Entry{}
 	start := (query.Page - 1) * query.PageSize 
+	var count int
 	if query.Query == "" {
 		if category == nil {
 			err = db.Select(&result, "SELECT * FROM Entry limit ?,?", start, query.PageSize)
+			
+			if err == nil {
+				err = db.Get(&count, "SELECT count(*) FROM Entry")
+			}
 		} else {
 			catid,_ := strconv.Atoi(category[0])
 			err = db.Select(&result, "SELECT e.* FROM Entry e inner join CategoryEntry ce on ce.EntryId = e.EntryId where ce.CategoryId = ? limit ?,?", catid,  start, query.PageSize)
+
+			if err == nil {
+				err = db.Get(&count, "SELECT count(*) FROM Entry e inner join CategoryEntry ce on ce.EntryId = e.EntryId where ce.CategoryId = ?", catid)
+			}
 		}
 	} else {
 		if category == nil {
 			err = db.Select(&result, "call search(?,?,?)", query.Query, start, query.PageSize)
+
+			if err == nil {
+				err = db.Get(&count, "call search_count(?)", query.Query)
+			}
+
 		} else {
 			catid, _ := strconv.Atoi(category[0])
 			err = db.Select(&result, "call SearchByCategory(?,?,?,?)", query.Query, catid, start, query.PageSize)
+
+			if err == nil {
+				err = db.Get(&count, "call SearchByCategory_count(?,?)", query.Query, catid)
+			}
 		}
 	}
 
 	if err != nil {
-		return nil, err
+		return nil, 0, err
 	}
 
 	var results = []*models.Entry{}
@@ -82,7 +100,7 @@ func (s SearchRepository) ExecuteSearch(query *models.SearchQuery) ([]*models.En
 		results = append(results, &r)
  	}
 
-	return results, nil
+	return results, count, nil
 }
 
 func (s SearchRepository) ProcessResultsNavigation(query *models.SearchQuery, results []*models.Entry, total int) (*models.SearchResults, error){

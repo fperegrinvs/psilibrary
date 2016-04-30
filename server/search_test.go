@@ -227,14 +227,14 @@ func Test_Execute_Search_Empty(t *testing.T) {
 	query.Query = ""
 	query.Page = 2
 	query.PageSize = 1
-	response, err := repo.ExecuteSearch(query)
+	response, count, err := repo.ExecuteSearch(query)
 
 	if err != nil {
 		t.Error("Erro ao executar query: ", err)
 		return
 	}
 
-	if response == nil || len(response) == 0 {
+	if response == nil || len(response) == 0 || count == 0 {
 		t.Error("Nenhum resultado retornado", err)
 		return
 	}
@@ -248,14 +248,14 @@ func Test_Execute_Search_Filter_NoQuery(t *testing.T) {
 	query.Filters  = make(map[string][]string)
 	query.Filters["category"] = []string{"2"}
 	
-	response, err := repo.ExecuteSearch(query)
+	response, count, err := repo.ExecuteSearch(query)
 
 	if err != nil {
 		t.Error("Erro ao executar query: ", err)
 		return
 	}
 
-	if response == nil || len(response) == 0 {
+	if response == nil || len(response) == 0 || count == 0 {
 		t.Error("Nenhum resultado retornado", err)
 		return
 	}
@@ -266,14 +266,14 @@ func Test_Execute_Search_Query_NoFilter(t *testing.T) {
 	query.Query = "abstract"
 	query.Page = 2
 	query.PageSize = 1
-	response, err := repo.ExecuteSearch(query)
+	response, count, err := repo.ExecuteSearch(query)
 
 	if err != nil {
 		t.Error("Erro ao executar query: ", err)
 		return
 	}
 
-	if response == nil || len(response) == 0 {
+	if response == nil || len(response) == 0  || count == 0 {
 		t.Error("Nenhum resultado retornado", err)
 		return
 	}
@@ -287,14 +287,14 @@ func Test_Execute_Search_Filter_and_Query(t *testing.T) {
 	query.Filters  = make(map[string][]string)
 	query.Filters["category"] = []string{"2"}
 	
-	response, err := repo.ExecuteSearch(query)
+	response, count, err := repo.ExecuteSearch(query)
 
 	if err != nil {
 		t.Error("Erro ao executar query: ", err)
 		return
 	}
 
-	if response == nil || len(response) == 0 {
+	if response == nil || len(response) == 0 || count == 0 {
 		t.Error("Nenhum resultado retornado", err)
 		return
 	}
