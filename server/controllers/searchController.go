@@ -26,6 +26,8 @@ func Search(w http.ResponseWriter, r *http.Request) {
 		if err := json.NewEncoder(w).Encode(err); err != nil {
 			panic(err)
 		}
+		
+		return
 	}
 
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")

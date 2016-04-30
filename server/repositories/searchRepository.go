@@ -132,6 +132,7 @@ func (s SearchRepository) ProcessResultsNavigation(query *models.SearchQuery, re
 	response.Navigation.PageEnd = int(math.Min(float64(response.Navigation.PageStart + query.PageSize - 1), float64(total)))
 	response.Navigation.CurentPage = query.Page
 	response.Navigation.TotalCount = total
+	response.Query = *query
 
 	response.Results = results
 	return response, nil
