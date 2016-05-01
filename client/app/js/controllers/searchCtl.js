@@ -1,10 +1,11 @@
 'use strict'; // http://stackoverflow.com/questions/1335851/what-does-use-strict-do-in-javascript-and-what-is-the-reasoning-behind-it
 angular.module('psilibrary.controllers')
-    .controller('searchCtl', ['$scope', 'Facebook', 'searchService', function ($scope, Facebook, searchService) {
-    $scope.filter = function(facet, facet_option) {
+    .controller('searchCtl', ['$scope', 'Facebook', 'searchService', '$sce', function ($scope, Facebook, searchService, $sce) {
+    $scope.filter = function(facet, facet_option, name) {
         filters = {};
         filters[facet] = ['' + facet_option];
         $scope.search(filters);
+        $scope.current = 'Categoria:' +  name;
     }
 
     $scope.search = function(filters) {
@@ -12,6 +13,7 @@ angular.module('psilibrary.controllers')
 
         if ($scope.query && $scope.query.length > 0){
             query['query'] = $scope.query;
+            $scope.current = 'Busca:' + $scope.query;
         }
 
         if ($scope.page) {
@@ -30,6 +32,11 @@ angular.module('psilibrary.controllers')
         call.then(
             function(data){
                 $scope.data = data;
+
+                for (var i =0 ; i < data.results.length; i++) {
+                    $scope.data.results[i].abstract_safe = $sce.trustAsHtml(data.results[i].abstract);
+                }
+
                 $scope.processNavigation(data.navigation);
             },
             function(err){
@@ -73,6 +80,7 @@ angular.module('psilibrary.controllers')
 
     $scope.init = function() {
         $scope.search();
+        $scope.current = 'Home';
     };
 
     $scope.init();

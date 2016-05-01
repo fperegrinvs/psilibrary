@@ -1,8 +1,10 @@
+<div ng-include src="'app/templates/siteHeader.html'"></div>
+
 <div class="container-fluid">
-<div id="breadcrumb" class="col-lg-12">
-</div>
+
+<div class="col-lg-12">
 <div id="search-bar">
-    <div class="input-group col-lg-12">
+    <div class="input-group">
         <input type="text" name="query" id="query" ng-model="query" class="search-query form-control" placeholder="Buscar" />
         <span class="input-group-btn">
             <button class="btn btn-danger" type="button" ng-click="search()">
@@ -10,6 +12,7 @@
             </button>
         </span>
     </div>
+</div>
 </div>
 
 <!-- left -->
@@ -19,7 +22,7 @@
 			{{facet.name}}
 		</div>
 		<div class="panel-body">
-		<div ng-repeat="option in facet.options" ng-class="'facet-' + facet.id + '-item'" class="btn btn-default btn-block {{option.isSelected ? 'active' : ''}}" ng-click="filter(facet['id'], option['id'])">{{option.name}}</div>
+		<div ng-repeat="option in facet.options" ng-class="'facet-' + facet.id + '-item'" class="btn btn-default btn-block {{option.isSelected ? 'active' : ''}}" ng-click="filter(facet['id'], option['id'], option['name'])">{{option.name}}</div>
 		</div>
 	</div>
 </div>
@@ -38,9 +41,7 @@
 				<h4 class="result-journal">
 					{{result.journal}}
 				</h4>
-				<div class="result-abstract text-justify">
-					{{result.abstract}}
-				</div>
+				<div class="result-abstract text-justify" ng-bind-html="result.abstract_safe" />
 				<div>
 				<br/>
 				<button type="button" ui-sref="view({id: result.id})" class="btn btn-primary">Ler Mais</button>
