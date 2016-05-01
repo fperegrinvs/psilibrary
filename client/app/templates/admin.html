@@ -1,12 +1,23 @@
-<!--<h1>Login</h1>
- <div id="fb-root"></div>
-  <div class="ng-cloak" ng-show="user.connected">
-  Hello {{user.name}}!
-  </div>
-  
-  <div class="ng-cloak" ng-hide="user.connected">
-    Efetuando o login
-  </div> 
- -->
-  <!-- Fixed navbar -->
 <div ng-include src="'app/templates/adminHeader.html'"></div>
+
+<div style="min-height: 800px;">
+<div class="container-fluid" ng-show="!logged">
+<div class="col-lg-12">
+	<div class="alert alert-warning">
+	  <strong>Atenção!</strong> É necessário efetuar login no facebook para continuar.
+	</div>
+
+    <button type="button" class="btn btn-primary btn-large" data-ng-show="!logged" data-ng-disabled="!facebookReady" data-ng-click="IntentLogin()">Login with Facebook</button>
+</div>
+</div>
+
+<div class="container-fluid" ng-show="logged && !$root.authorized">
+<div class="col-lg-12">
+  <div class="alert alert-danger">
+    <strong>Atenção!</strong> Acesso não autorizado ao usuário {{user.name}}.
+  </div>
+
+  <button type="button" class="btn btn-danger btn-large" data-ng-show="logged" data-ng-disabled="!facebookReady" data-ng-click="logout()">Logout</button>
+</div>
+</div>
+</div>

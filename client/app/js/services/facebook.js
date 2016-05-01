@@ -1,3 +1,4 @@
+/*
 angular.module('psilibrary.services')
 .service('Facebook', ['$q', '$rootScope', function($q, $rootScope) {
   
@@ -42,3 +43,4 @@ angular.module('psilibrary.services')
     }
   }; 
 }]);
+*/

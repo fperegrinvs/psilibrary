@@ -2,7 +2,10 @@
 angular.module('psilibrary.controllers')
     .controller('entryTypeEditCtl', ['$scope', 'entryTypeService', '$state', function ($scope, entryTypeService, $state) {
         $scope.section = 'entryType';
+        $scope.requireAuthorization();
+
         window.currentScope = $scope;
+
         var call = entryTypeService.Get($state.params.id);
         call.then(function (data) {
             $scope.data = data;

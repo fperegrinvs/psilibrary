@@ -17,6 +17,10 @@
         <li class="{{section == 'medline' ? 'active' : ''}}"><a href="" ui-sref="medline">Importação Medline</a></li>
         <li><a href="" ui-sref="home">Voltar para o site</a></li>
       </ul>
+      <ul class="nav navbar-nav navbar-right" ng-show="$root.authorized">
+        <li><img src="{{$root.user.picture.data.url}}" /></li>
+        <li><a href="">{{$root.user.name}}</a></li>
+      </ul>
     </div>
   </div>
 </nav>

@@ -3,9 +3,10 @@ angular.module('psilibrary.controllers')
     .controller('entryListCtl', ['$scope', 'entryService', '$state', function ($scope, entryService, $state) {
 
     $scope.init = function() {
-            $scope.section = 'entry';
+        $scope.section = 'entry';
         window.currentScope = $scope;
         
+        $scope.requireAuthorization();
         if ($state.params.error){
             $scope.msg = {error: $state.params.error}
         }

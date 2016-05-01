@@ -3,6 +3,8 @@ angular.module('psilibrary.controllers')
     .controller('entryTypeListCtl', ['$scope', 'entryTypeService', '$state', function ($scope, entryTypeService, $state) {
         $scope.section = 'entryType';
         window.currentScope = $scope;
+        $scope.requireAuthorization();
+
         var call = entryTypeService.List();
         call.then(function (data) {
             $scope.data = data;

@@ -2,6 +2,7 @@ package repositories
 
 import (
 	"errors"
+	//"log"
 	"github.com/lstern/psilibrary/server/models"
 	_ "github.com/go-sql-driver/mysql"
 	//"time"
@@ -144,7 +145,7 @@ func (r EntryRepository) ValidateEntry(e *models.Entry) (error) {
 		return errors.New("Categoria duplicada")
 	}
 
-	if (e.MedlineId != "") {
+	if (e.MedlineId != "" && e.EntryId == 0) {
 		o, err := r.GetByMedlineId(e.MedlineId);
 
 		if (err == nil && o.MedlineId == e.MedlineId) {

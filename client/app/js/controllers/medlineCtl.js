@@ -2,6 +2,8 @@
 angular.module('psilibrary.controllers')
     .controller('medlineCtl', ['$scope', 'medlineService', '$state', function ($scope, medlineService, $state) {
         $scope.section = 'medline';
+        $scope.requireAuthorization();
+
         window.currentScope = $scope;
         $scope.import = function () {
             medlineService.Import($scope.xml).then(function () {

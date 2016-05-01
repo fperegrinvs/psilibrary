@@ -3,6 +3,7 @@ angular.module('psilibrary.controllers')
     .controller('categoryCreateCtl', ['$scope', 'categoryService', '$state', function ($scope, categoryService, $state) {
         $scope.init = function () {
             window.currentScope = $scope;
+            $scope.requireAuthorization();
             $scope.data = {};
             $scope.section = 'category';
         };

@@ -4,7 +4,9 @@ angular.module('psilibrary.controllers')
     	function ($scope, entryService, $state, categoryService, entryTypeService, $filter) {
 
 	$scope.init = function(){
-            $scope.section = 'entry';
+        $scope.section = 'entry';
+        $scope.requireAuthorization();
+
         if (!$state.params.id){
             $state.go('entry', {error: 'Registro não encontrado'});
         }

@@ -8,7 +8,7 @@ var Psilibrary;
 (function (Psilibrary) {
     var app = angular.module('client', ["ngCookies", "ngResource", "ngSanitize", "ngRoute", "ngAnimate", "ui.utils", "ui.bootstrap", 
         "ui.router", "psilibrary.controllers", 'psilibrary.templates', 'psilibrary.config', 'psilibrary.services', 'psilibrary.directives', 
-        'psilibrary.providers', 'frapontillo.bootstrap-duallistbox', 'templates', 'ngSanitize', 'textAngular']);
+        'psilibrary.providers', 'frapontillo.bootstrap-duallistbox', 'templates', 'ngSanitize', 'textAngular', 'facebook']);
     angular.module("psilibrary.controllers", []);
     angular.module("psilibrary.templates", []);
     angular.module("psilibrary.services", []);
@@ -79,6 +79,13 @@ var Psilibrary;
         })
             .filter(function (obj) { return !!obj; });
     }
+
+    app.config(['FacebookProvider', function(FacebookProvider) {
+     // Set your appId through the setAppId method or
+     // use the shortcut in the initialize method directly.
+     FacebookProvider.init('268751096793071');
+  }])
+
     app.config([
         '$routeProvider', '$locationProvider', '$httpProvider', '$stateProvider', '$urlRouterProvider', function ($routeProvider, $locationProvider, $httpProvider, $stateProvider, $urlRouterProvider) {
             'use strict';
@@ -165,6 +172,12 @@ var Psilibrary;
                     console.log('$stateChangeSuccess to ' + toState.name + '- fired once the state transition is complete.');
                 }
             });
+
+            $rootScope.requireAuthorization = function() {
+                if (!$rootScope.authorized) {
+                    $state.go('admin');
+                }
+            }
         }
     ]); // helper functions
     function getScope(e) {

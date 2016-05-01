@@ -150,5 +150,10 @@ var routes = Routes{
 		"/medline",
 		controllers.ImportMedline,
 	},
-
+	Route{
+		"UserGet",
+		[]string{"GET"},
+		"/user/{id}",
+		controllers.CheckUser,
+	},
 }

@@ -4,6 +4,8 @@ angular.module('psilibrary.controllers')
         function ($scope, entryService, $state, categoryService, entryTypeService) {    	
     	$scope.init = function(){
             $scope.section = 'entry';
+            $scope.requireAuthorization();
+
             var call = categoryService.List();
             call.then(function(data){
                 $scope.categories = data;

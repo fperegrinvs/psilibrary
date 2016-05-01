@@ -1,13 +1,15 @@
 'use strict'; // http://stackoverflow.com/questions/1335851/what-does-use-strict-do-in-javascript-and-what-is-the-reasoning-behind-it
 angular.module('psilibrary.controllers')
-    .controller('categoryListCtl', ['$scope', 'categoryService', '$state', function ($scope, categoryService, $state) {
-        $scope.init = function () {
+    .controller('categoryListCtl', ['$scope', 'categoryService', '$state', 'userService', function ($scope, categoryService, $state, userService) {
+        $scope.init = function () {            
             $scope.section = 'category';
             if ($state.params.error){
                 $scope.msg = {error: $state.params.error}
             }
             
             window.currentScope = $scope;
+            $scope.requireAuthorization();
+
             var call = categoryService.List();
             call.then(function (data) {
                 $scope.data = data;

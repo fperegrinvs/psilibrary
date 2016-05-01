@@ -3,6 +3,8 @@ angular.module('psilibrary.controllers')
     .controller('entryTypeCreateCtl', ['$scope', 'entryTypeService', '$state', function ($scope, entryTypeService, $state) {
         $scope.section = 'entryType';
         window.currentScope = $scope;
+        $scope.requireAuthorization();
+
         $scope.data = {};
         $scope.update = function () {
             entryTypeService.Create($scope.data).then(function () {
