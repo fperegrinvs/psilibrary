@@ -8,6 +8,11 @@ angular.module('psilibrary.controllers')
         $scope.current = 'Categoria:' +  name;
     }
 
+    $scope.searchClick = function() {
+        $scope.page = 1;
+        $scope.search();
+    }
+
     $scope.search = function(filters) {
         var query = {};
 

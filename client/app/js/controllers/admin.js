@@ -59,13 +59,15 @@ angular.module('psilibrary.controllers')
               call = userService.Get(response.id);
               call.then(
                 function(data){
-                  if (data.id == response.login) {
-                    $rootScope.authorized = true;
-                    $rootScope.user = $scope.user;
-                  }
+                  $timeout(function(){
+                    if (data.id == response.login) {
+                      $rootScope.authorized = true;
+                      $rootScope.user = $scope.user;
+                    }
+                  })
                 },
                 function (data) {
-                    $scope.clear();
+                    $rootScope.authorized = false;
                 } 
               )
               console.log(response)
@@ -84,6 +86,7 @@ angular.module('psilibrary.controllers')
       $scope.logout = function() {
         Facebook.logout(function() {
           $scope.$apply(function() {
+            $scope.logged = false;
             $scope.clear();
           });
         });
