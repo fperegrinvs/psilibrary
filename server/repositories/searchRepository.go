@@ -65,7 +65,7 @@ func (s SearchRepository) Search(query *models.SearchQuery) (*models.SearchResul
 	return response, nil
 }
 
-func (s SearchRepository) ExecuteSearch(query *models.SearchQuery) ([]*models.Entry, int, error){
+func (s SearchRepository) ExecuteSearch(query *models.SearchQuery) ([]models.Entry, int, error){
 	category := query.Filters["category"]
 
 	db, err := openSql(s.DB)
@@ -116,15 +116,10 @@ func (s SearchRepository) ExecuteSearch(query *models.SearchQuery) ([]*models.En
 		return nil, 0, err
 	}
 
-	var results = []*models.Entry{}
- 	for _, r := range result {
-		results = append(results, &r)
- 	}
-
-	return results, count, nil
+	return result, count, nil
 }
 
-func (s SearchRepository) ProcessResultsNavigation(query *models.SearchQuery, results []*models.Entry, total int) (*models.SearchResults, error){
+func (s SearchRepository) ProcessResultsNavigation(query *models.SearchQuery, results []models.Entry, total int) (*models.SearchResults, error){
 	response := new(models.SearchResults)
 
 	response.Navigation.TotalPages =  int(math.Ceil(float64(total) / float64(query.PageSize)))

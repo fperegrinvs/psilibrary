@@ -137,5 +137,18 @@ var routes = Routes{
 		"/search",
 		controllers.Search,
 	},
+	Route{
+		"MedlineOptions",
+		[]string{"OPTIONS"},
+		"/medline",
+		controllers.OptionsHandler,
+	},
+
+	Route{
+		"Medline",
+		[]string{"POST"},
+		"/medline",
+		controllers.ImportMedline,
+	},
 
 }

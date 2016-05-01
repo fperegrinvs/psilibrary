@@ -2,14 +2,12 @@
 angular.module('psilibrary.controllers')
     .controller('searchCtl', ['$scope', 'Facebook', 'searchService', function ($scope, Facebook, searchService) {
     $scope.filter = function(facet, facet_option) {
-        facet_id = facet.id;
-        option_id = facet_option.id;
         filters = {};
-        filters[facet_id] = [option_id];
-        $scope.search({'filters': filters});
+        filters[facet] = ['' + facet_option];
+        $scope.search(filters);
     }
 
-    $scope.search = function(facets) {
+    $scope.search = function(filters) {
         var query = {};
 
         if ($scope.query && $scope.query.length > 0){
@@ -20,8 +18,12 @@ angular.module('psilibrary.controllers')
             query['page'] = $scope.page;
         }
 
-        if (facets) {
-            query['filters'] = facets;
+        if (filters) {
+            $scope.filters = filters 
+        }
+
+        if ($scope.filters) {
+            query['filters'] = filters;
         }        
 
         var call = searchService.Search(query);
@@ -33,6 +35,11 @@ angular.module('psilibrary.controllers')
             function(err){
                 $scope.msg = {error: err};
             });
+    }
+
+    $scope.changePage = function(page) {
+        $scope.page = page;
+        $scope.search();
     }
 
     $scope.processNavigation = function(data) {
@@ -53,7 +60,7 @@ angular.module('psilibrary.controllers')
 
         for (var i = p.min_page; i <= p.max_page; i++) {
             pageData = {};
-            pageData['name'] = '' + i;
+            pageData['name'] = i;
             pageData['current'] = p.page == i;
             p.pages.push(pageData);
         }
@@ -64,5 +71,7 @@ angular.module('psilibrary.controllers')
     $scope.init = function() {
         $scope.search();
     };
+
+    $scope.init();
 }]);
 

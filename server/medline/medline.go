@@ -1,6 +1,7 @@
 package medline
 
 import (
+    "errors"
     "strconv"
     "time"
     "encoding/xml"
@@ -12,6 +13,11 @@ import (
 // reference https://gist.github.com/kwmt/6135123#file-parsetvdb-go
 type Medline struct {
 
+}
+
+type ImportResult struct {
+        Count     int              `json:"count"`
+        Error string                `json:"error"`
 }
 
 type PubmedArticleSet struct {
@@ -88,19 +94,28 @@ func (m Medline) InsertFromXml(xml string) ([]*models.Entry, error) {
     repo := repositories.MakeEntryRepository(nil)
     var entries []*models.Entry;
 
+    errs := ""
     for _, pubmedArticle := range result.PubmedArticles {
         entry := m.ConvertArticle(pubmedArticle.MedlineCitation);
         id, err := repo.Create(entry);
 
+
         if (err != nil) {
-            return entries, err;
+            errs += "\n" + err.Error();
+            continue; 
         }
 
         entry.EntryId = id;
         entries = append(entries, entry);
     }
 
-    return entries, nil;
+    var err error;
+
+    if len(errs) > 0 {
+        err = errors.New(errs);
+    }
+
+    return entries, err;
 }
 
 

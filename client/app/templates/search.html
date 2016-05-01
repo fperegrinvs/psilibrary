@@ -19,7 +19,7 @@
 			{{facet.name}}
 		</div>
 		<div class="panel-body">
-		<div ng-repeat="option in facet.options" ng-class="'facet-' + facet.id + '-item'" class="btn btn-default btn-block" ng-click="filter(facet['id'], option['id'])">{{option.name}}</div>
+		<div ng-repeat="option in facet.options" ng-class="'facet-' + facet.id + '-item'" class="btn btn-default btn-block {{option.isSelected ? 'active' : ''}}" ng-click="filter(facet['id'], option['id'])">{{option.name}}</div>
 		</div>
 	</div>
 </div>
@@ -52,22 +52,22 @@
 		<nav>
 		  <ul class="pagination">
 		    <li class="page-item">
-		      <a class="page-link" href="#" aria-label="Anterior">
+		      <span class="page-link previous-page" href="#" aria-label="Anterior">
 		        <span aria-hidden="true">&laquo;</span>
-		        <span class="sr-only">Anterior</span>
-		      </a>
+		        <span class="sr-only" ng-click="changePage(page + 1)">Anterior</span>
+		      </span>
 		    </li>
 		    
 		    <li ng-repeat="page in pagination.pages" class="page-item" 
-		    	ng-class="{'page-item': true, 'active': page.current, 'disabled': !page.active}">
-		    	<a class="page-link" href="#">{{page.name}}</a>
+		    	ng-class="{'page-item': true, 'active': page.current}">
+		    	<span class="page-link" href="#" ng-click="changePage(page.name)">{{page.name}}</span>
 		    </li>
 
 		    <li class="page-item">
-		      <a class="page-link" href="#" aria-label="Next">
+		      <span class="page-link next-page" href="#" aria-label="Next" ng-click="changePage(page + 1)">
 		        <span aria-hidden="true">&raquo;</span>
 		        <span class="sr-only">Next</span>
-		      </a>
+		      </span>
 		    </li>
 		  </ul>
 		</nav>

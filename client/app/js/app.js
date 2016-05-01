@@ -104,7 +104,8 @@ var Psilibrary;
                 'entryCreate',
                 'entryEdit',
                 'facebookcallback',
-                'search'
+                'search',
+                'medlineImport',
             ];
             var stateConfigs = {
                 'home': { url: '', partial: 'home', controller: 'home', target: 'miolo' },
@@ -121,7 +122,8 @@ var Psilibrary;
                 'entryCreate': { url: '/entry/new', partial: 'entryEdit', controller: 'entryCreate', target: 'miolo' },
                 'entryEdit': { url: '/entry/{id}', partial: 'entryEdit', controller: 'entryEdit', target: 'miolo' },
                 'facebookcallback' : { url: '/auth/facebook/callback', partial: 'home', controller: 'home', target: 'miolo'},
-                'search': {url: '/search', partial: 'search', controller: 'search', target: 'miolo'}
+                'search': {url: '/search', partial: 'search', controller: 'search', target: 'miolo'},
+                'medlineImport': {url: '/medline', partial: 'medline', controller: 'medline', target: 'miolo'},
             };
 
             stateTree = addSubStates(stateTree);

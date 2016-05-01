@@ -13,7 +13,7 @@ type (
 
 	SearchResults struct {
 		Query     SearchQuery 	 `json:"query"`
-		Results   []*Entry        `json:"results"`
+		Results   []Entry        `json:"results"`
 		Navigation Navigation     `json:"navigation"`
 		Facets []Facet 			`json:"facets"`
 	}

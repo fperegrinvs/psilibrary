@@ -85,6 +85,15 @@ describe('Testing Search View', function () {
 
     expect(view.find('.result-item').length).toEqual(2)
   });
+
+  it('should have 5 pages', function(){
+    result = {"pagination":{"pages":[
+      {},{},{},{},{}
+    ]}};
+    var scope = createController(result);
+    expect(view.find('.page-item').length - 2).toEqual(5)
+
+  });
 });
 
 //{"filters":{'category': ['2']}}

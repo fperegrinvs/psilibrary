@@ -1,4 +1,5 @@
 //+build integration
+
 package main_test
 
 import (
@@ -85,10 +86,10 @@ func Test_Process_Result_Navigation_Page_1(t *testing.T){
 	query.PageSize = 10
 
 	results := 
-		[]*models.Entry{
-			&models.Entry{EntryId:1}, 
-			&models.Entry{EntryId:2}, 
-			&models.Entry{EntryId:3}}
+		[]models.Entry{
+			models.Entry{EntryId:1}, 
+			models.Entry{EntryId:2}, 
+			models.Entry{EntryId:3}}
 
 	response, err := repo.ProcessResultsNavigation(query, results, 3)
 
@@ -131,10 +132,10 @@ func Test_Process_Result_Navigation_Page_2(t *testing.T){
 	query.PageSize = 1
 
 	results := 
-		[]*models.Entry{
-			&models.Entry{EntryId:1}, 
-			&models.Entry{EntryId:2}, 
-			&models.Entry{EntryId:3}}
+		[]models.Entry{
+			models.Entry{EntryId:1}, 
+			models.Entry{EntryId:2}, 
+			models.Entry{EntryId:3}}
 
 	response, err := repo.ProcessResultsNavigation(query, results, 3)
 
@@ -171,7 +172,7 @@ func Test_Process_Result_Navigation_Page_2(t *testing.T){
 
 
 func Test_Process_Facets_Category_No_Filter(t *testing.T) {
-	results := []*models.Entry{}
+	results := []models.Entry{}
 
 	query_result := new(models.SearchResults)
 	query_result.Results = results
@@ -189,7 +190,7 @@ func Test_Process_Facets_Category_No_Filter(t *testing.T) {
 }
 
 func Test_Process_Facets_Category_Filter(t *testing.T) {
-	results := []*models.Entry{}
+	results := []models.Entry{}
 
 	query_result := new(models.SearchResults)
 	query_result.Results = results
