@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"encoding/json"
 	"net/http"
 	"github.com/lstern/psilibrary/server/models"
 	"github.com/lstern/psilibrary/server/repositories"
@@ -10,19 +11,23 @@ var catRepository = repositories.MakeCategoryRepository(nil, nil)
 
 // CategoryUpdate rota teste
 func CategoryUpdate(w http.ResponseWriter, r *http.Request) {
-	category := new(models.Category)
-	f := func(o interface{})(error) { 
-		category, _ := o.(models.Category);
-		return catRepository.Update(&category) 
+
+	f := func(body []byte)(error) { 
+		category := new(models.Category)
+		if err := json.Unmarshal(body, category); err != nil {
+			w.WriteHeader(422) // unprocessable entity
+		}
+
+		return catRepository.Update(category) 
 	}
 	 
-	GenericUpdate(category, r, w, f)
+	GenericUpdate(r, w, f)
 }
 
 
 // CategoryShow TodoShow rota teste
 func CategoryShow(w http.ResponseWriter, r *http.Request) {
-	idVar := "ID"
+	idVar := "CategoryId"
 	call := func(v int)(interface{}, error){
 		return catRepository.GetById(v)
 	}
@@ -33,14 +38,18 @@ func CategoryShow(w http.ResponseWriter, r *http.Request) {
 
 // CategoryCreate TodoCreate rota teste
 func CategoryCreate(w http.ResponseWriter, r *http.Request) {
-	category := new(models.Category)
-	f := func(o interface{})(error) { 
-		category, _ := o.(models.Category);
-		_, err := catRepository.Create(&category)
+	f := func(body []byte)(error) { 
+		category := new(models.Category)
+		
+		if err := json.Unmarshal(body, category); err != nil {
+			w.WriteHeader(422) // unprocessable entity
+		}
+
+		_, err := catRepository.Create(category)
 		return err 
 	}
 
-	GenericUpdate(category, r, w, f)
+	GenericUpdate(r, w, f)
 }
 
 // CategoryIndex rota teste

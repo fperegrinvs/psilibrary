@@ -24,7 +24,7 @@ angular.module('psilibrary.controllers')
 
     $scope.edit = function(id) {
     	if (id) {
-	    	$state.go('entryEdit');
+	    	$state.go('entryEdit', { id: id });
     	}
     	else {
     		$scope.msg = {error: 'Nenhum registro selecionado'}

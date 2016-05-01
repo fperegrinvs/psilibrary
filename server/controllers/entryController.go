@@ -1,9 +1,7 @@
 package controllers
 
 import (
-	"errors"
-	"fmt"
-	"reflect"
+	"encoding/json"
 	"net/http"
 	"github.com/lstern/psilibrary/server/models"
 	"github.com/lstern/psilibrary/server/repositories"
@@ -13,19 +11,22 @@ var entryRepo = repositories.MakeEntryRepository(nil)
 
 // CategoryUpdate rota teste
 func EntryUpdate(w http.ResponseWriter, r *http.Request) {
-	entry := new(models.Entry)
-	f := func(o interface{})(error) { 
-		entry, _ := o.(models.Entry);
-		return entryRepo.Update(&entry) 
+	f := func(body []byte)(error) { 
+		entry := new(models.Entry)
+		if err := json.Unmarshal(body, entry); err != nil {
+			w.WriteHeader(422) // unprocessable entity
+		}
+
+		return entryRepo.Update(entry) 
 	}
 	 
-	GenericUpdate(entry, r, w, f)
+	GenericUpdate(r, w, f)
 }
 
 
 // CategoryShow TodoShow rota teste
 func EntryShow(w http.ResponseWriter, r *http.Request) {
-	idVar := "ID"
+	idVar := "CategoryId"
 	call := func(v int)(interface{}, error){
 		return entryRepo.GetById(v)
 	}
@@ -36,24 +37,19 @@ func EntryShow(w http.ResponseWriter, r *http.Request) {
 
 // CategoryCreate TodoCreate rota teste
 func EntryCreate(w http.ResponseWriter, r *http.Request) {
-	entry := new(models.Entry)
+	f := func(body []byte)(error) { 
+		entry := new(models.Entry)
 
-	f := func(o interface{})(error) { 
-		entry, ok := o.(*models.Entry);
-
-		if !ok  {
-			print("Erro ao converter tipo:\n")
-			fmt.Println(reflect.TypeOf(o))
-			return errors.New("Erro ao converter tipo");
+		if err := json.Unmarshal(body, entry); err != nil {
+			w.WriteHeader(422) // unprocessable entity
 		}
 
 		_, err := entryRepo.Create(entry)
 		
-
 		return err 
 	}
 
-	GenericUpdate(entry, r, w, f)
+	GenericUpdate(r, w, f)
 }
 
 // CategoryIndex rota teste
