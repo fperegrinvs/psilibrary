@@ -1,4 +1,5 @@
 <div ng-include src="'app/templates/adminHeader.html'"></div>
+<div class="container-fluid">
 <h3 ng-if="!data.id">Novo tipo de registro</h3>
 <h3 ng-if="data.id">Editando tipo de registro</h3>
 <div class="simple-form">
@@ -13,4 +14,5 @@
         </div>
         <button type="submit" class="btn btn-primary" ng-click="update()">Salvar</button>
     </form>
+</div>
 </div>

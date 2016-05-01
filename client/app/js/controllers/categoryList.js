@@ -2,6 +2,7 @@
 angular.module('psilibrary.controllers')
     .controller('categoryListCtl', ['$scope', 'categoryService', '$state', function ($scope, categoryService, $state) {
         $scope.init = function () {
+            $scope.section = 'category';
             if ($state.params.error){
                 $scope.msg = {error: $state.params.error}
             }

@@ -4,6 +4,7 @@ angular.module('psilibrary.controllers')
         $scope.init = function () {
             window.currentScope = $scope;
             $scope.data = {};
+            $scope.section = 'category';
         };
         $scope.update = function () {
             categoryService.Create($scope.data).then(function () {

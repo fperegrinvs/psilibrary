@@ -3,6 +3,7 @@ angular.module('psilibrary.controllers')
     .controller('entryListCtl', ['$scope', 'entryService', '$state', function ($scope, entryService, $state) {
 
     $scope.init = function() {
+            $scope.section = 'entry';
         window.currentScope = $scope;
         
         if ($state.params.error){

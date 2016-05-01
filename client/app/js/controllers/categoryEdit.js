@@ -3,6 +3,7 @@ angular.module('psilibrary.controllers')
     .controller('categoryEditCtl', ['$scope', 'categoryService', '$state', function ($scope, categoryService, $state) {
         $scope.init = function () {
             window.currentScope = $scope;
+            $scope.section = 'category';
             var call = categoryService.Get($state.params.id);
             call.then(function (data) {
                 $scope.data = data;

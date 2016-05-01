@@ -1,17 +1,18 @@
 <div ng-include src="'app/templates/adminHeader.html'"></div>
-<div>Categorias</div>
-<div id="toolbar">
-    <div class="form-inline" role="form">
-        <button type="submit" class="btn btn-primary create" ng-click="create()">Nova</button>
+<div class="container-fluid">
+    <h3>Categorias</h3>
+    <div id="toolbar">
+        <div class="form-inline" role="form">
+            <button type="submit" class="btn btn-primary create" ng-click="create()">Nova</button>
+        </div>
     </div>
+    <table id="table-pagination" data-toolbar="#toolbar" data-height="400" data-tabledata="data" data-search="true"  bs-table-control>
+        <thead>
+            <tr>
+                <th data-field="id" data-align="right" data-sortable="true">ID</th>
+                <th data-field="name" data-align="center" data-sortable="true">Nome</th>
+                <th data-field="id" data-align="center" data-sortable="true" data-formatter="currentScope.formatter">Ações</th>
+            </tr>
+        </thead>
+    </table>
 </div>
-<table id="table-pagination" data-toolbar="#toolbar" data-height="400" data-tabledata="data" data-search="true"  bs-table-control>
-    <thead>
-        <tr>
-            <th data-field="id" data-align="right" data-sortable="true">ID</th>
-            <th data-field="name" data-align="center" data-sortable="true">Nome</th>
-            <th data-field="id" data-align="center" data-sortable="true" data-formatter="currentScope.formatter">Ações</th>
-        </tr>
-    </thead>
-</table>
-

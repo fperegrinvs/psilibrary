@@ -3,6 +3,7 @@ angular.module('psilibrary.controllers')
     .controller('entryCreateCtl', ['$scope', 'entryService', '$state', 'categoryService', 'entryTypeService', 
         function ($scope, entryService, $state, categoryService, entryTypeService) {    	
     	$scope.init = function(){
+            $scope.section = 'entry';
             var call = categoryService.List();
             call.then(function(data){
                 $scope.categories = data;

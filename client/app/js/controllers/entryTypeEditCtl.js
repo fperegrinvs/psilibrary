@@ -1,6 +1,7 @@
 'use strict'; // http://stackoverflow.com/questions/1335851/what-does-use-strict-do-in-javascript-and-what-is-the-reasoning-behind-it
 angular.module('psilibrary.controllers')
     .controller('entryTypeEditCtl', ['$scope', 'entryTypeService', '$state', function ($scope, entryTypeService, $state) {
+        $scope.section = 'entryType';
         window.currentScope = $scope;
         var call = entryTypeService.Get($state.params.id);
         call.then(function (data) {
