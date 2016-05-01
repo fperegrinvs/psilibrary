@@ -106,10 +106,12 @@ var Psilibrary;
                 'facebookcallback',
                 'search',
                 'medline',
+                'view',
             ];
             var stateConfigs = {
-                'home': { url: '', partial: 'home', controller: 'home', target: 'miolo' },
-                'home2': { url: '/', partial: 'home', controller: 'home', target: 'miolo' },
+                'home': { url: '', partial: 'search', controller: 'search', target: 'miolo' },
+                'home2': { url: '/', partial: 'search', controller: 'search', target: 'miolo' },
+                'search': {url: '/search', partial: 'search', controller: 'search', target: 'miolo'},
                 'admin': { url: '/admin', controller: 'admin', partial: 'admin', target: 'miolo'},
                 'entryType': { url: '/entryType', controller: 'entryTypeList', partial: 'entryTypeList', target: 'miolo' },
                 'entryTypeEdit': { url: '/entryType/{id}', controller: 'entryTypeEdit', partial: 'entryTypeEdit', target: 'miolo' },
@@ -122,8 +124,8 @@ var Psilibrary;
                 'entryCreate': { url: '/entry/new', partial: 'entryEdit', controller: 'entryCreate', target: 'miolo' },
                 'entryEdit': { url: '/entry/{id}', partial: 'entryEdit', controller: 'entryEdit', target: 'miolo' },
                 'facebookcallback' : { url: '/auth/facebook/callback', partial: 'home', controller: 'home', target: 'miolo'},
-                'search': {url: '/search', partial: 'search', controller: 'search', target: 'miolo'},
                 'medline': {url: '/medline', partial: 'medline', controller: 'medline', target: 'miolo'},
+                'view': {url: '/{id}', partial: 'view', controller: 'view', target: 'miolo'},
             };
 
             stateTree = addSubStates(stateTree);

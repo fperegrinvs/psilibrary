@@ -5,7 +5,7 @@
     <div class="input-group col-lg-12">
         <input type="text" name="query" id="query" ng-model="query" class="search-query form-control" placeholder="Buscar" />
         <span class="input-group-btn">
-            <button class="btn btn-danger" type="button">
+            <button class="btn btn-danger" type="button" ng-click="search()">
                 <span class=" glyphicon glyphicon-search"></span>
             </button>
         </span>
@@ -43,7 +43,7 @@
 				</div>
 				<div>
 				<br/>
-				<button type="button" class="btn btn-primary">Ler Mais</button>
+				<button type="button" ui-sref="view({id: result.id})" class="btn btn-primary">Ler Mais</button>
 				</div>
 			</div>
 		</div>

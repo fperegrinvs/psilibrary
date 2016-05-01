@@ -38,6 +38,9 @@ angular.module('psilibrary.controllers')
     }
 
     $scope.changePage = function(page) {
+        if (page < $scope.pagination.min_page || page > $scope.pagination.max_page) {
+            return;
+        }
         $scope.page = page;
         $scope.search();
     }
