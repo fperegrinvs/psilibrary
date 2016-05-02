@@ -83157,7 +83157,7 @@ function defaultPromise(h, $q){
 (function (Psilibrary) {
     angular.module('psilibrary.config')
         .constant('config', {
-        'serverUrl': 'http://localhost:8080',
+        'serverUrl': 'http://52.67.51.36',
         'retries': 3
     });
 })(Psilibrary || (Psilibrary = {}));
