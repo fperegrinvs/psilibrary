@@ -81,17 +81,17 @@ func (s SearchRepository) ExecuteSearch(query *models.SearchQuery) ([]models.Ent
 	var count int
 	if query.Query == "" {
 		if category == nil {
-			err = db.Select(&result, "SELECT * FROM Entry limit ?,?", start, query.PageSize)
+			err = db.Select(&result, "SELECT * FROM entry limit ?,?", start, query.PageSize)
 			
 			if err == nil {
-				err = db.Get(&count, "SELECT count(*) FROM Entry")
+				err = db.Get(&count, "SELECT count(*) FROM entry")
 			}
 		} else {
 			catid,_ := strconv.Atoi(category[0])
-			err = db.Select(&result, "SELECT e.* FROM Entry e inner join CategoryEntry ce on ce.EntryId = e.EntryId where ce.CategoryId = ? limit ?,?", catid,  start, query.PageSize)
+			err = db.Select(&result, "SELECT e.* FROM entry e inner join categoryentry ce on ce.EntryId = e.EntryId where ce.CategoryId = ? limit ?,?", catid,  start, query.PageSize)
 
 			if err == nil {
-				err = db.Get(&count, "SELECT count(*) FROM Entry e inner join CategoryEntry ce on ce.EntryId = e.EntryId where ce.CategoryId = ?", catid)
+				err = db.Get(&count, "SELECT count(*) FROM entry e inner join categoryentry ce on ce.EntryId = e.EntryId where ce.CategoryId = ?", catid)
 			}
 		}
 	} else {

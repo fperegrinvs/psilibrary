@@ -21,7 +21,7 @@ func (r EntryTypeRepository) Create(e *models.EntryType) (int, error) {
 	db, err := openSql(r.DB)	
 	defer db.Close()
 
-	res, err := db.Exec("insert into EntryType (Name) values (?)", e.Name)
+	res, err := db.Exec("insert into entrytype (Name) values (?)", e.Name)
 
 	if err == nil {
         id, err := res.LastInsertId()
@@ -37,7 +37,7 @@ func (r EntryTypeRepository) Update(e *models.EntryType) (error) {
 	db, err := openSql(r.DB)	
 	defer db.Close()
 
-	_, err = db.Exec("update EntryType set Name = ? where entryTypeId = ?", e.Name, e.ID)
+	_, err = db.Exec("update entrytype set Name = ? where entryTypeId = ?", e.Name, e.ID)
 
 	log.Printf("update " +  e.Name)
 	
@@ -48,7 +48,7 @@ func (r EntryTypeRepository) Delete(id int) error{
 	db, err := openSql(r.DB)	
 	defer db.Close()
 
-	_, err = db.Exec("delete from EntryType where EntryTypeId = ?", id)
+	_, err = db.Exec("delete from entrytype where EntryTypeId = ?", id)
 
 	if err == nil {}
 

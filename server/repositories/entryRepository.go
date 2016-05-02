@@ -25,7 +25,7 @@ func MakeEntryRepository(v EntryValidator) EntryRepository {
 }
 
 func (r EntryRepository) insertEntryCategory(entryId int, categoryId int, transaction *sqlx.Tx) error{
-	res, err := transaction.Exec("insert into CategoryEntry (EntryId, CategoryId) values (?, ?)", entryId, categoryId)
+	res, err := transaction.Exec("insert into categoryentry (EntryId, CategoryId) values (?, ?)", entryId, categoryId)
 
 	if err == nil {
         id, err := res.RowsAffected()
@@ -74,7 +74,7 @@ func (r EntryRepository) Create(e *models.Entry) (int, error) {
 
 	tx := db.MustBegin()
 
-	res, err := tx.Exec("insert into Entry (Abstract, Author, Content, EntryTypeID, Journal, PublishDate, Title, MedlineId) " +
+	res, err := tx.Exec("insert into entry (Abstract, Author, Content, EntryTypeID, Journal, PublishDate, Title, MedlineId) " +
 		"values (?, ?, ?, ?, ?, ?, ?, ?)", e.Abstract, e.Author, e.Content, e.EntryType.ID, e.Journal,
 		 e.PublishDate.Format("2006-01-02"), e.Title, e.MedlineId)
 
@@ -174,7 +174,7 @@ func (r EntryRepository) Update(e *models.Entry) (error) {
 	tx := db.MustBegin()
 
 
-	rows, err := tx.Exec("update Entry set Abstract = ?, Author = ?,  Content = ?, EntryTypeID = ?, Journal = ?," +
+	rows, err := tx.Exec("update entry set Abstract = ?, Author = ?,  Content = ?, EntryTypeID = ?, Journal = ?," +
 		" PublishDate = ?, Title = ?, MedlineId = ? where EntryID = ?", e.Abstract, e.Author, e.Content, e.EntryType.ID, e.Journal,
 		e.PublishDate, e.Title, e.MedlineId, e.EntryId)
 	
@@ -222,7 +222,7 @@ func (r EntryRepository) List(start int, stop int) (*[]models.Entry, error) {
 	defer db.Close()
 
 	result := []models.Entry{}
-	err = db.Select(&result, "SELECT * FROM Entry limit ?,?", start, stop)
+	err = db.Select(&result, "SELECT * FROM entry limit ?,?", start, stop)
 
 	if err != nil {
 		return nil, err
@@ -274,7 +274,7 @@ func (r EntryRepository) GetById(id int) (*models.Entry, error) {
 	defer db.Close()
 
 	result := models.Entry{}
-	err = db.Get(&result, "SELECT * FROM Entry where EntryId = ? LIMIT 1", id)
+	err = db.Get(&result, "SELECT * FROM entry where EntryId = ? LIMIT 1", id)
 
 
 	if err != nil {
@@ -294,7 +294,7 @@ func (r EntryRepository) GetByMedlineId(id string) (*models.Entry, error) {
 	defer db.Close()
 
 	result := models.Entry{}
-	err = db.Get(&result, "SELECT * FROM Entry where MedlineId = ? LIMIT 1", id)
+	err = db.Get(&result, "SELECT * FROM entry where MedlineId = ? LIMIT 1", id)
 
 
 	if err != nil {
@@ -314,7 +314,7 @@ func (r EntryRepository) GetEntryCategories(id int) ([]int64, error) {
 	defer db.Close()
 
 	var result []int64
-	err = db.Select(&result, "SELECT CategoryId FROM CategoryEntry where EntryId = ?", id)
+	err = db.Select(&result, "SELECT CategoryId FROM categoryentry where EntryId = ?", id)
 
 	return result, err
 }
@@ -324,7 +324,7 @@ func (r EntryRepository) Delete(id int) (error){
 
 	defer db.Close()
 
-	result, err := db.Exec("Delete from Entry where EntryId = ?", id)
+	result, err := db.Exec("Delete from entry where EntryId = ?", id)
 	rows, _ := result.RowsAffected()
 
 	if rows != 1 {

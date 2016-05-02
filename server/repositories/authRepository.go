@@ -36,7 +36,7 @@ func (a AuthRepository) SaveSession(session *models.Session) error {
 	db, err := openSql(a.DB)	
 	defer db.Close()
 
-	_, err = db.Exec("insert into Session (sessionId, login, expiration) values (?, ?, ?)", session.ID, session.Login, session.Expiration)
+	_, err = db.Exec("insert into session (sessionId, login, expiration) values (?, ?, ?)", session.ID, session.Login, session.Expiration)
 	
 	return  err
 }

@@ -18,7 +18,7 @@ func (r UserRepository) GetById(id string) (*models.User, error) {
 	defer db.Close()
 
 	result := models.User{}
-	err = db.Get(&result, "SELECT * FROM User where Login = ? LIMIT 1", id)
+	err = db.Get(&result, "SELECT * FROM user where Login = ? LIMIT 1", id)
 
 
 	if err != nil {

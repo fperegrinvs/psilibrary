@@ -48,7 +48,7 @@ func (r CategoryRepository) Create(e *models.Category) (int, error) {
 	db, err := openSql(r.DB)	
 	defer db.Close()
 
-	res, err := db.Exec("insert into Category (Name, ParentId) values (?, ?)", e.Name, e.ParentId)
+	res, err := db.Exec("insert into category (Name, ParentId) values (?, ?)", e.Name, e.ParentId)
 
 	if err == nil {
         id, err := res.LastInsertId()
@@ -77,7 +77,7 @@ func (r CategoryRepository) Update(e *models.Category) (error) {
 	db, err := openSql(r.DB)	
 	defer db.Close()
 
-	rows, err := db.Exec("update Category set Name = ?, ParentId = ? where CategoryId = ?", e.Name, e.ParentId, e.ID)
+	rows, err := db.Exec("update category set Name = ?, ParentId = ? where CategoryId = ?", e.Name, e.ParentId, e.ID)
 
 	if err != nil {
 		return err
@@ -114,7 +114,7 @@ func (r CategoryRepository) Delete(id int) (*CategoryCheckResult, error){
 		return nil, err
 	}
 
-	result, err := db.Exec("delete from Category where CategoryId = ?", id)
+	result, err := db.Exec("delete from category where CategoryId = ?", id)
 
 	if err != nil {
 		return nil, err
@@ -138,7 +138,7 @@ func (r CategoryRepository) GetById(id int) (*models.Category, error) {
 		return nil, err
 	}
 
-	rows := db.QueryRow("select CategoryId, Name, ParentId FROM Category where CategoryId = ?", id)
+	rows := db.QueryRow("select CategoryId, Name, ParentId FROM category where CategoryId = ?", id)
 
     e := new(models.Category)
     err = rows.Scan(&e.ID, &e.Name, &e.ParentId)
@@ -202,7 +202,7 @@ func (r CategoryRepository) List() ([]*models.Category, error) {
 	defer db.Close()
 
 	var entries []*models.Category
-	rows, err := db.Query("select CategoryId, Name, ParentId FROM Category")
+	rows, err := db.Query("select CategoryId, Name, ParentId FROM category")
 
 	if rows == nil{
 		return nil, err
@@ -222,7 +222,7 @@ func (r CategoryRepository) GetByParentId(catid int)([]*models.Category, error){
 	db, err := openSql(r.DB)	
 	defer db.Close()
 
-	rows, err := db.Query("select CategoryId, Name, ParentId FROM Category where ParentId = ?", catid)
+	rows, err := db.Query("select CategoryId, Name, ParentId FROM category where ParentId = ?", catid)
 
 	if rows == nil{
 		return nil, err
@@ -242,7 +242,7 @@ func (r CategoryRepository) GetCategoriesByIdList(ids []int64 ) ([]models.Catego
 	db, err := openSql(r.DB)	
 	defer db.Close()
 
-	query, args, err := sqlx.In("SELECT * FROM Category WHERE CategoryId IN (?);", ids)
+	query, args, err := sqlx.In("SELECT * FROM category WHERE CategoryId IN (?);", ids)
 
 	if err != nil {
 		return nil, err
