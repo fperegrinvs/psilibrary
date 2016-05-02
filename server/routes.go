@@ -152,7 +152,7 @@ var routes = Routes{
 	},
 	Route{
 		"UserGet",
-		[]string{"GET"},
+		[]string{"GET", "OPTIONS"},
 		"/user/{id}",
 		controllers.CheckUser,
 	},
