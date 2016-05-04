@@ -53,7 +53,7 @@ describe('entryEdit tests', function() {
   it('if current state lacks id, redirect to list state with error message', function(){
 	state.params = {}
 	scope.init();
-    expect(nextState.name).toBe('entryList');
+    expect(nextState.name).toBe('entry');
     expect(nextState.params.error).not.toBe(undefined);
   });
 

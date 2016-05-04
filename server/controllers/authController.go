@@ -30,10 +30,13 @@ func CheckUser(w http.ResponseWriter, r *http.Request){
 
 	obj, err := repo.GetById(id)
 
+	if err != nil {
+		log.Printf(err.Error());
+	}
+
 	if err == nil {
 		w.WriteHeader(http.StatusOK)
 		if err := json.NewEncoder(w).Encode(obj); err != nil {
-			log.Printf(err.Error());
 			panic(err)
 		}
 

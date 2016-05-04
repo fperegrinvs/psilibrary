@@ -183,7 +183,7 @@ func (r EntryRepository) Update(e *models.Entry) (error) {
 		return err
 	}
 
-	tx.MustExec("delete from categoryEntry where EntryID = ?", e.EntryId)
+	tx.MustExec("delete from categoryentry where EntryID = ?", e.EntryId)
 
    	if len(e.Categories) > 0 {
 		for _, cat := range e.Categories {
