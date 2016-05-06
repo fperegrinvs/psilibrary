@@ -27,6 +27,9 @@
 }
 
 
-
+table {
+    table-layout: fixed;
+    word-wrap: break-word;
+}
 
 /*# sourceMappingURL=styles.css.map*/
