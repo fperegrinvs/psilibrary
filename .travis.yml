@@ -8,7 +8,7 @@ go:
 install:
   - go get -t -v ./...
   - go get golang.org/x/tools/cmd/vet
-  - go get github.com/golang/lint/golint
+  - go get golang.org/x/lint/golint
   - go get labix.org/v2/mgo/bson
   - go get github.com/clbanning/x2j
   - go get github.com/ugorji/go/codec
